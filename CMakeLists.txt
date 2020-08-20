@@ -28,19 +28,27 @@ else()
     message (FATAL_ERROR "Cannot find glut! Try to install glut-devel package.")
 endif()
 
-set(SRC_DIR "src")
+set(SRC_DIR src)
+set(RATYPES_DIR src/ra_types)
+set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+
+set(RATYPES_SRC
+    ${RATYPES_DIR}/rgb888.cpp
+    )
 
 set(SOURCES
+    ${RATYPES_SRC}
     ${SRC_DIR}/main.cpp
     )
 
-add_executable (${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
+    ${INCLUDE_DIR}
+    ${RATYPES_DIR}
     )
 
 target_link_libraries( ${PROJECT_NAME}
