@@ -36,7 +36,32 @@ set(RATYPES_SRC
     ${RATYPES_DIR}/rgb888.cpp
     )
 
+set(EXAMPLES_DIRS
+    src/example_runner
+    )
+
+set(EXAMPLES_SRC
+    src/example_runner/ExampleRunner.cpp
+    )
+
+set(CANVAS2DVIEWERS_DIR src/canvas2dViewers)
+
+set(CANVAS2DVIEWERS_SRC
+    ${CANVAS2DVIEWERS_DIR}/PpxCanvas2dViewer.cpp
+    )
+
+set(CORE_DIR src/core)
+set(CORE_DIRS
+    ${CORE_DIR}/canvas2d/
+    )
+set(CORE_SRC
+    ${CORE_DIR}/canvas2d/PixelBuffer.cpp
+    )
+
 set(SOURCES
+    ${CORE_SRC}
+    ${CANVAS2DVIEWERS_SRC}
+    ${EXAMPLES_SRC}
     ${RATYPES_SRC}
     ${SRC_DIR}/main.cpp
     )
@@ -49,6 +74,9 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
     ${INCLUDE_DIR}
     ${RATYPES_DIR}
+    ${EXAMPLES_DIRS}
+    ${CANVAS2DVIEWERS_DIR}
+    ${CORE_DIRS}
     )
 
 target_link_libraries( ${PROJECT_NAME}
