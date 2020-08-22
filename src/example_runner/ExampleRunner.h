@@ -1,15 +1,33 @@
 #ifndef EXAMPLERUNNER_H
 #define EXAMPLERUNNER_H
 
+#include <vector>
+
 #include "Canvas2dViewerInterface.h"
-#include "PixelBuffer.h"
+#include "ExamplePackBase.h"
+#include "examples_types.h"
+
+/**
+ * @brief The ExampleRunner class use Canvas2dViewer to produce viewable result
+ * of example routines
+ */
 
 class ExampleRunner
 {
 public:
     ExampleRunner();
+    ~ExampleRunner();
 
     void UseCanvas2dViewer(Canvas2dViewerInterface& cv);
+
+    /**
+     * @brief Run - execute examples pipline
+     * @param expack - pack of examples to be run
+     */
+    void Run(ra_examples::ExamplePackBase& expack);
+
+private:
+    Canvas2dViewerInterface& actualCanvas2dViewer;
 };
 
 #endif // EXAMPLERUNNER_H

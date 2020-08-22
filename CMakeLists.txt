@@ -37,17 +37,22 @@ set(RATYPES_SRC
     )
 
 set(EXAMPLES_DIRS
-    src/example_runner
+    ${SRC_DIR}/example_runner
+    ${SRC_DIR}/examples
+    ${SRC_DIR}/examples/cartesian2d
     )
 
 set(EXAMPLES_SRC
     src/example_runner/ExampleRunner.cpp
+    src/examples/ExamplePackBase.cpp
+    src/examples/cartesian2d/01_Elementary.cpp
     )
 
 set(CANVAS2DVIEWERS_DIR src/canvas2dViewers)
 
 set(CANVAS2DVIEWERS_SRC
     ${CANVAS2DVIEWERS_DIR}/PpxCanvas2dViewer.cpp
+    ${CANVAS2DVIEWERS_DIR}/TerminalCanvas2dViewer.cpp
     )
 
 set(CORE_DIR src/core)
@@ -55,7 +60,7 @@ set(CORE_DIRS
     ${CORE_DIR}/canvas2d/
     )
 set(CORE_SRC
-    ${CORE_DIR}/canvas2d/PixelBuffer.cpp
+    ${CORE_DIR}/canvas2d/RectangularPixelBuffer.cpp
     )
 
 set(SOURCES
