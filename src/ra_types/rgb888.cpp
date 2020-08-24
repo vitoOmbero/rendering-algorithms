@@ -35,4 +35,14 @@ bool rgb888::operator!=(const rgb888& b) const
     return (this->r != b.r && this->g != b.g && this->b != b.b);
 }
 
+bool rgb888::operator<(const rgb888& b) const
+{
+    return this->r < b.r || this->g < b.g || this->b < b.b;
+}
+
+rgb888 rgb888::operator-(const rgb888& b) const
+{
+    return rgb888(r - b.r, g - b.g, this->b - b.b);
+}
+
 } // namespace ra_types

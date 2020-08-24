@@ -3,8 +3,12 @@
 
 #include <vector>
 
+#include "Canvas2d.h"
+#include "ColorMap.h"
+#include "Dot.h"
 #include "ExamplePackBase.h"
 #include "examples_types.h"
+#include "typedefs.h"
 
 namespace ra_examples
 {

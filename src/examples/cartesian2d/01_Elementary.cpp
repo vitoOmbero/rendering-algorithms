@@ -1,13 +1,40 @@
 #include "01_Elemantary.h"
 
-// TODO: provide function name with compiler detection for every example
-// (macros?)
+/*
+ * draft
+ * previous version
+ *
+  static void test_1(const char* filepath) {
+    using namespace simple_drawing;
+
+primitive_canvas canvas(height, width);
+
+auto dt = dot({20, 20}, color::DarkOrange1B);
+
+canvas.draw(dt);
+
+canvas.save<display_size>(filepath);
+
+std::cout << filepath << " is ready" << std::endl;
+}
+*/
 
 ra_core::canvas2d::RectangularPixelBuffer example_draw_dot()
 {
+    ra_services::color_rgb::ColorMap cm;
 
-    // TODO: implement draw dot
-    return ra_core::canvas2d::RectangularPixelBuffer();
+    ra_core::canvas2d::Canvas2d canvas; // TODO: forbid deafult ctor
+
+    ra_core::figures2d::border border;
+
+    ra_core::figures2d::Dot dot(50, 50, border);
+
+    dot.SetColor(cm.FindRgbCode(ra_services::color_rgb::color::White));
+    dot.SetColor({ 111, 111, 111 });
+
+    canvas.Draw(dot);
+
+    return canvas.GetPixelBuffer(); // TODO: default buffer color black
 }
 
 namespace ra_examples
@@ -18,8 +45,7 @@ namespace cartesian2d
 
 Elementary::Elementary()
 {
-    examples->push_back(example_draw_dot);
-    names->push_back("example_draw_dot");
+    AddExample(example_draw_dot, "example_draw_dot");
 }
 
 } // namespace cartesian2d

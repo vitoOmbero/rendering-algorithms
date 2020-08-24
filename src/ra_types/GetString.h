@@ -7,6 +7,7 @@
 #include "Directions.h"
 #include "RectangularPixelBuffer.h"
 #include "displacement2d.h"
+#include "rgb888.h"
 
 inline void line_formatting(std::ostringstream& oss, bool use_endl_separator)
 {
@@ -80,6 +81,19 @@ inline std::string GetString(
         << endl;
     oss << "Zero point offset: " << ra_types::GetString(pb.GetZeroPointOffset())
         << endl;
+    return oss.str();
+}
+
+/**
+ * @brief GetString - namespace free helping function overload
+ * @param rgb - rgb888 coloe code
+ * @return string
+ */
+inline std::string GetString(rgb888 rgb)
+{
+    using namespace std;
+    ostringstream oss;
+    oss << "{R:" << rgb.r << "; G:" << rgb.g << "; B:" << rgb.b << ";}";
     return oss.str();
 }
 

@@ -56,18 +56,47 @@ set(CANVAS2DVIEWERS_SRC
     )
 
 set(CORE_DIR src/core)
+set(RENDER2D_DIR src/rendering2d)
+set(RENDER2D_DIRS
+    ${RENDER2D_DIR}/circuits/
+    ${RENDER2D_DIR}/clipping/
+    ${RENDER2D_DIR}/filling/
+    ${RENDER2D_DIR}/line/
+    )
 set(CORE_DIRS
     ${CORE_DIR}/canvas2d/
+    ${CORE_DIR}/figures2d/
+    ${CORE_DIR}/figures2d/shapes/
+    ${CORE_DIR}/figures2d/circuits/
+    ${RENDERD2D_DIRS}
     )
 set(CORE_SRC
     ${CORE_DIR}/canvas2d/RectangularPixelBuffer.cpp
+    ${CORE_DIR}/canvas2d/Canvas2d.cpp
+    src/core/canvas2d/DrawFigure2dVisitor.cpp
+    src/core/figures2d/ShapeBase.cpp
+    src/core/figures2d/CircuitBase.cpp
+    src/core/figures2d/circuits/Dot.cpp
     )
+
+set(RASERVICES_DIR ${SRC_DIR}/ra_services)
+set(RASERVICES_DIRS
+    ${RASERVICES_DIR}/random_figure/
+    ${RASERVICES_DIR}/geo_trans_homogen_coord/
+    ${RASERVICES_DIR}/color_rgb/
+    )
+
+set(RASERVCIES_SRC
+    src/ra_services/color_rgb/ColorMap.cpp
+    )
+
 
 set(SOURCES
     ${CORE_SRC}
     ${CANVAS2DVIEWERS_SRC}
     ${EXAMPLES_SRC}
     ${RATYPES_SRC}
+    ${RASERVCIES_SRC}
     ${SRC_DIR}/main.cpp
     )
 
@@ -82,6 +111,7 @@ target_include_directories(${PROJECT_NAME}
     ${EXAMPLES_DIRS}
     ${CANVAS2DVIEWERS_DIR}
     ${CORE_DIRS}
+    ${RASERVICES_DIRS}
     )
 
 target_link_libraries( ${PROJECT_NAME}

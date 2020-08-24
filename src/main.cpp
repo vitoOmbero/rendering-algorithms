@@ -14,5 +14,13 @@ int main(int argc, char* argv[])
 
     std::cout << "Argc " << argc << std::endl;
     std::cout << "Argv " << argv << std::endl;
+
+    // TODO: view as picture
+    /*
+     *new ppxviewer();
+     *er.Use(ppxviewer);
+     *er.Run(expack);
+     */
+
     return 0;
 }

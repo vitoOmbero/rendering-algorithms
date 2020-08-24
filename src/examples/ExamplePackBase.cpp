@@ -20,6 +20,15 @@ ExamplePackBase::nameCIterator ExamplePackBase::GetNamesCEnd() const
     return names->cend();
 }
 
+void ExamplePackBase::AddExample(canvas2d_example_ft example_func_ptr,
+                                 std::string_view    example_description) const
+{
+    // TODO: provide function name with compiler detection for every example
+    // with macros?
+    examples->push_back(example_func_ptr);
+    names->push_back(example_description);
+}
+
 ExamplePackBase::exampleCIterator ExamplePackBase::GetExamplesCBegin() const
 {
     return examples->cbegin();

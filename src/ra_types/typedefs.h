@@ -20,21 +20,21 @@ typedef void*
 /**
  * @brief distance_t lightweight abstraction for linear distance
  */
-typedef std::uint64_t distance_t;
+typedef std::uint32_t distance_t;
 /**
  * @brief displacement_t lightweight abstraction for linear path, displacement
  * @details E.g. The main idea of coordinate in coodinate system is the
  * displacement for point from the zero point by each axis.
  */
-typedef std::int32_t displacement_t;
-/**
- * @brief size_t - lightweight abstraction for linear and geometrical size
- */
-typedef std::uint64_t size_t;
+typedef std::int64_t displacement_t;
 /**
  * @brief n0_t non-negative positives
  */
-typedef std::uint64_t n0_t;
+typedef std::uint32_t n0_t;
+/**
+ * @brief n1_t natural numbers
+ */
+typedef std::uint32_t n1_t;
 
 } // namespace ra_types
 

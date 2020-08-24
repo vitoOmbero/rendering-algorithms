@@ -1,5 +1,6 @@
 #ifndef RGB888_H
 #define RGB888_H
+
 #include "typedefs.h"
 
 namespace ra_types
@@ -27,6 +28,10 @@ struct rgb888 final
     bool operator==(const rgb888& b) const;
 
     bool operator!=(const rgb888& b) const;
+
+    bool operator<(const rgb888& b) const;
+
+    rgb888 operator-(const rgb888& b) const;
 };
 
 } // namespace ra_types
