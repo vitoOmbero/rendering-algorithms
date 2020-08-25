@@ -2,6 +2,8 @@
 
 TerminalCanvas2dViewer::TerminalCanvas2dViewer() {}
 
+TerminalCanvas2dViewer::~TerminalCanvas2dViewer() {}
+
 void TerminalCanvas2dViewer::ViewResult(
     const ra_core::canvas2d::RectangularPixelBuffer& pb,
     const std::string_view                           description) const

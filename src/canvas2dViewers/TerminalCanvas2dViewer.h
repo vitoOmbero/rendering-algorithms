@@ -15,6 +15,7 @@ class TerminalCanvas2dViewer : public Canvas2dViewerInterface
 {
 public:
     TerminalCanvas2dViewer();
+    ~TerminalCanvas2dViewer();
 
     void ViewResult(const ra_core::canvas2d::RectangularPixelBuffer& pb,
                     const std::string_view description) const override;

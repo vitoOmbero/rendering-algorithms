@@ -1,6 +1,8 @@
 #ifndef CANVAS2D_H
 #define CANVAS2D_H
 
+#include <memory>
+
 #include "DrawFigure2dVisitor.h"
 #include "DrawableInterface.h"
 #include "Figure2dVisitor.h"
@@ -15,12 +17,12 @@ public:
     Canvas2d();
     ~Canvas2d();
 
-    RectangularPixelBuffer GetPixelBuffer() const;
+    std::unique_ptr<RectangularPixelBuffer> getPixelBuffer();
 
     void Draw(const ra_core::figures2d::DrawableInterface& drawable) const;
 
 private:
-    RectangularPixelBuffer*              rpb;
+    std::unique_ptr<RectangularPixelBuffer> rpb;
     ra_core::figures2d::Figure2dVisitor* drawVisitor;
 };
 } // namespace ra_core::canvas2d

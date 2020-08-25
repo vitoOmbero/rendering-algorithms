@@ -70,17 +70,27 @@ inline std::string GetString(
     using namespace std;
     ostringstream oss;
     oss << "Output from DefaultCanvs2dViewer:" << endl;
-    oss << "Using PixelBuffer: " << pb.GetName() << endl;
-    oss << "Width: " << pb.GetWidth() << endl;
-    oss << "Height: " << pb.GetHeight() << endl;
-    oss << "Dot size in pixels: " << pb.GetDotSize() << endl;
-    oss << "Dots total: " << pb.GetDotsNumber() << endl;
-    oss << "0x view direction: " << ra_types::GetString(pb.GetXAxisDirection())
+    oss << "Using PixelBuffer: " << pb.getName() << endl;
+    oss << "Width, px: " << pb.getPxWidth() << endl;
+    oss << "Height, px: " << pb.getPxHeight() << endl;
+    oss << "Width, dt: " << pb.getDtWidth() << endl;
+    oss << "Height, dt: " << pb.getDtHeight() << endl;
+    oss << "Dot scale: " << pb.getBufferDotSize() << endl;
+
+    oss << "0x view direction: " << ra_types::GetString(pb.getXAxisDirection())
         << endl;
-    oss << "0y view direction: " << ra_types::GetString(pb.GetYAxisDirection())
+    oss << "0y view direction: " << ra_types::GetString(pb.getYAxisDirection())
         << endl;
-    oss << "Zero point offset: " << ra_types::GetString(pb.GetZeroPointOffset())
+    oss << "Buffer last index: " << pb.getBufferLastIndex() << endl;
+    oss << "Zero index: " << pb.getBufferZeroIndex() << endl;
+    oss << "Zero point offset: " << ra_types::GetString(pb.getZeroPointOffset())
         << endl;
+    oss << "Dots drawn total: " << pb.getBufferDotsNumber() << endl;
+    oss << "Lowest visible point: "
+        << ra_types::GetString(pb.getLowestVisiblePoint()) << endl;
+    oss << "Highest visible point: "
+        << ra_types::GetString(pb.getHighestVisiblePoint()) << endl;
+    oss << "Buffer zero point index: " << pb.getBufferZeroPointIndex() << endl;
     return oss.str();
 }
 

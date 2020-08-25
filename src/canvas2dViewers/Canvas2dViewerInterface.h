@@ -8,6 +8,7 @@
 class Canvas2dViewerInterface
 {
 public:
+    virtual ~Canvas2dViewerInterface(){};
     virtual void ViewResult(const ra_core::canvas2d::RectangularPixelBuffer& pb,
                             const std::string_view description) const = 0;
 };

@@ -15,13 +15,13 @@ public:
     Dot(displacement_t x, displacement_t y, struct border border);
     Dot(point2d p, struct border border);
 
-    inline displacement_t GetMaxX() const override { return GetX(); };
-    inline displacement_t GetMaxY() const override { return GetY(); };
-    inline displacement_t GetMinX() const override { return GetX(); };
-    inline displacement_t GetMinY() const override { return GetY(); };
+    inline displacement_t GetMaxX() const override { return getX(); };
+    inline displacement_t GetMaxY() const override { return getY(); };
+    inline displacement_t GetMinX() const override { return getX(); };
+    inline displacement_t GetMinY() const override { return getY(); };
 
-    displacement_t GetX() const;
-    displacement_t GetY() const;
+    displacement_t getX() const;
+    displacement_t getY() const;
     void           SetX(displacement_t x);
     void           SetY(displacement_t y);
 

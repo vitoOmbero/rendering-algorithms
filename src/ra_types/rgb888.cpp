@@ -27,7 +27,7 @@ rgb888::rgb888(uchar r_, uchar g_, uchar b_)
 
 bool rgb888::operator==(const rgb888& b) const
 {
-    return (this->r == b.r && this->g == b.g && this->b == b.b);
+    return (this->r == b.r & this->g == b.g & this->b == b.b);
 }
 
 bool rgb888::operator!=(const rgb888& b) const

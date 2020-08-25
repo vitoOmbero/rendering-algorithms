@@ -16,12 +16,12 @@ Dot::Dot(point2d p, struct border border)
 {
 }
 
-displacement_t Dot::GetX() const
+displacement_t Dot::getX() const
 {
     return x;
 }
 
-displacement_t Dot::GetY() const
+displacement_t Dot::getY() const
 {
     return y;
 }

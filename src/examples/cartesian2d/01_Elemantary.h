@@ -1,6 +1,7 @@
 #ifndef EXAMPLES_PACK_01_ELEMANTARY_H
 #define EXAMPLES_PACK_01_ELEMANTARY_H
 
+#include <memory>
 #include <vector>
 
 #include "Canvas2d.h"

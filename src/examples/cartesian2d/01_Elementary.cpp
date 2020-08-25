@@ -19,7 +19,7 @@ std::cout << filepath << " is ready" << std::endl;
 }
 */
 
-ra_core::canvas2d::RectangularPixelBuffer example_draw_dot()
+std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer> example_draw_dot()
 {
     ra_services::color_rgb::ColorMap cm;
 
@@ -34,7 +34,8 @@ ra_core::canvas2d::RectangularPixelBuffer example_draw_dot()
 
     canvas.Draw(dot);
 
-    return canvas.GetPixelBuffer(); // TODO: default buffer color black
+    return canvas.getPixelBuffer();
+    // TODO: shared pointer!
 }
 
 namespace ra_examples

@@ -56,27 +56,27 @@ set(CANVAS2DVIEWERS_SRC
     )
 
 set(CORE_DIR src/core)
-set(RENDER2D_DIR src/rendering2d)
-set(RENDER2D_DIRS
-    ${RENDER2D_DIR}/circuits/
-    ${RENDER2D_DIR}/clipping/
-    ${RENDER2D_DIR}/filling/
-    ${RENDER2D_DIR}/line/
-    )
+set(RENDER2D_DIR src/core/rendering2d)
 set(CORE_DIRS
     ${CORE_DIR}/canvas2d/
     ${CORE_DIR}/figures2d/
     ${CORE_DIR}/figures2d/shapes/
     ${CORE_DIR}/figures2d/circuits/
-    ${RENDERD2D_DIRS}
+    ${RENDER2D_DIR}/circuits/
+    ${RENDER2D_DIR}/clipping/
+    ${RENDER2D_DIR}/filling/
+    ${RENDER2D_DIR}/line/
+
     )
 set(CORE_SRC
     ${CORE_DIR}/canvas2d/RectangularPixelBuffer.cpp
     ${CORE_DIR}/canvas2d/Canvas2d.cpp
+    src/core/canvas2d/Rectangular1dDotBuffer.cpp
     src/core/canvas2d/DrawFigure2dVisitor.cpp
     src/core/figures2d/ShapeBase.cpp
     src/core/figures2d/CircuitBase.cpp
     src/core/figures2d/circuits/Dot.cpp
+    src/core/rendering2d/line/algorithms_naive.cpp
     )
 
 set(RASERVICES_DIR ${SRC_DIR}/ra_services)
@@ -133,4 +133,4 @@ else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wextra -pedantic -Werror")
 endif()
 
-message(">> CMakeLists for drawing_principles: finished!")
+message(">> CMakeLists for Rendering Algorithms: finished!")

@@ -10,6 +10,7 @@ class PpxCanvas2dViewer : public Canvas2dViewerInterface
 
 public:
     PpxCanvas2dViewer();
+    ~PpxCanvas2dViewer();
 
     void ViewResult(const ra_core::canvas2d::RectangularPixelBuffer& pb,
                     const std::string_view description) const override;
