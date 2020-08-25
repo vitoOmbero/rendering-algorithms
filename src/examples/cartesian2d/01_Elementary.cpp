@@ -27,12 +27,18 @@ std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer> example_draw_dot()
 
     ra_core::figures2d::border border;
 
-    ra_core::figures2d::Dot dot(50, 50, border);
+    ra_core::figures2d::Dot dot(150, 150, border);
 
     dot.SetColor(cm.FindRgbCode(ra_services::color_rgb::color::White));
     dot.SetColor({ 111, 111, 111 });
 
     canvas.Draw(dot);
+
+    for (int i = 0; i < 10; ++i)
+    {
+        dot.setX(150 + i);
+        canvas.Draw(dot);
+    }
 
     return canvas.getPixelBuffer();
     // TODO: shared pointer!

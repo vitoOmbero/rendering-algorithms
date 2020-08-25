@@ -1,12 +1,10 @@
 #include "ExampleRunner.h"
 #include "TerminalCanvas2dViewer.h"
 
-ExampleRunner::ExampleRunner()
-    : actualCanvas2dViewer{ *new TerminalCanvas2dViewer() }
+ExampleRunner::ExampleRunner(Canvas2dViewerInterface& cv)
+    : actualCanvas2dViewer{ cv }
 {
 }
-
-ExampleRunner::~ExampleRunner() {}
 
 void ExampleRunner::UseCanvas2dViewer(Canvas2dViewerInterface& cv)
 {

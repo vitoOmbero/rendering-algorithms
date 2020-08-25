@@ -15,8 +15,7 @@
 class ExampleRunner
 {
 public:
-    ExampleRunner();
-    ~ExampleRunner();
+    ExampleRunner(Canvas2dViewerInterface& cv);
 
     void UseCanvas2dViewer(Canvas2dViewerInterface& cv);
 

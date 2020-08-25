@@ -1,6 +1,7 @@
 #ifndef PPXCANVAS2DVIEWER_H
 #define PPXCANVAS2DVIEWER_H
 
+#include <iostream>
 #include <string>
 
 #include "Canvas2dViewerInterface.h"

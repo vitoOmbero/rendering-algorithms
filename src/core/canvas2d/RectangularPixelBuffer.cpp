@@ -131,7 +131,20 @@ void RectangularPixelBuffer::Draw(const ra_core::figures2d::Dot& dot) const
     }
 }
 
-void RectangularPixelBuffer::Foo() const {}
+std::unique_ptr<std::vector<ra_types::rgb888>>
+RectangularPixelBuffer::StumpBufferCopy(ra_types::n0_t           width_px,
+                                        ra_types::n0_t           height_px,
+                                        ra_types::displacement_t xOffset,
+                                        ra_types::displacement_t yOffset) const
+{
+    // TODO: fill if bigger, cut if smaller
+    width_px  = 0;
+    height_px = 0;
+    xOffset   = 0;
+    yOffset   = 0;
+    // TODO: make stamp use dot scale
+    return dotbuf->CreateCopy();
+}
 
 ra_types::displacement2d RectangularPixelBuffer::getHighestVisiblePoint() const
 {

@@ -22,7 +22,7 @@ public:
 
     displacement_t getX() const;
     displacement_t getY() const;
-    void           SetX(displacement_t x);
+    void           setX(displacement_t x);
     void           SetY(displacement_t y);
 
     void AcceptFigure2dVisitor(Figure2dVisitor* fv) const override;

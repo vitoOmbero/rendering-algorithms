@@ -1,6 +1,7 @@
 #ifndef RECTANGULAR1DPIXELBUFFER_H
 #define RECTANGULAR1DPIXELBUFFER_H
 #include <cassert>
+#include <memory>
 #include <vector>
 
 #include "displacement2d.h"
@@ -54,9 +55,12 @@ public:
      * @param start - cartesian coordinates of first segment's end
      * @param end - cartesian coordinates of second segment's end
      */
-    void           Mark(ra_types::rgb888 code, ra_types::displacement2d start,
-                        ra_types::displacement2d end);
-    ra_types::n0_t getDotsNumber() const;
+    void Mark(ra_types::rgb888 code, ra_types::displacement2d start,
+              ra_types::displacement2d end);
+
+    std::unique_ptr<std::vector<ra_types::rgb888>> CreateCopy() const;
+
+    ra_types::n0_t       getDotsNumber() const;
     ra_types::n0_t getZeroIndex() const;
     ra_types::n0_t getLastIndex() const;
     ra_types::n0_t getZeroPointIndex() const;

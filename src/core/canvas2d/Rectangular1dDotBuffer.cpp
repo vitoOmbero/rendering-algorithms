@@ -56,19 +56,29 @@ void Rectangular1dDotBuffer::UpdateDotsNumber(ra_types::n0_t inc)
 void Rectangular1dDotBuffer::Mark(ra_types::rgb888         code,
                                   ra_types::displacement2d point)
 {
-    dots->at(Canvas2dToIndex1d(point, lineLastIndex)) = code;
+    auto i      = Canvas2dToIndex1d(point, width);
+    dots->at(i) = code;
 }
 
 void Rectangular1dDotBuffer::Mark(ra_types::rgb888         code,
                                   ra_types::displacement2d start,
                                   ra_types::displacement2d end)
 {
-    auto ist = Canvas2dToIndex1d(start, lineLastIndex);
-    auto ind = Canvas2dToIndex1d(end, lineLastIndex);
+    auto ist = Canvas2dToIndex1d(start, width);
+    auto ind = Canvas2dToIndex1d(end, width);
     for (auto i = ist; i <= ind; ++i)
     {
         dots->at(i) = code;
     }
+}
+
+std::unique_ptr<std::vector<ra_types::rgb888>>
+Rectangular1dDotBuffer::CreateCopy() const
+{
+
+    std::vector<ra_types::rgb888>* v = new std::vector<ra_types::rgb888>(*dots);
+    std::unique_ptr<std::vector<ra_types::rgb888>> ptr(v);
+    return ptr;
 }
 
 ra_types::n0_t Rectangular1dDotBuffer::getZeroIndex() const

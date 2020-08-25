@@ -26,6 +26,11 @@ displacement_t Dot::getY() const
     return y;
 }
 
+void Dot::setX(displacement_t x)
+{
+    this->x = x;
+}
+
 void Dot::AcceptFigure2dVisitor(Figure2dVisitor* fv) const
 {
     fv->VisitDot(this);

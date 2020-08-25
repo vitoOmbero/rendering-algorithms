@@ -2,7 +2,9 @@
 #define PIXELBUFFER_H
 
 #include <iostream>
+#include <memory>
 #include <string>
+#include <vector>
 
 #include "Directions.h"
 #include "Dot.h"
@@ -49,9 +51,18 @@ public:
     ra_types::displacement2d getZeroPointOffset() const;
 
     void Draw(const ra_core::figures2d::Dot& dot) const;
-
-    // TODO: remove placeholder when implementin ppxviewer
-    void Foo() const;
+    /**
+     * @brief StumpBufferCopy - make new copy of pixel buffer
+     * @param width_px - desired width in pixels
+     * @param height_px - desired height in pixels
+     * @param xOffset - additional offset along 0x
+     * @param yOffset - additional offset along 0y
+     * @return unique pointer to vector
+     */
+    std::unique_ptr<std::vector<ra_types::rgb888>> StumpBufferCopy(
+        ra_types::n0_t width_px, ra_types::n0_t height_px,
+        ra_types::displacement_t xOffset = 0,
+        ra_types::displacement_t yOffset = 0) const;
 
 private:
     /**
