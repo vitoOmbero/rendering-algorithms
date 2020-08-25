@@ -8,14 +8,14 @@ CircuitBase::CircuitBase(struct border border)
 
 CircuitBase::~CircuitBase() {}
 
-const rgb888& CircuitBase::GetColor() const
+const rgb888& CircuitBase::GetColorCode() const
 {
-    return this->border.color;
+    return this->border.color_code;
 }
 
 void CircuitBase::SetColor(rgb888 rgb)
 {
-    this->border.color = rgb;
+    this->border.color_code = rgb;
 }
 
 const border& CircuitBase::GetBorder() const

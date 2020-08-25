@@ -62,7 +62,7 @@ struct border
     /**
      * @brief color value
      */
-    ra_types::rgb888 color = ra_types::rgb888(0);
+    ra_types::rgb888 color_code = ra_types::rgb888(0);
 };
 } // namespace ra_core::figures2d
 

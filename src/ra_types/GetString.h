@@ -93,7 +93,8 @@ inline std::string GetString(rgb888 rgb)
 {
     using namespace std;
     ostringstream oss;
-    oss << "{R:" << rgb.r << "; G:" << rgb.g << "; B:" << rgb.b << ";}";
+    oss << "{R:" << rgb.red() << "; G:" << rgb.green() << "; B:" << rgb.blue()
+        << ";}";
     return oss.str();
 }
 

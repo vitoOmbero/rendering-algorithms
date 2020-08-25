@@ -23,6 +23,12 @@ struct rgb888 final
      */
     rgb888(uchar val);
 
+    /**
+     * @brief rgb888 utility constructor
+     * @param r_ red value code 0-255
+     * @param g_ green value 0-255
+     * @param b_ blue value 0-255
+     */
     rgb888(uchar r_, uchar g_, uchar b_);
 
     bool operator==(const rgb888& b) const;
@@ -32,6 +38,21 @@ struct rgb888 final
     bool operator<(const rgb888& b) const;
 
     rgb888 operator-(const rgb888& b) const;
+    /**
+     * @brief blue - helper getter
+     * @return at least 16bit int
+     */
+    int blue() const { return static_cast<int>(b); };
+    /**
+     * @brief green - helper getter
+     * @return at least 16bit int
+     */
+    int green() const { return static_cast<int>(g); };
+    /**
+     * @brief red - helper getter
+     * @return at least 16bit int
+     */
+    int red() const { return static_cast<int>(r); };
 };
 
 } // namespace ra_types

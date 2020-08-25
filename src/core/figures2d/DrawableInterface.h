@@ -18,7 +18,7 @@ public:
     virtual displacement_t GetMinX() const = 0;
     virtual displacement_t GetMinY() const = 0;
 
-    virtual const rgb888& GetColor() const     = 0;
+    virtual const rgb888& GetColorCode() const     = 0;
     virtual void          SetColor(rgb888 rgb) = 0;
 
     virtual const border& GetBorder() const        = 0;

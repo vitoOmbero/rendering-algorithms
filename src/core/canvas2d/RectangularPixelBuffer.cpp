@@ -48,7 +48,7 @@ ra_types::displacement2d RectangularPixelBuffer::GetZeroPointOffset() const
 void RectangularPixelBuffer::Draw(const ra_core::figures2d::Dot& dot) const
 {
     // TODO: implement ppximageviewer
-    std::cout << "Fake draw Dot with color " << GetString(dot.GetColor())
+    std::cout << "Fake draw Dot with color " << GetString(dot.GetColorCode())
               << std::endl;
 }
 

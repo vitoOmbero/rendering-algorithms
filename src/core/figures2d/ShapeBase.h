@@ -13,7 +13,7 @@ class ShapeBase : public DrawableInterface
 public:
     virtual ~ShapeBase();
 
-    virtual const rgb888& GetColor() const override;
+    virtual const rgb888& GetColorCode() const override;
     virtual void          SetColor(rgb888 rgb) override;
 
     virtual const border& GetBorder() const override;
