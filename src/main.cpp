@@ -7,20 +7,24 @@
 
 int main(int argc, char* argv[])
 {
-    TerminalCanvas2dViewer tViewer;
-    ExampleRunner          er(tViewer);
 
-    ra_examples::cartesian2d::Elementary expack;
-
-    er.Run(expack);
-
-    PpxCanvas2dViewer ppxViewer;
-    ExampleRunner     er2(ppxViewer);
-
-    er2.Run(expack);
-
+    // TODO: orgaize example pack execution with CLI
     std::cout << "Argc " << argc << std::endl;
     std::cout << "Argv " << argv << std::endl;
+    /*
+        {
+            TerminalCanvas2dViewer               tViewer;
+            ExampleRunner                        er(tViewer);
+            ra_examples::cartesian2d::Elementary expack;
+            er.Run(expack);
+        }
+    */
+    {
+        PpxCanvas2dViewer                    ppxViewer;
+        ExampleRunner                        er(ppxViewer);
+        ra_examples::cartesian2d::Elementary expack;
+        er.Run(expack);
+    }
 
     return 0;
 }

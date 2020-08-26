@@ -6,8 +6,10 @@
 #include <string>
 #include <vector>
 
+#include "AlgorithmProxy.h"
 #include "Directions.h"
 #include "Dot.h"
+#include "LineSegment.h"
 #include "Rectangular1dDotBuffer.h"
 #include "algorithms_naive.h"
 #include "displacement2d.h"
@@ -51,6 +53,7 @@ public:
     ra_types::displacement2d getZeroPointOffset() const;
 
     void Draw(const ra_core::figures2d::Dot& dot) const;
+    void Draw(const ra_core::figures2d::LineSegment& ls) const;
     /**
      * @brief StumpBufferCopy - make new copy of pixel buffer
      * @param width_px - desired width in pixels
@@ -137,6 +140,7 @@ private:
      * @details 1 dot == 1 pixel when dotSize = 1.
      */
     Rectangular1dDotBuffer* dotbuf;
+    AlgorithmProxy          raproxy;
 };
 
 }; // namespace ra_core::canvas2d

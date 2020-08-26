@@ -14,7 +14,7 @@ public:
     virtual ~ShapeBase();
 
     virtual const rgb888& GetColorCode() const override;
-    virtual void          SetColor(rgb888 rgb) override;
+    virtual void          setColorCode(rgb888 rgb) override;
 
     virtual const border& GetBorder() const override;
     virtual void          SetBorder(border border) override;

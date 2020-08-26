@@ -6,6 +6,10 @@
 
 #include "Canvas2dViewerInterface.h"
 
+/**
+ * @brief The PpxCanvas2dViewer class - generate PPM image
+ * (<https://ru.wikipedia.org/wiki/Portable_anymap>)
+ */
 class PpxCanvas2dViewer : public Canvas2dViewerInterface
 {
 

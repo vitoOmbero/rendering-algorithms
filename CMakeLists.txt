@@ -62,6 +62,7 @@ set(CORE_DIRS
     ${CORE_DIR}/figures2d/
     ${CORE_DIR}/figures2d/shapes/
     ${CORE_DIR}/figures2d/circuits/
+    ${RENDER2D_DIR}
     ${RENDER2D_DIR}/circuits/
     ${RENDER2D_DIR}/clipping/
     ${RENDER2D_DIR}/filling/
@@ -76,7 +77,9 @@ set(CORE_SRC
     src/core/figures2d/ShapeBase.cpp
     src/core/figures2d/CircuitBase.cpp
     src/core/figures2d/circuits/Dot.cpp
+    src/core/figures2d/circuits/LineSegment.cpp
     src/core/rendering2d/line/algorithms_naive.cpp
+    src/core/canvas2d/AlgorithmProxy.cpp
     )
 
 set(RASERVICES_DIR ${SRC_DIR}/ra_services)

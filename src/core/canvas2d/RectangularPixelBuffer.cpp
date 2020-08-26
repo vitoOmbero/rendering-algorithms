@@ -36,12 +36,20 @@ RectangularPixelBuffer::RectangularPixelBuffer()
     , xAxisDirection{ ra_types::eDirection::East }
     , yAxisDirection{ ra_types::eDirection::South }
     , zeroPointOffset{ 0, 0 }
+    , raproxy()
 {
 
     lowestVisiblePoint = CalculateLowestVisiblePoint(this);
     assert(zeroPointOffset >= lowestVisiblePoint);
     highestVisiblePoint = CalculateHighestVisiblePoint(this);
     dotbuf = new Rectangular1dDotBuffer(width, height, zeroPointOffset);
+
+    raproxy.setRenderingAlgorithm(
+        ra_core::figures2d::eFigure2dType::Dot,
+        AlgorithmProxy::rendering_algorithm::naive_dot);
+    raproxy.setRenderingAlgorithm(
+        ra_core::figures2d::eFigure2dType::Line,
+        AlgorithmProxy::rendering_algorithm::naive_line_hor_vert_diag);
 }
 
 RectangularPixelBuffer::~RectangularPixelBuffer()
@@ -117,17 +125,50 @@ ra_types::displacement2d RectangularPixelBuffer::getZeroPointOffset() const
 void RectangularPixelBuffer::Draw(const ra_core::figures2d::Dot& dot) const
 {
     // TODO: move to algoritm + add compile options and debug mode
-    std::cout << "Draw Dot with color " << GetString(dot.GetColorCode())
-              << std::endl;
+    std::cout << "Draw Dot " << ra_types::GetString(dot.getPoint(), true)
+              << " with color " << GetString(dot.GetColorCode()) << std::endl;
 
     if (IsVisible(dot.getX(), dot.getY()))
     {
         auto point =
             Cartesian2dToCanvas2d({ dot.getX(), dot.getY() }, zeroPointOffset);
-        // TODO: use pointers to algorithms
-        auto dotsdrawn = ra_core::rendering2d::line::naive_dot(
-            point.x, point.y, dot.GetColorCode(), *dotbuf);
+
+        auto ra_dot_func = raproxy.getRenderingDot();
+
+        auto dotsdrawn =
+            ra_dot_func(point.x, point.y, dot.GetColorCode(), *dotbuf);
+
         dotbuf->UpdateDotsNumber(dotsdrawn);
+    }
+}
+
+void RectangularPixelBuffer::Draw(const figures2d::LineSegment& ls) const
+{
+    // TODO: move to algoritm + add compile options and debug mode
+    std::cout << "Draw LineSegment "
+              << ra_types::GetString(ls.getFirstPoint(), true) << "-"
+              << ra_types::GetString(ls.getSecondPoint(), true)
+              << " with color " << GetString(ls.GetColorCode()) << std::endl;
+
+    if (IsVisible(ls.getMaxX(), ls.getMaxY()) &
+        IsVisible(ls.getMinX(), ls.getMinY()))
+    {
+        auto first_d = Cartesian2dToCanvas2d(
+            { ls.getFirstPoint().x, ls.getFirstPoint().y }, zeroPointOffset);
+        auto second_d = Cartesian2dToCanvas2d(
+            { ls.getSecondPoint().x, ls.getSecondPoint().y }, zeroPointOffset);
+
+        ra_core::figures2d::point2d first{ first_d.x, first_d.y };
+        ra_core::figures2d::point2d second{ second_d.x, second_d.y };
+
+        auto ra_linesegment_func = raproxy.getRenderingLineSegment();
+
+        auto dotsdrawn =
+            ra_linesegment_func(first, second, ls.GetColorCode(), *dotbuf);
+
+        dotbuf->UpdateDotsNumber(dotsdrawn);
+        // TODO: brezenham line algorithm
+        // TODO: pointer to algorithm
     }
 }
 

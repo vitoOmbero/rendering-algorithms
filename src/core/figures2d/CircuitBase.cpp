@@ -13,7 +13,7 @@ const rgb888& CircuitBase::GetColorCode() const
     return this->border.color_code;
 }
 
-void CircuitBase::SetColor(rgb888 rgb)
+void CircuitBase::setColorCode(rgb888 rgb)
 {
     this->border.color_code = rgb;
 }

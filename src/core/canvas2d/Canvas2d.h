@@ -23,7 +23,7 @@ public:
 
 private:
     std::unique_ptr<RectangularPixelBuffer> rpb;
-    ra_core::figures2d::Figure2dVisitor* drawVisitor;
+    ra_core::figures2d::Figure2dVisitor*    drawVisitor;
 };
 } // namespace ra_core::canvas2d
 #endif // CANVAS2D_H

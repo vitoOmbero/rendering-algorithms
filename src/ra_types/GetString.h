@@ -7,6 +7,7 @@
 #include "Directions.h"
 #include "RectangularPixelBuffer.h"
 #include "displacement2d.h"
+#include "point2d.h"
 #include "rgb888.h"
 
 inline void line_formatting(std::ostringstream& oss, bool use_endl_separator)
@@ -55,6 +56,31 @@ inline std::string GetString(const displacement2d cp, bool oneline = false)
     oss << "0x displacement: " << cp.x;
     line_formatting(oss, !oneline);
     oss << "0y displacement: " << cp.y;
+    line_formatting(oss, !oneline);
+    return oss.str();
+}
+
+/**
+ * @brief GetString - namespace free helping function overload
+ * @param point - 2d point
+ * @param oneline - formatting flag (TRUE by default)
+ * @return 2d point string representation
+ */
+inline std::string GetString(const ra_core::figures2d::point2d point,
+                             bool                              oneline = true)
+{
+    std::ostringstream oss;
+    line_formatting(oss, !oneline);
+    oss << "(";
+    line_formatting(oss, !oneline);
+    oss << point.x;
+    line_formatting(oss, !oneline);
+
+    if (oneline)
+        oss << "; ";
+    oss << point.y;
+    line_formatting(oss, !oneline);
+    oss << ")";
     line_formatting(oss, !oneline);
     return oss.str();
 }
