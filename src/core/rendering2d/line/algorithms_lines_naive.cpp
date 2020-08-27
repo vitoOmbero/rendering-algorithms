@@ -1,4 +1,4 @@
-#include "algorithms_naive.h"
+#include "algorithms_lines_naive.h"
 #include "typedefs.h"
 
 ra_types::n0_t ra_core::rendering2d::line::naive_dot(

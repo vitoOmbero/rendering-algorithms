@@ -11,7 +11,7 @@
 #include "Dot.h"
 #include "LineSegment.h"
 #include "Rectangular1dDotBuffer.h"
-#include "algorithms_naive.h"
+#include "algorithms_lines_naive.h"
 #include "displacement2d.h"
 #include "typedefs.h"
 
@@ -66,6 +66,8 @@ public:
         ra_types::n0_t width_px, ra_types::n0_t height_px,
         ra_types::displacement_t xOffset = 0,
         ra_types::displacement_t yOffset = 0) const;
+
+    void UseLineAlgorithm(AlgorithmProxy::rendering_algorithm algo_ptr);
 
 private:
     /**

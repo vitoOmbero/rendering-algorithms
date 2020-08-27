@@ -78,7 +78,8 @@ set(CORE_SRC
     src/core/figures2d/CircuitBase.cpp
     src/core/figures2d/circuits/Dot.cpp
     src/core/figures2d/circuits/LineSegment.cpp
-    src/core/rendering2d/line/algorithms_naive.cpp
+    src/core/rendering2d/line/algorithms_lines_naive.cpp
+    src/core/rendering2d/line/algorithms_line_classic.cpp
     src/core/canvas2d/AlgorithmProxy.cpp
     )
 

@@ -46,10 +46,10 @@ RectangularPixelBuffer::RectangularPixelBuffer()
 
     raproxy.setRenderingAlgorithm(
         ra_core::figures2d::eFigure2dType::Dot,
-        AlgorithmProxy::rendering_algorithm::naive_dot);
+        AlgorithmProxy::rendering_algorithm::dot_naive);
     raproxy.setRenderingAlgorithm(
         ra_core::figures2d::eFigure2dType::Line,
-        AlgorithmProxy::rendering_algorithm::naive_line_hor_vert_diag);
+        AlgorithmProxy::rendering_algorithm::line_naive_hor_vert_diag);
 }
 
 RectangularPixelBuffer::~RectangularPixelBuffer()
@@ -185,6 +185,12 @@ RectangularPixelBuffer::StumpBufferCopy(ra_types::n0_t           width_px,
     yOffset   = 0;
     // TODO: make stamp use dot scale
     return dotbuf->CreateCopy();
+}
+
+void RectangularPixelBuffer::UseLineAlgorithm(
+    AlgorithmProxy::rendering_algorithm algo_ptr)
+{
+    raproxy.setRenderingAlgorithm(figures2d::eFigure2dType::Line, algo_ptr);
 }
 
 ra_types::displacement2d RectangularPixelBuffer::getHighestVisiblePoint() const

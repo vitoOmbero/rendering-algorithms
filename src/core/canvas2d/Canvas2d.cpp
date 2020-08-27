@@ -17,7 +17,7 @@ Canvas2d::~Canvas2d()
 std::unique_ptr<RectangularPixelBuffer> Canvas2d::getPixelBuffer()
 {
     std::unique_ptr<RectangularPixelBuffer> new_(new RectangularPixelBuffer());
-    auto                                    old = std::move(rpb);
+    auto old = std::move(rpb); // TODO: copy ctor (copy buffer settings)
     rpb                                         = std::move(new_);
     return old;
 }
@@ -25,5 +25,11 @@ std::unique_ptr<RectangularPixelBuffer> Canvas2d::getPixelBuffer()
 void Canvas2d::Draw(const ra_core::figures2d::DrawableInterface& drawable) const
 {
     drawable.AcceptFigure2dVisitor(drawVisitor);
+}
+
+void Canvas2d::UseLineAlgorithm(
+    AlgorithmProxy::rendering_algorithm algo_ptr) const
+{
+    rpb->UseLineAlgorithm(algo_ptr);
 }
 } // namespace ra_core::canvas2d

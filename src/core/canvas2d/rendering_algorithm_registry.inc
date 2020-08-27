@@ -7,8 +7,10 @@
 enum rendering_algorithm
 {
     custom,
-    naive_dot,
-    naive_line_hor_vert_diag,
+    dot_naive,
+    line_naive_hor_vert_diag,
+    line_bresenham_defect,
+    line_bresenham_int,
 };
 
 #endif // ALGORITHM_REGISTRY_INC

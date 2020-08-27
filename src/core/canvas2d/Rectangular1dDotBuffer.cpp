@@ -5,12 +5,12 @@ namespace ra_core::canvas2d
 
 // NOTE: todo coord translation service?
 inline ra_types::n0_t Canvas2dToIndex1d(ra_types::displacement2d point,
-                                        ra_types::n0_t           lineLastIndex)
+                                        ra_types::n0_t           line_width)
 {
     assert(point.x >= 0 & point.y >= 0);
 
     // NOTE: depends on arithmetic type of ra_types::displacement_t
-    auto y_1d = point.y * lineLastIndex;
+    auto y_1d = point.y * line_width;
     return point.x + y_1d;
 }
 
@@ -75,7 +75,6 @@ void Rectangular1dDotBuffer::Mark(ra_types::rgb888         code,
 std::unique_ptr<std::vector<ra_types::rgb888>>
 Rectangular1dDotBuffer::CreateCopy() const
 {
-
     std::vector<ra_types::rgb888>* v = new std::vector<ra_types::rgb888>(*dots);
     std::unique_ptr<std::vector<ra_types::rgb888>> ptr(v);
     return ptr;

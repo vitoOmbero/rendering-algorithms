@@ -1,18 +1,23 @@
 #include <exception>
 
 #include "AlgorithmProxy.h"
-#include "algorithms_naive.h"
+#include "algorithms_line_classic.h"
+#include "algorithms_lines_naive.h"
 
 namespace ra_core::canvas2d
 {
 
 AlgorithmProxy::AlgorithmProxy()
 {
-    rendering_dot_map = ra_dot_map{ { rendering_algorithm::naive_dot,
+    rendering_dot_map = ra_dot_map{ { rendering_algorithm::dot_naive,
                                       ra_core::rendering2d::line::naive_dot } };
     rendering_line_segment_map =
-        ra_ls_map{ { rendering_algorithm::naive_line_hor_vert_diag,
-                     ra_core::rendering2d::line::naive_hv_line } };
+        ra_ls_map{ { rendering_algorithm::line_naive_hor_vert_diag,
+                     ra_core::rendering2d::line::naive_hv_line },
+                   { rendering_algorithm::line_bresenham_defect,
+                     ra_core::rendering2d::line::bresenham_defect_diag_line },
+                   { rendering_algorithm::line_bresenham_int,
+                     ra_core::rendering2d::line::bresenham_int_line } };
 }
 
 ra_core::rendering2d::rendering_dot_fptr AlgorithmProxy::getRenderingDot() const
@@ -41,7 +46,7 @@ bool AlgorithmProxy::setRenderingAlgorithm(
             catch (std::exception e)
             {
                 renderingDot =
-                    rendering_dot_map[rendering_algorithm::naive_dot];
+                    rendering_dot_map[rendering_algorithm::dot_naive];
                 return false;
             }
         };
@@ -55,7 +60,7 @@ bool AlgorithmProxy::setRenderingAlgorithm(
             catch (std::exception e)
             {
                 renderingLineSegment = rendering_line_segment_map
-                    [rendering_algorithm::naive_line_hor_vert_diag];
+                    [rendering_algorithm::line_naive_hor_vert_diag];
                 return false;
             }
         };
@@ -80,7 +85,7 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
             else
             {
                 setRenderingAlgorithm(ra_core::figures2d::eFigure2dType::Dot,
-                                      rendering_algorithm::naive_dot);
+                                      rendering_algorithm::dot_naive);
                 return false;
             }
         };
@@ -98,7 +103,7 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
             {
                 setRenderingAlgorithm(
                     ra_core::figures2d::eFigure2dType::Line,
-                    rendering_algorithm::naive_line_hor_vert_diag);
+                    rendering_algorithm::line_naive_hor_vert_diag);
                 return false;
             }
         };
