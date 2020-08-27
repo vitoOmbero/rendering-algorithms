@@ -19,6 +19,11 @@ typedef ra_types::n0_t (*rendering_line_segment_fptr)(
     ra_types::rgb888                           color_code,
     ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf);
 
+typedef ra_types::n0_t (*rendering_circle_fptr)(
+    ra_core::figures2d::point2d center, ra_types::distance_t radius,
+    ra_types::rgb888                           color_code,
+    ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf);
+
 } // namespace ra_core::rendering2d
 
 #endif // ALGORITHMS_TYPES_H

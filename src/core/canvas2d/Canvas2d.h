@@ -29,6 +29,7 @@ public:
     void Draw(const ra_core::figures2d::DrawableInterface& drawable) const;
 
     void UseLineAlgorithm(AlgorithmProxy::rendering_algorithm algo_ptr) const;
+    void UseCircleAlgorithm(AlgorithmProxy::rendering_algorithm algo_ptr) const;
 
 private:
     std::unique_ptr<RectangularPixelBuffer> rpb;

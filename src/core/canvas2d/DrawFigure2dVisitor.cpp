@@ -17,4 +17,9 @@ void DrawFigure2dVisitor::VisitLine(const figures2d::LineSegment* ls) const
     rpb.Draw(*ls);
 }
 
+void DrawFigure2dVisitor::VisitCircle(const figures2d::Circle* c) const
+{
+    rpb.Draw(*c);
+}
+
 } // namespace ra_core::canvas2d

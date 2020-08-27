@@ -78,8 +78,10 @@ set(CORE_SRC
     src/core/figures2d/CircuitBase.cpp
     src/core/figures2d/circuits/Dot.cpp
     src/core/figures2d/circuits/LineSegment.cpp
+    src/core/figures2d/circuits/Circle.cpp
     src/core/rendering2d/line/algorithms_lines_naive.cpp
     src/core/rendering2d/line/algorithms_line_classic.cpp
+    src/core/rendering2d/circuits/algorithms_circle.cpp
     src/core/canvas2d/AlgorithmProxy.cpp
     )
 
@@ -88,6 +90,7 @@ set(RASERVICES_DIRS
     ${RASERVICES_DIR}/random_figure/
     ${RASERVICES_DIR}/geo_trans_homogen_coord/
     ${RASERVICES_DIR}/color_rgb/
+    ${RASERVICES_DIR}/math2d/
     )
 
 set(RASERVCIES_SRC

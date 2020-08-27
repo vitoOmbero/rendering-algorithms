@@ -6,14 +6,23 @@
 namespace ra_types
 {
 /**
- * @brief The eDirection enum - description of screenview based direction
+ * @brief The eScreenDirection enum - description of screenview based direction
  */
-enum class eDirection
+enum class eScreenDirection
 {
     North,
     East,
     South,
     West
+};
+
+/**
+ * @brief The eDirection1d enum - 1d direction
+ */
+enum class eDirection1d
+{
+    InfPos, ///< poisitive infinity
+    InfNeg  ///< negative infinity
 };
 } // namespace ra_types
 #endif // DIRECTIONS_H

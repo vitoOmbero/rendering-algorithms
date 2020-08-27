@@ -41,6 +41,8 @@ public:
     bool setCustomRenderingAlgorithm(
         ra_core::figures2d::eFigure2dType figure2dType, void* function_ptr);
 
+    ra_core::rendering2d::rendering_circle_fptr getRenderingCircle() const;
+
 private:
     bool IsValidRenderingAlgorithm(); // placeholder - should be
                                       // deleted
@@ -53,11 +55,17 @@ private:
                      ra_core::rendering2d::rendering_line_segment_fptr>
         ra_ls_map;
 
+    typedef std::map<rendering_algorithm,
+                     ra_core::rendering2d::rendering_circle_fptr>
+        ra_cir_map;
+
     ra_dot_map rendering_dot_map;
     ra_ls_map  rendering_line_segment_map;
+    ra_cir_map rendering_circle_map;
 
     ra_core::rendering2d::rendering_dot_fptr          renderingDot;
     ra_core::rendering2d::rendering_line_segment_fptr renderingLineSegment;
+    ra_core::rendering2d::rendering_circle_fptr       renderingCircle;
 };
 } // namespace ra_core::canvas2d
 #endif // ALGORITHMPROXY_H

@@ -12,6 +12,7 @@ enum class eFigure2dType
 {
     Dot,
     Line,
+    Circle,
 };
 
 } // namespace ra_core::figures2d

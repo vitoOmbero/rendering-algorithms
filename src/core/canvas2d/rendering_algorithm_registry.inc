@@ -11,6 +11,7 @@ enum rendering_algorithm
     line_naive_hor_vert_diag,
     line_bresenham_defect,
     line_bresenham_int,
+    circle_bresenham_int,
 };
 
 #endif // ALGORITHM_REGISTRY_INC

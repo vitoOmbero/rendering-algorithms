@@ -13,6 +13,7 @@ public:
     DrawFigure2dVisitor(RectangularPixelBuffer& rpb);
     void VisitDot(const ra_core::figures2d::Dot* dot) const override;
     void VisitLine(const ra_core::figures2d::LineSegment* ls) const override;
+    void VisitCircle(const ra_core::figures2d::Circle* c) const override;
 
 private:
     RectangularPixelBuffer& rpb;

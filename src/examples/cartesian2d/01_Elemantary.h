@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Canvas2d.h"
+#include "Circle.h"
 #include "ColorMap.h"
 #include "Dot.h"
 #include "ExamplePackBase.h"

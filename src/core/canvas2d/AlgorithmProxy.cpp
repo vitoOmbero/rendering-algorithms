@@ -1,6 +1,7 @@
 #include <exception>
 
 #include "AlgorithmProxy.h"
+#include "algorithms_circle.h"
 #include "algorithms_line_classic.h"
 #include "algorithms_lines_naive.h"
 
@@ -18,6 +19,9 @@ AlgorithmProxy::AlgorithmProxy()
                      ra_core::rendering2d::line::bresenham_defect_diag_line },
                    { rendering_algorithm::line_bresenham_int,
                      ra_core::rendering2d::line::bresenham_int_line } };
+    rendering_circle_map =
+        ra_cir_map{ { rendering_algorithm::circle_bresenham_int,
+                      ra_core::rendering2d::circuits::bresenham_int_circle } };
 }
 
 ra_core::rendering2d::rendering_dot_fptr AlgorithmProxy::getRenderingDot() const
@@ -64,6 +68,20 @@ bool AlgorithmProxy::setRenderingAlgorithm(
                 return false;
             }
         };
+        case (ra_core::figures2d::eFigure2dType::Circle):
+        {
+            try
+            {
+                renderingCircle = rendering_circle_map[ra];
+                return true;
+            }
+            catch (std::exception e)
+            {
+                renderingCircle = rendering_circle_map
+                    [rendering_algorithm::circle_bresenham_int];
+                return false;
+            }
+        };
     }
 }
 
@@ -107,6 +125,24 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
                 return false;
             }
         };
+        case (ra_core::figures2d::eFigure2dType::Circle):
+        {
+            auto a =
+                reinterpret_cast<ra_core::rendering2d::rendering_circle_fptr>(
+                    function_ptr);
+            if (IsValidRenderingAlgorithm())
+            {
+                renderingCircle = a;
+                return true;
+            }
+            else
+            {
+                setRenderingAlgorithm(
+                    ra_core::figures2d::eFigure2dType::Circle,
+                    rendering_algorithm::circle_bresenham_int);
+                return false;
+            }
+        };
         default:
             return false;
     }
@@ -116,5 +152,10 @@ bool AlgorithmProxy::IsValidRenderingAlgorithm()
 {
     // TODO: add RenderingAlgorithmValidator (based on example running)
     return true;
+}
+
+ra_core::rendering2d::rendering_circle_fptr AlgorithmProxy::getRenderingCircle() const
+{
+    return renderingCircle;
 }
 } // namespace ra_core::canvas2d

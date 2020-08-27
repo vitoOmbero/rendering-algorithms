@@ -32,4 +32,10 @@ void Canvas2d::UseLineAlgorithm(
 {
     rpb->UseLineAlgorithm(algo_ptr);
 }
+
+void Canvas2d::UseCircleAlgorithm(
+    AlgorithmProxy::rendering_algorithm algo_ptr) const
+{
+    rpb->UseCircleAlgorithm(algo_ptr);
+}
 } // namespace ra_core::canvas2d

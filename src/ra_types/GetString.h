@@ -26,17 +26,17 @@ namespace ra_types
  * @param edir - sreenview related direction
  * @return readonly string representation
  */
-inline std::string_view GetString(const eDirection edir)
+inline std::string_view GetString(const eScreenDirection edir)
 {
     switch (edir)
     {
-        case eDirection::North:
+        case eScreenDirection::North:
             return "North";
-        case eDirection::East:
+        case eScreenDirection::East:
             return "East";
-        case eDirection::South:
+        case eScreenDirection::South:
             return "South";
-        case eDirection::West:
+        case eScreenDirection::West:
             return "West";
         default:
             return "No string is provided for eDirection";

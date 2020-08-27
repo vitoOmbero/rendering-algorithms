@@ -6,7 +6,7 @@
 namespace ra_types
 {
 
-struct displacement2d
+struct displacement2d final
 {
     displacement_t x;
     displacement_t y;

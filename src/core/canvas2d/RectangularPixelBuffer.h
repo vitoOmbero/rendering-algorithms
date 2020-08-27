@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "AlgorithmProxy.h"
+#include "Circle.h"
 #include "Directions.h"
 #include "Dot.h"
 #include "LineSegment.h"
@@ -41,8 +42,8 @@ public:
     ra_types::n0_t           getBufferZeroPointIndex() const;
     ra_types::n0_t           getDtWidth() const;
     ra_types::n0_t           getDtHeight() const;
-    ra_types::eDirection     getXAxisDirection() const;
-    ra_types::eDirection     getYAxisDirection() const;
+    ra_types::eScreenDirection     getXAxisDirection() const;
+    ra_types::eScreenDirection     getYAxisDirection() const;
     ra_types::displacement2d getHighestVisiblePoint() const;
     ra_types::displacement2d getLowestVisiblePoint() const;
     /**
@@ -53,7 +54,11 @@ public:
     ra_types::displacement2d getZeroPointOffset() const;
 
     void Draw(const ra_core::figures2d::Dot& dot) const;
+
     void Draw(const ra_core::figures2d::LineSegment& ls) const;
+
+    void Draw(const ra_core::figures2d::Circle& c) const;
+
     /**
      * @brief StumpBufferCopy - make new copy of pixel buffer
      * @param width_px - desired width in pixels
@@ -67,7 +72,9 @@ public:
         ra_types::displacement_t xOffset = 0,
         ra_types::displacement_t yOffset = 0) const;
 
+    // when add new Use* do not forget to set the default value in ctor
     void UseLineAlgorithm(AlgorithmProxy::rendering_algorithm algo_ptr);
+    void UseCircleAlgorithm(AlgorithmProxy::rendering_algorithm algo_ptr);
 
 private:
     /**
@@ -110,11 +117,11 @@ private:
     /**
      * @brief xAxisDirection - view relative direction
      */
-    ra_types::eDirection xAxisDirection;
+    ra_types::eScreenDirection xAxisDirection;
     /**
      * @brief yAxisDirection - view relative direction
      */
-    ra_types::eDirection yAxisDirection;
+    ra_types::eScreenDirection yAxisDirection;
     /**
      * @brief zeroPointOffset - zeroPoint is cartesian O(0;0) point
      * @details zeroPointOffset is measured in canvas coordinate system. e.g.

@@ -33,8 +33,8 @@ RectangularPixelBuffer::RectangularPixelBuffer()
     : name{ "RectangularPixelBuffer" }
     , width{ 800 }
     , height{ 600 }
-    , xAxisDirection{ ra_types::eDirection::East }
-    , yAxisDirection{ ra_types::eDirection::South }
+    , xAxisDirection{ ra_types::eScreenDirection::East }
+    , yAxisDirection{ ra_types::eScreenDirection::South }
     , zeroPointOffset{ 0, 0 }
     , raproxy()
 {
@@ -50,6 +50,9 @@ RectangularPixelBuffer::RectangularPixelBuffer()
     raproxy.setRenderingAlgorithm(
         ra_core::figures2d::eFigure2dType::Line,
         AlgorithmProxy::rendering_algorithm::line_naive_hor_vert_diag);
+    raproxy.setRenderingAlgorithm(
+        ra_core::figures2d::eFigure2dType::Circle,
+        AlgorithmProxy::rendering_algorithm::circle_bresenham_int);
 }
 
 RectangularPixelBuffer::~RectangularPixelBuffer()
@@ -107,12 +110,12 @@ ra_types::n0_t RectangularPixelBuffer::getDtHeight() const
     return dotbuf->getHeight();
 }
 
-ra_types::eDirection RectangularPixelBuffer::getXAxisDirection() const
+ra_types::eScreenDirection RectangularPixelBuffer::getXAxisDirection() const
 {
     return xAxisDirection;
 }
 
-ra_types::eDirection RectangularPixelBuffer::getYAxisDirection() const
+ra_types::eScreenDirection RectangularPixelBuffer::getYAxisDirection() const
 {
     return yAxisDirection;
 }
@@ -126,7 +129,7 @@ void RectangularPixelBuffer::Draw(const ra_core::figures2d::Dot& dot) const
 {
     // TODO: move to algoritm + add compile options and debug mode
     std::cout << "Draw Dot " << ra_types::GetString(dot.getPoint(), true)
-              << " with color " << GetString(dot.GetColorCode()) << std::endl;
+              << " with rgb " << GetString(dot.GetColorCode()) << std::endl;
 
     if (IsVisible(dot.getX(), dot.getY()))
     {
@@ -147,8 +150,8 @@ void RectangularPixelBuffer::Draw(const figures2d::LineSegment& ls) const
     // TODO: move to algoritm + add compile options and debug mode
     std::cout << "Draw LineSegment "
               << ra_types::GetString(ls.getFirstPoint(), true) << "-"
-              << ra_types::GetString(ls.getSecondPoint(), true)
-              << " with color " << GetString(ls.GetColorCode()) << std::endl;
+              << ra_types::GetString(ls.getSecondPoint(), true) << " with rgb "
+              << GetString(ls.GetColorCode()) << std::endl;
 
     if (IsVisible(ls.getMaxX(), ls.getMaxY()) &
         IsVisible(ls.getMinX(), ls.getMinY()))
@@ -167,8 +170,30 @@ void RectangularPixelBuffer::Draw(const figures2d::LineSegment& ls) const
             ra_linesegment_func(first, second, ls.GetColorCode(), *dotbuf);
 
         dotbuf->UpdateDotsNumber(dotsdrawn);
-        // TODO: brezenham line algorithm
-        // TODO: pointer to algorithm
+    }
+}
+
+void RectangularPixelBuffer::Draw(const figures2d::Circle& c) const
+{
+    // TODO: move to algoritm + add compile options and debug mode
+    std::cout << "Draw Circle in " << ra_types::GetString(c.getCenter(), true)
+              << "with R: " << c.getRadius() << " and rgb "
+              << GetString(c.GetColorCode()) << std::endl;
+
+    if (IsVisible(c.getMaxX(), c.getMaxY()) &
+        IsVisible(c.getMinX(), c.getMinY()))
+    {
+        auto center_d = Cartesian2dToCanvas2d(
+            { c.getCenter().x, c.getCenter().y }, zeroPointOffset);
+
+        ra_core::figures2d::point2d center{ center_d.x, center_d.y };
+
+        auto ra_circle_func = raproxy.getRenderingCircle();
+
+        auto dotsdrawn =
+            ra_circle_func(center, c.getRadius(), c.GetColorCode(), *dotbuf);
+
+        dotbuf->UpdateDotsNumber(dotsdrawn);
     }
 }
 
@@ -191,6 +216,12 @@ void RectangularPixelBuffer::UseLineAlgorithm(
     AlgorithmProxy::rendering_algorithm algo_ptr)
 {
     raproxy.setRenderingAlgorithm(figures2d::eFigure2dType::Line, algo_ptr);
+}
+
+void RectangularPixelBuffer::UseCircleAlgorithm(
+    AlgorithmProxy::rendering_algorithm algo_ptr)
+{
+    raproxy.setRenderingAlgorithm(figures2d::eFigure2dType::Circle, algo_ptr);
 }
 
 ra_types::displacement2d RectangularPixelBuffer::getHighestVisiblePoint() const

@@ -177,6 +177,44 @@ example_draw_lines_bresenham_defect()
     return canvas.getPixelBuffer();
 }
 
+std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
+example_draw_circles_bresenham()
+{
+    ra_services::color_rgb::ColorMap cm;
+    ra_core::canvas2d::Canvas2d      canvas;
+    ra_core::figures2d::border       border;
+
+    canvas.UseCircleAlgorithm(ra_core::canvas2d::AlgorithmProxy::
+                                  rendering_algorithm::circle_bresenham_int);
+
+    ra_types::displacement_t x = 400;
+    ra_types::displacement_t y = 300;
+
+    ra_core::figures2d::Circle c({ x, y }, 150, border);
+    c.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Purple_blue));
+
+    canvas.Draw(c);
+
+    c.setCenter({ x - 50, y });
+    canvas.Draw(c);
+    c.setCenter({ x + 50, y });
+    canvas.Draw(c);
+    c.setCenter({ x, y - 50 });
+    canvas.Draw(c);
+    c.setCenter({ x, y + 50 });
+    canvas.Draw(c);
+    c.setCenter({ x + 50, y - 50 });
+    canvas.Draw(c);
+    c.setCenter({ x + 50, y + 50 });
+    canvas.Draw(c);
+    c.setCenter({ x - 50, y - 50 });
+    canvas.Draw(c);
+    c.setCenter({ x - 50, y + 50 });
+    canvas.Draw(c);
+
+    return canvas.getPixelBuffer();
+}
+
 namespace ra_examples::cartesian2d
 {
 
@@ -189,6 +227,8 @@ Elementary::Elementary()
                "example_draw_lines_bresenham_int");
     AddExample(example_draw_lines_bresenham_defect,
                "example_draw_lines_bresenham_defect");
+    AddExample(example_draw_circles_bresenham,
+               "example_draw_circles_bresenham");
 }
 
 } // namespace ra_examples::cartesian2d
