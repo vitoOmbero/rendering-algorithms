@@ -46,6 +46,9 @@ example_draw_lines_naive()
     ra_core::canvas2d::Canvas2d      canvas;
     ra_core::figures2d::border       border;
 
+    canvas.UseLineAlgorithm(ra_core::canvas2d::AlgorithmProxy::
+                                rendering_algorithm::line_naive_hor_vert_diag);
+
     ra_core::figures2d::LineSegment diag_line({ 300, 300 }, { 400, 400 },
                                               border);
     diag_line.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Blue));
@@ -215,6 +218,30 @@ example_draw_circles_bresenham()
     return canvas.getPixelBuffer();
 }
 
+std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
+example_draw_triangles()
+{
+    ra_services::color_rgb::ColorMap cm;
+    ra_core::canvas2d::Canvas2d      canvas;
+    ra_core::figures2d::border       border;
+
+    canvas.UseLineAlgorithm(ra_core::canvas2d::AlgorithmProxy::
+                                rendering_algorithm::line_bresenham_int);
+
+    ra_core::figures2d::Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 },
+                                    border);
+    tr.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Orange));
+
+    canvas.Draw(tr);
+    tr.setP1({ 100, 100 });
+    tr.setP2({ 50, 350 });
+    tr.setP3({ 15, 400 });
+    tr.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Teal));
+    canvas.Draw(tr);
+
+    return canvas.getPixelBuffer();
+}
+
 namespace ra_examples::cartesian2d
 {
 
@@ -229,6 +256,7 @@ Elementary::Elementary()
                "example_draw_lines_bresenham_defect");
     AddExample(example_draw_circles_bresenham,
                "example_draw_circles_bresenham");
+    AddExample(example_draw_triangles, "example_draw_triangles");
 }
 
 } // namespace ra_examples::cartesian2d

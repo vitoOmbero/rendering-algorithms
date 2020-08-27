@@ -22,4 +22,9 @@ void DrawFigure2dVisitor::VisitCircle(const figures2d::Circle* c) const
     rpb.Draw(*c);
 }
 
+void DrawFigure2dVisitor::VisitTriangle(const figures2d::Triangle* tr) const
+{
+    rpb.Draw(*tr);
+}
+
 } // namespace ra_core::canvas2d

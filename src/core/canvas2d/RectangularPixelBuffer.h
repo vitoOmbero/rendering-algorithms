@@ -12,6 +12,7 @@
 #include "Dot.h"
 #include "LineSegment.h"
 #include "Rectangular1dDotBuffer.h"
+#include "Triangle.h"
 #include "algorithms_lines_naive.h"
 #include "displacement2d.h"
 #include "typedefs.h"
@@ -58,6 +59,8 @@ public:
     void Draw(const ra_core::figures2d::LineSegment& ls) const;
 
     void Draw(const ra_core::figures2d::Circle& c) const;
+
+    void Draw(const ra_core::figures2d::Triangle& tr) const;
 
     /**
      * @brief StumpBufferCopy - make new copy of pixel buffer

@@ -13,6 +13,7 @@ enum class eFigure2dType
     Dot,
     Line,
     Circle,
+    Triangle,
 };
 
 } // namespace ra_core::figures2d

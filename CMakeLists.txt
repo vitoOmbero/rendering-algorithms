@@ -79,6 +79,7 @@ set(CORE_SRC
     src/core/figures2d/circuits/Dot.cpp
     src/core/figures2d/circuits/LineSegment.cpp
     src/core/figures2d/circuits/Circle.cpp
+    src/core/figures2d/circuits/Triangle.cpp
     src/core/rendering2d/line/algorithms_lines_naive.cpp
     src/core/rendering2d/line/algorithms_line_classic.cpp
     src/core/rendering2d/circuits/algorithms_circle.cpp

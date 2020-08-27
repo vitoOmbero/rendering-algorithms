@@ -49,7 +49,7 @@ RectangularPixelBuffer::RectangularPixelBuffer()
         AlgorithmProxy::rendering_algorithm::dot_naive);
     raproxy.setRenderingAlgorithm(
         ra_core::figures2d::eFigure2dType::Line,
-        AlgorithmProxy::rendering_algorithm::line_naive_hor_vert_diag);
+        AlgorithmProxy::rendering_algorithm::line_bresenham_int);
     raproxy.setRenderingAlgorithm(
         ra_core::figures2d::eFigure2dType::Circle,
         AlgorithmProxy::rendering_algorithm::circle_bresenham_int);
@@ -192,6 +192,38 @@ void RectangularPixelBuffer::Draw(const figures2d::Circle& c) const
 
         auto dotsdrawn =
             ra_circle_func(center, c.getRadius(), c.GetColorCode(), *dotbuf);
+
+        dotbuf->UpdateDotsNumber(dotsdrawn);
+    }
+}
+
+void RectangularPixelBuffer::Draw(const figures2d::Triangle& tr) const
+{
+    // TODO: move to algoritm + add compile options and debug mode
+    std::cout << "Draw Triangle " << ra_types::GetString(tr.getP1(), true)
+              << "-" << ra_types::GetString(tr.getP2(), true) << "-"
+              << ra_types::GetString(tr.getP3(), true) << "with rgb "
+              << GetString(tr.GetColorCode()) << std::endl;
+
+    if (IsVisible(tr.getMaxX(), tr.getMaxY()) &
+        IsVisible(tr.getMinX(), tr.getMinY()))
+    {
+        auto p1_d = Cartesian2dToCanvas2d({ tr.getP1().x, tr.getP1().y },
+                                          zeroPointOffset);
+        auto p2_d = Cartesian2dToCanvas2d({ tr.getP2().x, tr.getP2().y },
+                                          zeroPointOffset);
+        auto p3_d = Cartesian2dToCanvas2d({ tr.getP3().x, tr.getP3().y },
+                                          zeroPointOffset);
+
+        ra_core::figures2d::point2d p1{ p1_d.x, p1_d.y };
+        ra_core::figures2d::point2d p2{ p2_d.x, p2_d.y };
+        ra_core::figures2d::point2d p3{ p3_d.x, p3_d.y };
+
+        auto ra_ls_func = raproxy.getRenderingLineSegment();
+
+        auto dotsdrawn = ra_ls_func(p1, p2, tr.GetColorCode(), *dotbuf);
+        dotsdrawn += ra_ls_func(p2, p3, tr.GetColorCode(), *dotbuf);
+        dotsdrawn += ra_ls_func(p3, p1, tr.GetColorCode(), *dotbuf);
 
         dotbuf->UpdateDotsNumber(dotsdrawn);
     }

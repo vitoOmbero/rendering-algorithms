@@ -82,6 +82,8 @@ bool AlgorithmProxy::setRenderingAlgorithm(
                 return false;
             }
         };
+        default:
+            return false;
     }
 }
 
