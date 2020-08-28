@@ -24,7 +24,8 @@ ra_types::n0_t CalculateIndex(const Rectangular1dDotBuffer* buf,
 
 Rectangular1dDotBuffer::Rectangular1dDotBuffer(
     ra_types::distance_t width, ra_types::distance_t height,
-    ra_types::displacement2d zeroPointOffset)
+    ra_types::displacement2d zeroPointOffset,
+    ra_types::rgb888         default_color_code)
     : width{ width }
     , height{ height }
     , dotsNumber{ 0 }
@@ -32,7 +33,7 @@ Rectangular1dDotBuffer::Rectangular1dDotBuffer(
 
 {
     dots =
-        new std::vector<ra_types::rgb888>(width * height, ra_types::rgb888());
+        new std::vector<ra_types::rgb888>(width * height, default_color_code);
     lastIndex      = width * height - 1; // NOTE: depends on scale
     lineLastIndex  = width - 1;
     zeroPointIndex = CalculateIndex(this, zeroPointOffset);

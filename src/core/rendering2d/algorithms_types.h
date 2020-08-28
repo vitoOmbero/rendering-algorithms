@@ -24,6 +24,12 @@ typedef ra_types::n0_t (*rendering_circle_fptr)(
     ra_types::rgb888                           color_code,
     ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf);
 
+// TODO: add into type ptr to line algorithm
+typedef ra_types::n0_t (*rendering_triangle_filling_fptr)(
+    ra_core::figures2d::point2d first, ra_core::figures2d::point2d second,
+    ra_core::figures2d::point2d third, ra_types::rgb888 color_code,
+    ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf);
+
 } // namespace ra_core::rendering2d
 
 #endif // ALGORITHMS_TYPES_H

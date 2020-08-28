@@ -11,11 +11,16 @@ namespace ra_types
  */
 struct rgb888 final
 {
-    uchar r;
-    uchar g;
-    uchar b;
+    uchar r = 0;
+    uchar g = 0;
+    uchar b = 0;
 
-    rgb888();
+    constexpr rgb888()
+    {
+        r = 0;
+        g = 0;
+        b = 0;
+    };
 
     /**
      * Special constructor

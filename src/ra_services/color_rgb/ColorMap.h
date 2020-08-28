@@ -7,6 +7,8 @@
 #include "color.h"
 #include "rgb888.h"
 
+// TODO: static service
+
 namespace ra_services::color_rgb
 {
 

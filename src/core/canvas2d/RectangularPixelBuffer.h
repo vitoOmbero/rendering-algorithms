@@ -30,7 +30,8 @@ namespace ra_core::canvas2d
 class RectangularPixelBuffer
 {
 public:
-    RectangularPixelBuffer();
+    RectangularPixelBuffer(
+        ra_types::rgb888 default_color_code = ra_types::rgb888());
     ~RectangularPixelBuffer();
 
     std::string_view         getName() const;
@@ -54,13 +55,13 @@ public:
      */
     ra_types::displacement2d getZeroPointOffset() const;
 
-    void Draw(const ra_core::figures2d::Dot& dot) const;
+    void DrawCircuit(const ra_core::figures2d::Dot& dot) const;
+    void DrawCircuit(const ra_core::figures2d::LineSegment& ls) const;
+    void DrawCircuit(const ra_core::figures2d::Circle& c) const;
+    void DrawCircuit(const ra_core::figures2d::Triangle& tr) const;
 
-    void Draw(const ra_core::figures2d::LineSegment& ls) const;
-
-    void Draw(const ra_core::figures2d::Circle& c) const;
-
-    void Draw(const ra_core::figures2d::Triangle& tr) const;
+    void DrawShape(const ra_core::figures2d::Circle& c) const;
+    void DrawShape(const ra_core::figures2d::Triangle& tr) const;
 
     /**
      * @brief StumpBufferCopy - make new copy of pixel buffer
@@ -78,6 +79,7 @@ public:
     // when add new Use* do not forget to set the default value in ctor
     void UseLineAlgorithm(AlgorithmProxy::rendering_algorithm algo_ptr);
     void UseCircleAlgorithm(AlgorithmProxy::rendering_algorithm algo_ptr);
+    void UseFilling3v(AlgorithmProxy::rendering_algorithm algo_ptr);
 
 private:
     /**

@@ -46,6 +46,7 @@ set(EXAMPLES_SRC
     src/example_runner/ExampleRunner.cpp
     src/examples/ExamplePackBase.cpp
     src/examples/cartesian2d/01_Elementary.cpp
+    src/examples/cartesian2d/02_Shapes.cpp
     )
 
 set(CANVAS2DVIEWERS_DIR src/canvas2dViewers)
@@ -73,7 +74,8 @@ set(CORE_SRC
     ${CORE_DIR}/canvas2d/RectangularPixelBuffer.cpp
     ${CORE_DIR}/canvas2d/Canvas2d.cpp
     src/core/canvas2d/Rectangular1dDotBuffer.cpp
-    src/core/canvas2d/DrawFigure2dVisitor.cpp
+    src/core/canvas2d/DrawCircuit2dVisitor.cpp
+    src/core/canvas2d/DrawShape2dVisitor.cpp
     src/core/figures2d/ShapeBase.cpp
     src/core/figures2d/CircuitBase.cpp
     src/core/figures2d/circuits/Dot.cpp
@@ -83,6 +85,8 @@ set(CORE_SRC
     src/core/rendering2d/line/algorithms_lines_naive.cpp
     src/core/rendering2d/line/algorithms_line_classic.cpp
     src/core/rendering2d/circuits/algorithms_circle.cpp
+    src/core/rendering2d/filling/algorithms_filling_naive.cpp
+    src/core/rendering2d/filling/algorithm_filling_3v_line_sweeping.cpp
     src/core/canvas2d/AlgorithmProxy.cpp
     )
 

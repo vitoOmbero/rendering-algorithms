@@ -28,14 +28,25 @@ public:
      * @param ra - enum type pointer to supported rendering algorithm
      * @return true if set successfully
      */
-    bool setRenderingAlgorithm(ra_core::figures2d::eFigure2dType figure2dType,
-                               rendering_algorithm               ra);
+    bool setRenderingCircuitAlgorithm(
+        ra_core::figures2d::eFigure2dType figure2dType, rendering_algorithm ra);
+
     /**
-     * @brief setCustomRenderingAlgorithm - common setter for custom rendering
-     * algorithm
+     * @brief setFillingAlgorithm - common setter for supported filling
+     * algorithms
+     * @param figure2dType
+     * @param ra
+     * @return true if set successfully
+     */
+    bool setFillingAlgorithm(ra_core::figures2d::eFigure2dType figure2dType,
+                             rendering_algorithm               ra);
+
+    /**
+     * @brief setCustomRenderingAlgorithm - common setter for custom
+     * rendering algorithm
      * @param figure2dType - enum type pointer to supported figure2d
-     * @param function_ptr - suitable unction pointer for figure2d rendering.
-     * See \link algorithms_types.h \endlink
+     * @param function_ptr - suitable unction pointer for figure2d
+     * rendering. See \link algorithms_types.h \endlink
      * @return true if set successfully
      */
     bool setCustomRenderingAlgorithm(
@@ -43,9 +54,12 @@ public:
 
     ra_core::rendering2d::rendering_circle_fptr getRenderingCircle() const;
 
+    ra_core::rendering2d::rendering_triangle_filling_fptr
+    getRenderingTriangleFilled() const;
+
 private:
     bool IsValidRenderingAlgorithm(); // placeholder - should be
-                                      // deleted
+    // deleted
 
     typedef std::map<rendering_algorithm,
                      ra_core::rendering2d::rendering_dot_fptr>
@@ -58,14 +72,20 @@ private:
     typedef std::map<rendering_algorithm,
                      ra_core::rendering2d::rendering_circle_fptr>
         ra_cir_map;
+    typedef std::map<rendering_algorithm,
+                     ra_core::rendering2d::rendering_triangle_filling_fptr>
+        ra_fill3_map;
 
     ra_dot_map rendering_dot_map;
     ra_ls_map  rendering_line_segment_map;
     ra_cir_map rendering_circle_map;
+    ra_fill3_map rendering_fill3_map;
 
     ra_core::rendering2d::rendering_dot_fptr          renderingDot;
     ra_core::rendering2d::rendering_line_segment_fptr renderingLineSegment;
     ra_core::rendering2d::rendering_circle_fptr       renderingCircle;
+    ra_core::rendering2d::rendering_triangle_filling_fptr
+        renderingTriangleFilled;
 };
 } // namespace ra_core::canvas2d
 #endif // ALGORITHMPROXY_H

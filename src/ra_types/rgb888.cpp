@@ -4,13 +4,6 @@
 namespace ra_types
 {
 
-rgb888::rgb888()
-{
-    r = 255;
-    g = 255;
-    b = 255;
-}
-
 rgb888::rgb888(uchar val)
 {
     r = val;

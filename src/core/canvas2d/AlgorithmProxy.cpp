@@ -1,7 +1,9 @@
 #include <exception>
 
 #include "AlgorithmProxy.h"
+#include "algorithm_filling_3v_line_sweeping.h"
 #include "algorithms_circle.h"
+#include "algorithms_filling_naive.h"
 #include "algorithms_line_classic.h"
 #include "algorithms_lines_naive.h"
 
@@ -22,6 +24,17 @@ AlgorithmProxy::AlgorithmProxy()
     rendering_circle_map =
         ra_cir_map{ { rendering_algorithm::circle_bresenham_int,
                       ra_core::rendering2d::circuits::bresenham_int_circle } };
+
+    rendering_fill3_map = ra_fill3_map{
+        { rendering_algorithm::fill3_naive_horizontal,
+          ra_core::rendering2d::filling::fill3_naive_hr },
+        { rendering_algorithm::fill3_line_sweeping_phase_01,
+          ra_core::rendering2d::filling::fill3_line_sweeping_phase01_sides },
+        { rendering_algorithm::fill3_line_sweeping_phase_02,
+          ra_core::rendering2d::filling::fill3_line_sweeping_phase02_sides },
+        { rendering_algorithm::fill3_line_sweeping,
+          ra_core::rendering2d::filling::fill3_line_sweeping }
+    };
 }
 
 ra_core::rendering2d::rendering_dot_fptr AlgorithmProxy::getRenderingDot() const
@@ -35,7 +48,31 @@ AlgorithmProxy::getRenderingLineSegment() const
     return renderingLineSegment;
 }
 
-bool AlgorithmProxy::setRenderingAlgorithm(
+bool AlgorithmProxy::setFillingAlgorithm(
+    ra_core::figures2d::eFigure2dType figure2dType, rendering_algorithm ra)
+{
+    switch (figure2dType)
+    {
+        case (ra_core::figures2d::eFigure2dType::Triangle):
+        {
+            try
+            {
+                renderingTriangleFilled = rendering_fill3_map[ra];
+                return true;
+            }
+            catch (std::exception e)
+            {
+                renderingTriangleFilled = rendering_fill3_map
+                    [rendering_algorithm::fill3_naive_horizontal];
+                return false;
+            }
+        };
+        default:
+            return false;
+    }
+}
+
+bool AlgorithmProxy::setRenderingCircuitAlgorithm(
     ra_core::figures2d::eFigure2dType figure2dType, rendering_algorithm ra)
 {
     switch (figure2dType)
@@ -104,8 +141,9 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
 
             else
             {
-                setRenderingAlgorithm(ra_core::figures2d::eFigure2dType::Dot,
-                                      rendering_algorithm::dot_naive);
+                setRenderingCircuitAlgorithm(
+                    ra_core::figures2d::eFigure2dType::Dot,
+                    rendering_algorithm::dot_naive);
                 return false;
             }
         };
@@ -121,7 +159,7 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
             }
             else
             {
-                setRenderingAlgorithm(
+                setRenderingCircuitAlgorithm(
                     ra_core::figures2d::eFigure2dType::Line,
                     rendering_algorithm::line_naive_hor_vert_diag);
                 return false;
@@ -139,7 +177,7 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
             }
             else
             {
-                setRenderingAlgorithm(
+                setRenderingCircuitAlgorithm(
                     ra_core::figures2d::eFigure2dType::Circle,
                     rendering_algorithm::circle_bresenham_int);
                 return false;
@@ -154,6 +192,12 @@ bool AlgorithmProxy::IsValidRenderingAlgorithm()
 {
     // TODO: add RenderingAlgorithmValidator (based on example running)
     return true;
+}
+
+ra_core::rendering2d::rendering_triangle_filling_fptr
+AlgorithmProxy::getRenderingTriangleFilled() const
+{
+    return renderingTriangleFilled;
 }
 
 ra_core::rendering2d::rendering_circle_fptr AlgorithmProxy::getRenderingCircle() const

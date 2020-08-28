@@ -12,6 +12,10 @@ enum rendering_algorithm
     line_bresenham_defect,
     line_bresenham_int,
     circle_bresenham_int,
+    fill3_naive_horizontal,
+    fill3_line_sweeping_phase_01,
+    fill3_line_sweeping_phase_02,
+    fill3_line_sweeping,
 };
 
 #endif // ALGORITHM_REGISTRY_INC

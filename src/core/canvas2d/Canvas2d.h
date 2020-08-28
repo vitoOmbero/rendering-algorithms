@@ -4,7 +4,8 @@
 #include <memory>
 
 #include "AlgorithmProxy.h"
-#include "DrawFigure2dVisitor.h"
+#include "DrawCircuit2dVisitor.h"
+#include "DrawShape2dVisitor.h"
 #include "DrawableInterface.h"
 #include "Figure2dVisitor.h"
 #include "RectangularPixelBuffer.h"
@@ -21,15 +22,26 @@ namespace ra_core::canvas2d
 class Canvas2d
 {
 public:
-    Canvas2d();
+    enum Mode
+    {
+        Ciruit,
+        Shape
+    };
+
+    Canvas2d(Mode             mode       = Ciruit,
+             ra_types::rgb888 color_code = ra_types::rgb888());
     ~Canvas2d();
 
     std::unique_ptr<RectangularPixelBuffer> getPixelBuffer();
 
     void Draw(const ra_core::figures2d::DrawableInterface& drawable) const;
 
+    void setDrawingMode(Mode mode);
+
     void UseLineAlgorithm(AlgorithmProxy::rendering_algorithm algo_ptr) const;
     void UseCircleAlgorithm(AlgorithmProxy::rendering_algorithm algo_ptr) const;
+
+    void UseFillingTriangle(AlgorithmProxy::rendering_algorithm algo_ptr) const;
 
 private:
     std::unique_ptr<RectangularPixelBuffer> rpb;

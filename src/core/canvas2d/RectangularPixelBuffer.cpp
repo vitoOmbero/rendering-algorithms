@@ -29,7 +29,8 @@ inline ra_types::displacement2d CalculateHighestVisiblePoint(
     return ra_types::displacement2d{ b->width, b->height } - b->zeroPointOffset;
 }
 
-RectangularPixelBuffer::RectangularPixelBuffer()
+RectangularPixelBuffer::RectangularPixelBuffer(
+    ra_types::rgb888 default_color_code)
     : name{ "RectangularPixelBuffer" }
     , width{ 800 }
     , height{ 600 }
@@ -42,17 +43,22 @@ RectangularPixelBuffer::RectangularPixelBuffer()
     lowestVisiblePoint = CalculateLowestVisiblePoint(this);
     assert(zeroPointOffset >= lowestVisiblePoint);
     highestVisiblePoint = CalculateHighestVisiblePoint(this);
-    dotbuf = new Rectangular1dDotBuffer(width, height, zeroPointOffset);
+    dotbuf = new Rectangular1dDotBuffer(width, height, zeroPointOffset,
+                                        default_color_code);
 
-    raproxy.setRenderingAlgorithm(
+    raproxy.setRenderingCircuitAlgorithm(
         ra_core::figures2d::eFigure2dType::Dot,
         AlgorithmProxy::rendering_algorithm::dot_naive);
-    raproxy.setRenderingAlgorithm(
+    raproxy.setRenderingCircuitAlgorithm(
         ra_core::figures2d::eFigure2dType::Line,
         AlgorithmProxy::rendering_algorithm::line_bresenham_int);
-    raproxy.setRenderingAlgorithm(
+    raproxy.setRenderingCircuitAlgorithm(
         ra_core::figures2d::eFigure2dType::Circle,
         AlgorithmProxy::rendering_algorithm::circle_bresenham_int);
+
+    raproxy.setFillingAlgorithm(
+        ra_core::figures2d::eFigure2dType::Triangle,
+        AlgorithmProxy::rendering_algorithm::fill3_naive_horizontal);
 }
 
 RectangularPixelBuffer::~RectangularPixelBuffer()
@@ -125,7 +131,8 @@ ra_types::displacement2d RectangularPixelBuffer::getZeroPointOffset() const
     return zeroPointOffset;
 }
 
-void RectangularPixelBuffer::Draw(const ra_core::figures2d::Dot& dot) const
+void RectangularPixelBuffer::DrawCircuit(
+    const ra_core::figures2d::Dot& dot) const
 {
     // TODO: move to algoritm + add compile options and debug mode
     std::cout << "Draw Dot " << ra_types::GetString(dot.getPoint(), true)
@@ -145,7 +152,7 @@ void RectangularPixelBuffer::Draw(const ra_core::figures2d::Dot& dot) const
     }
 }
 
-void RectangularPixelBuffer::Draw(const figures2d::LineSegment& ls) const
+void RectangularPixelBuffer::DrawCircuit(const figures2d::LineSegment& ls) const
 {
     // TODO: move to algoritm + add compile options and debug mode
     std::cout << "Draw LineSegment "
@@ -173,7 +180,7 @@ void RectangularPixelBuffer::Draw(const figures2d::LineSegment& ls) const
     }
 }
 
-void RectangularPixelBuffer::Draw(const figures2d::Circle& c) const
+void RectangularPixelBuffer::DrawCircuit(const figures2d::Circle& c) const
 {
     // TODO: move to algoritm + add compile options and debug mode
     std::cout << "Draw Circle in " << ra_types::GetString(c.getCenter(), true)
@@ -197,7 +204,7 @@ void RectangularPixelBuffer::Draw(const figures2d::Circle& c) const
     }
 }
 
-void RectangularPixelBuffer::Draw(const figures2d::Triangle& tr) const
+void RectangularPixelBuffer::DrawCircuit(const figures2d::Triangle& tr) const
 {
     // TODO: move to algoritm + add compile options and debug mode
     std::cout << "Draw Triangle " << ra_types::GetString(tr.getP1(), true)
@@ -229,6 +236,43 @@ void RectangularPixelBuffer::Draw(const figures2d::Triangle& tr) const
     }
 }
 
+void RectangularPixelBuffer::DrawShape(const figures2d::Circle& c) const
+{
+    DrawCircuit(c);
+    std::cout << ">>>  Draw Circle Shape is not implemented! <<<" << std::endl;
+}
+
+void RectangularPixelBuffer::DrawShape(const figures2d::Triangle& tr) const
+{
+    // TODO: move to algoritm + add compile options and debug mode
+    std::cout << "Draw Filled Triangle "
+              << ra_types::GetString(tr.getP1(), true) << "-"
+              << ra_types::GetString(tr.getP2(), true) << "-"
+              << ra_types::GetString(tr.getP3(), true) << "with rgb "
+              << GetString(tr.GetColorCode()) << std::endl;
+
+    if (IsVisible(tr.getMaxX(), tr.getMaxY()) &
+        IsVisible(tr.getMinX(), tr.getMinY()))
+    {
+        auto p1_d = Cartesian2dToCanvas2d({ tr.getP1().x, tr.getP1().y },
+                                          zeroPointOffset);
+        auto p2_d = Cartesian2dToCanvas2d({ tr.getP2().x, tr.getP2().y },
+                                          zeroPointOffset);
+        auto p3_d = Cartesian2dToCanvas2d({ tr.getP3().x, tr.getP3().y },
+                                          zeroPointOffset);
+
+        ra_core::figures2d::point2d p1{ p1_d.x, p1_d.y };
+        ra_core::figures2d::point2d p2{ p2_d.x, p2_d.y };
+        ra_core::figures2d::point2d p3{ p3_d.x, p3_d.y };
+
+        auto ra_trf_func = raproxy.getRenderingTriangleFilled();
+
+        auto dotsdrawn = ra_trf_func(p1, p2, p3, tr.GetColorCode(), *dotbuf);
+
+        dotbuf->UpdateDotsNumber(dotsdrawn);
+    }
+}
+
 std::unique_ptr<std::vector<ra_types::rgb888>>
 RectangularPixelBuffer::StumpBufferCopy(ra_types::n0_t           width_px,
                                         ra_types::n0_t           height_px,
@@ -247,13 +291,21 @@ RectangularPixelBuffer::StumpBufferCopy(ra_types::n0_t           width_px,
 void RectangularPixelBuffer::UseLineAlgorithm(
     AlgorithmProxy::rendering_algorithm algo_ptr)
 {
-    raproxy.setRenderingAlgorithm(figures2d::eFigure2dType::Line, algo_ptr);
+    raproxy.setRenderingCircuitAlgorithm(figures2d::eFigure2dType::Line,
+                                         algo_ptr);
 }
 
 void RectangularPixelBuffer::UseCircleAlgorithm(
     AlgorithmProxy::rendering_algorithm algo_ptr)
 {
-    raproxy.setRenderingAlgorithm(figures2d::eFigure2dType::Circle, algo_ptr);
+    raproxy.setRenderingCircuitAlgorithm(figures2d::eFigure2dType::Circle,
+                                         algo_ptr);
+}
+
+void RectangularPixelBuffer::UseFilling3v(
+    AlgorithmProxy::rendering_algorithm algo_ptr)
+{
+    raproxy.setFillingAlgorithm(figures2d::eFigure2dType::Triangle, algo_ptr);
 }
 
 ra_types::displacement2d RectangularPixelBuffer::getHighestVisiblePoint() const

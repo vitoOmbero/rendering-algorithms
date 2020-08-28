@@ -1,5 +1,15 @@
+#include <memory>
+#include <vector>
+
 #include "01_Elemantary.h"
+
 #include "AlgorithmProxy.h"
+#include "Canvas2d.h"
+#include "Circle.h"
+#include "ColorMap.h"
+#include "Dot.h"
+#include "examples_types.h"
+#include "typedefs.h"
 
 std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer> example_draw_dot()
 {

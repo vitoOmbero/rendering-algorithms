@@ -14,8 +14,10 @@ namespace ra_core::canvas2d
 class Rectangular1dDotBuffer
 {
 public:
-    Rectangular1dDotBuffer(ra_types::n0_t width, ra_types::n0_t height,
-                           ra_types::displacement2d zeroPointOffset);
+    Rectangular1dDotBuffer(
+        ra_types::n0_t width, ra_types::n0_t height,
+        ra_types::displacement2d zeroPointOffset,
+        ra_types::rgb888         default_color_code = ra_types::rgb888());
     ~Rectangular1dDotBuffer();
 
     /**
