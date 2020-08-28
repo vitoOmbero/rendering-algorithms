@@ -64,5 +64,10 @@ inline ra_types::displacement2d make_displacement2d(const point2d p)
 {
     return { p.x, p.y };
 };
+
+inline point2d make_point2d(const ra_types::displacement2d p)
+{
+    return { p.x, p.y };
+};
 } // namespace ra_core::figures2d
 #endif // POINT2D_H

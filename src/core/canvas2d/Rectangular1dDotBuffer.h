@@ -71,8 +71,10 @@ public:
     ra_types::n0_t       getDotSize() const;
 
 private:
-    friend ra_types::n0_t CalculateIndex(const Rectangular1dDotBuffer* buf,
-                                         ra_types::displacement2d      point);
+    ra_types::n0_t CalculateIndex(const Rectangular1dDotBuffer* buf,
+                                  ra_types::displacement2d      point);
+    ra_types::n0_t Canvas2dToIndex1d(ra_types::displacement2d point,
+                                     ra_types::n0_t           line_width);
 
     std::vector<ra_types::rgb888>* dots;
     ra_types::n0_t                 width;

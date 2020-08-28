@@ -1,11 +1,8 @@
 #include "02_Shapes.h"
 
-#include "AlgorithmProxy.h"
 #include "Canvas2d.h"
-#include "Circle.h"
 #include "ColorMap.h"
-#include "Dot.h"
-#include "examples_types.h"
+#include "color.h"
 #include "typedefs.h"
 
 std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
@@ -21,13 +18,13 @@ example_draw_triangles_filled_01_naive()
 
     ra_core::figures2d::Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 },
                                     border);
-    tr.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Orange));
+    tr.setColorCode(cm.FindRgbCode(ra_types::color::Orange));
 
     canvas.Draw(tr);
     tr.setP1({ 100, 100 });
     tr.setP2({ 50, 350 });
     tr.setP3({ 15, 400 });
-    tr.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Teal));
+    tr.setColorCode(cm.FindRgbCode(ra_types::color::Teal));
     canvas.Draw(tr);
 
     return canvas.getPixelBuffer();
@@ -80,6 +77,7 @@ example_draw_triangles_filled_02_line_sweeping_ph02()
     using namespace ra_services::color_rgb;
     using namespace ra_core::figures2d;
     using namespace ra_core::canvas2d;
+    using namespace ra_types;
 
     ColorMap cm;
     Canvas2d canvas(Canvas2d::Shape, cm.FindRgbCode(color::Black));

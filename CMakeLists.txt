@@ -47,6 +47,7 @@ set(EXAMPLES_SRC
     src/examples/ExamplePackBase.cpp
     src/examples/cartesian2d/01_Elementary.cpp
     src/examples/cartesian2d/02_Shapes.cpp
+    src/examples/cartesian2d/03_Clipping.cpp
     )
 
 set(CANVAS2DVIEWERS_DIR src/canvas2dViewers)

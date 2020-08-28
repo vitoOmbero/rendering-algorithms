@@ -4,18 +4,25 @@ namespace ra_core::canvas2d
 {
 
 // NOTE: todo coord translation service?
-inline ra_types::n0_t Canvas2dToIndex1d(ra_types::displacement2d point,
-                                        ra_types::n0_t           line_width)
+ra_types::n0_t Rectangular1dDotBuffer::Canvas2dToIndex1d(
+    ra_types::displacement2d point, ra_types::n0_t line_width)
 {
-    assert(point.x >= 0 & point.y >= 0);
-
     // NOTE: depends on arithmetic type of ra_types::displacement_t
     auto y_1d = point.y * line_width;
-    return point.x + y_1d;
+    auto xny_1d = point.x + y_1d;
+
+    // cutting
+    if (xny_1d > lastIndex)
+        xny_1d = lastIndex;
+    // you shall not pass!!!
+    if (xny_1d < zeroIndex)
+        xny_1d = zeroIndex;
+
+    return xny_1d;
 }
 
-ra_types::n0_t CalculateIndex(const Rectangular1dDotBuffer* buf,
-                              ra_types::displacement2d      point)
+ra_types::n0_t Rectangular1dDotBuffer::CalculateIndex(
+    const Rectangular1dDotBuffer* buf, ra_types::displacement2d point)
 {
     assert(point.x <= buf->width - 1);
     assert(point.y <= buf->height - 1);

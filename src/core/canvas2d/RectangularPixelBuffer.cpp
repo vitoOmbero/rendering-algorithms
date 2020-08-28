@@ -154,6 +154,7 @@ void RectangularPixelBuffer::DrawCircuit(
 
 void RectangularPixelBuffer::DrawCircuit(const figures2d::LineSegment& ls) const
 {
+    using namespace ra_core::figures2d;
     // TODO: move to algoritm + add compile options and debug mode
     std::cout << "Draw LineSegment "
               << ra_types::GetString(ls.getFirstPoint(), true) << "-"
@@ -164,12 +165,12 @@ void RectangularPixelBuffer::DrawCircuit(const figures2d::LineSegment& ls) const
         IsVisible(ls.getMinX(), ls.getMinY()))
     {
         auto first_d = Cartesian2dToCanvas2d(
-            { ls.getFirstPoint().x, ls.getFirstPoint().y }, zeroPointOffset);
+            make_displacement2d(ls.getFirstPoint()), zeroPointOffset);
         auto second_d = Cartesian2dToCanvas2d(
-            { ls.getSecondPoint().x, ls.getSecondPoint().y }, zeroPointOffset);
+            make_displacement2d(ls.getSecondPoint()), zeroPointOffset);
 
-        ra_core::figures2d::point2d first{ first_d.x, first_d.y };
-        ra_core::figures2d::point2d second{ second_d.x, second_d.y };
+        auto first  = make_point2d(first_d);
+        auto second = make_point2d(second_d);
 
         auto ra_linesegment_func = raproxy.getRenderingLineSegment();
 
