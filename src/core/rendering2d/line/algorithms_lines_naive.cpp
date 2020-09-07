@@ -2,9 +2,8 @@
 #include "typedefs.h"
 
 ra_types::n0_t ra_core::rendering2d::line::naive_dot(
-    ra_types::displacement_t x, ra_types::displacement_t y,
-    ra_types::rgb888                           color_code,
-    ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf)
+    ra_types::displacement1i_t x, ra_types::displacement1i_t y,
+    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
 {
     dotbuf.Paint(color_code);
     dotbuf.Mark({ x, y });
@@ -12,17 +11,14 @@ ra_types::n0_t ra_core::rendering2d::line::naive_dot(
 }
 
 ra_types::n0_t ra_core::rendering2d::line::naive_hv_line(
-    ra_core::figures2d::point2d first, ra_core::figures2d::point2d second,
-    ra_types::rgb888                           color_code,
-    ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf)
+    ra_types::point2i first, ra_types::point2i second,
+    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
 {
     dotbuf.Paint(color_code);
 
-    ra_core::figures2d::point2d& closestToZero =
-        first <= second ? first : second;
-    ra_core::figures2d::point2d& farthestToZero =
-        first <= second ? second : first;
-    ra_types::displacement_t c = 0;
+    ra_types::point2i& closestToZero  = first <= second ? first : second;
+    ra_types::point2i& farthestToZero = first <= second ? second : first;
+    ra_types::displacement1i_t c = 0;
 
     for (auto i = closestToZero.x, j = closestToZero.y;
          i <= farthestToZero.x && j <= farthestToZero.y; ++i, ++j)

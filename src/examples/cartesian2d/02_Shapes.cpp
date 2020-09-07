@@ -1,157 +1,153 @@
-#include "02_Shapes.h"
+﻿#include "02_Shapes.h"
 
+#include "AlgorithmProxy.h"
 #include "Canvas2d.h"
+#include "Circle.h"
 #include "ColorMap.h"
-#include "color.h"
-#include "typedefs.h"
+#include "Dot.h"
+#include "LineSegment.h"
+#include "Triangle.h"
+#include "algorithms_registry.h"
+#include "examples_types.h"
+#include "ra_types.h"
+#include "renderer.h"
 
-std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
-example_draw_triangles_filled_01_naive()
+ra_core::pipeline::Canvas2d filling_triangle_naive()
 {
-    ra_services::color_rgb::ColorMap cm;
-    ra_core::canvas2d::Canvas2d      canvas;
-    ra_core::figures2d::border       border;
-
-    canvas.UseLineAlgorithm(ra_core::canvas2d::AlgorithmProxy::
-                                rendering_algorithm::line_bresenham_int);
-    canvas.setDrawingMode(ra_core::canvas2d::Canvas2d::Shape);
-
-    ra_core::figures2d::Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 },
-                                    border);
-    tr.setColorCode(cm.FindRgbCode(ra_types::color::Orange));
-
-    canvas.Draw(tr);
-    tr.setP1({ 100, 100 });
-    tr.setP2({ 50, 350 });
-    tr.setP3({ 15, 400 });
-    tr.setColorCode(cm.FindRgbCode(ra_types::color::Teal));
-    canvas.Draw(tr);
-
-    return canvas.getPixelBuffer();
-}
-
-std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
-example_draw_triangles_filled_02_line_sweeping_ph01()
-{
-    using namespace ra_services::color_rgb;
+    ra_core::renderer::Init();
     using namespace ra_core::figures2d;
-    using namespace ra_core::canvas2d;
-
-    ColorMap cm;
-    Canvas2d canvas(Canvas2d::Shape, cm.FindRgbCode(color::Black));
-    border   border;
-
-    canvas.UseLineAlgorithm(
-        AlgorithmProxy::rendering_algorithm::line_bresenham_int);
-    canvas.UseFillingTriangle(
-        AlgorithmProxy::rendering_algorithm::fill3_line_sweeping_phase_01);
-
-    ra_core::figures2d::Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 },
-                                    border);
-
-    tr.setColorCode(cm.FindRgbCode(color::Orange));
-    canvas.Draw(tr);
-
-    tr.setP1({ 100, 100 });
-    tr.setP2({ 50, 350 });
-    tr.setP3({ 15, 400 });
-    tr.setColorCode(cm.FindRgbCode(color::Teal));
-    canvas.Draw(tr);
-
-    ra_core::figures2d::Triangle tr2({ 200, 50 }, { 300, 500 }, { 400, 250 },
-                                     border);
-    tr2.setColorCode(cm.FindRgbCode(color::Blue));
-    ra_core::figures2d::Triangle tr3({ 500, 250 }, { 600, 50 }, { 700, 500 },
-                                     border);
-    tr2.setColorCode(cm.FindRgbCode(color::Purple_blue));
-
-    canvas.Draw(tr2);
-    canvas.Draw(tr3);
-
-    return canvas.getPixelBuffer();
-}
-
-std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
-example_draw_triangles_filled_02_line_sweeping_ph02()
-{
-    using namespace ra_services::color_rgb;
-    using namespace ra_core::figures2d;
-    using namespace ra_core::canvas2d;
+    using namespace ra_core::pipeline;
+    using namespace ra_core;
     using namespace ra_types;
+    auto              cm = renderer::getColorMap();
+    figures2d::border border;
 
-    ColorMap cm;
-    Canvas2d canvas(Canvas2d::Shape, cm.FindRgbCode(color::Black));
-    border   border;
+    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
+    renderer::setDrawingMode(eDrawingMode::Shape);
 
-    canvas.UseLineAlgorithm(
-        AlgorithmProxy::rendering_algorithm::line_bresenham_int);
-    canvas.UseFillingTriangle(
-        AlgorithmProxy::rendering_algorithm::fill3_line_sweeping_phase_02);
+    renderer::UseFillingTriangle(filling_algorithm::fill3_naive_horizontal);
 
-    ra_core::figures2d::Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 },
-                                    border);
+    Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 }, border);
+    tr.setColorCode(cm.FindRgbCode(eColor::Orange));
 
-    tr.setColorCode(cm.FindRgbCode(color::Orange));
-    canvas.Draw(tr);
-
+    renderer::Draw(tr);
     tr.setP1({ 100, 100 });
     tr.setP2({ 50, 350 });
     tr.setP3({ 15, 400 });
-    tr.setColorCode(cm.FindRgbCode(color::Teal));
-    canvas.Draw(tr);
+    tr.setColorCode(cm.FindRgbCode(eColor::Teal));
+    renderer::Draw(tr);
 
-    ra_core::figures2d::Triangle tr2({ 200, 50 }, { 300, 500 }, { 400, 250 },
-                                     border);
-    tr2.setColorCode(cm.FindRgbCode(color::Blue));
-    ra_core::figures2d::Triangle tr3({ 500, 250 }, { 600, 50 }, { 700, 500 },
-                                     border);
-    tr3.setColorCode(cm.FindRgbCode(color::Purple_blue));
-
-    canvas.Draw(tr2);
-    canvas.Draw(tr3);
-
-    return canvas.getPixelBuffer();
+    return renderer::getCanvas();
 }
 
-std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
-example_draw_triangles_filled_02_line_sweeping_ph03_full()
+ra_core::pipeline::Canvas2d triangle_line_sweeping_ph01()
 {
-    using namespace ra_services::color_rgb;
+    ra_core::renderer::Init();
     using namespace ra_core::figures2d;
-    using namespace ra_core::canvas2d;
+    using namespace ra_core::pipeline;
+    using namespace ra_core;
+    using namespace ra_types;
+    auto              cm = renderer::getColorMap();
+    figures2d::border border;
 
-    ColorMap cm;
-    Canvas2d canvas(Canvas2d::Shape, cm.FindRgbCode(color::Black));
-    border   border;
-
-    canvas.UseLineAlgorithm(
-        AlgorithmProxy::rendering_algorithm::line_bresenham_int);
-    canvas.UseFillingTriangle(
-        AlgorithmProxy::rendering_algorithm::fill3_line_sweeping);
+    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
+    renderer::UseFillingTriangle(
+        filling_algorithm::fill3_line_sweeping_phase_01);
 
     ra_core::figures2d::Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 },
                                     border);
 
-    tr.setColorCode(cm.FindRgbCode(color::Orange));
-    canvas.Draw(tr);
+    tr.setColorCode(cm.FindRgbCode(eColor::Orange));
+    renderer::Draw(tr);
 
     tr.setP1({ 100, 100 });
     tr.setP2({ 50, 350 });
     tr.setP3({ 15, 400 });
-    tr.setColorCode(cm.FindRgbCode(color::Teal));
-    canvas.Draw(tr);
+    tr.setColorCode(cm.FindRgbCode(eColor::Teal));
+    renderer::Draw(tr);
 
     ra_core::figures2d::Triangle tr2({ 200, 50 }, { 300, 500 }, { 400, 250 },
                                      border);
-    tr2.setColorCode(cm.FindRgbCode(color::Blue));
+    tr2.setColorCode(cm.FindRgbCode(eColor::Blue));
     ra_core::figures2d::Triangle tr3({ 500, 250 }, { 600, 50 }, { 700, 500 },
                                      border);
-    tr3.setColorCode(cm.FindRgbCode(color::Purple_blue));
+    tr2.setColorCode(cm.FindRgbCode(eColor::Purple_blue));
 
-    canvas.Draw(tr2);
-    canvas.Draw(tr3);
+    renderer::Draw(tr2);
+    renderer::Draw(tr3);
 
-    return canvas.getPixelBuffer();
+    return renderer::getCanvas();
+}
+
+ra_core::pipeline::Canvas2d triangle_line_sweeping_ph02()
+{
+    ra_core::renderer::Init();
+    using namespace ra_core::figures2d;
+    using namespace ra_core::pipeline;
+    using namespace ra_core;
+    using namespace ra_types;
+    auto              cm = renderer::getColorMap();
+    figures2d::border border;
+
+    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
+    renderer::UseFillingTriangle(
+        filling_algorithm::fill3_line_sweeping_phase_02);
+
+    Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 }, border);
+
+    tr.setColorCode(cm.FindRgbCode(eColor::Orange));
+    renderer::Draw(tr);
+
+    tr.setP1({ 100, 100 });
+    tr.setP2({ 50, 350 });
+    tr.setP3({ 15, 400 });
+    tr.setColorCode(cm.FindRgbCode(eColor::Teal));
+    renderer::Draw(tr);
+
+    Triangle tr2({ 200, 50 }, { 300, 500 }, { 400, 250 }, border);
+    tr2.setColorCode(cm.FindRgbCode(eColor::Blue));
+    Triangle tr3({ 500, 250 }, { 600, 50 }, { 700, 500 }, border);
+    tr3.setColorCode(cm.FindRgbCode(eColor::Purple_blue));
+
+    renderer::Draw(tr2);
+    renderer::Draw(tr3);
+
+    return renderer::getCanvas();
+}
+
+ra_core::pipeline::Canvas2d triangle_line_sweeping_full()
+{
+    ra_core::renderer::Init();
+    using namespace ra_core::figures2d;
+    using namespace ra_core::pipeline;
+    using namespace ra_core;
+    using namespace ra_types;
+    auto              cm = renderer::getColorMap();
+    figures2d::border border;
+
+    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
+    renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
+
+    Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 }, border);
+
+    tr.setColorCode(cm.FindRgbCode(eColor::Orange));
+    renderer::Draw(tr);
+
+    tr.setP1({ 100, 100 });
+    tr.setP2({ 50, 350 });
+    tr.setP3({ 15, 400 });
+    tr.setColorCode(cm.FindRgbCode(eColor::Teal));
+    renderer::Draw(tr);
+
+    Triangle tr2({ 200, 50 }, { 300, 500 }, { 400, 250 }, border);
+    tr2.setColorCode(cm.FindRgbCode(eColor::Blue));
+    Triangle tr3({ 500, 250 }, { 600, 50 }, { 700, 500 }, border);
+    tr3.setColorCode(cm.FindRgbCode(eColor::Purple_blue));
+
+    renderer::Draw(tr2);
+    renderer::Draw(tr3);
+
+    return renderer::getCanvas();
 }
 
 namespace ra_examples::cartesian2d
@@ -159,13 +155,10 @@ namespace ra_examples::cartesian2d
 
 Shapes::Shapes()
 {
-    AddExample(example_draw_triangles_filled_01_naive,
-               "example_draw_triangles_filled_01_naive");
-    AddExample(example_draw_triangles_filled_02_line_sweeping_ph01,
-               "example_draw_triangles_filled_02_line_sweeping_ph01");
-    AddExample(example_draw_triangles_filled_02_line_sweeping_ph02,
-               "example_draw_triangles_filled_02_line_sweeping_ph02");
-    AddExample(example_draw_triangles_filled_02_line_sweeping_ph03_full,
-               "example_draw_triangles_filled_02_line_sweeping_ph03_full");
+    name = "02_shapes";
+    AddExample(filling_triangle_naive, "filling_triangle_naive");
+    AddExample(triangle_line_sweeping_ph01, "triangle_line_sweeping_ph01");
+    AddExample(triangle_line_sweeping_ph02, "triangle_line_sweeping_ph02");
+    AddExample(triangle_line_sweeping_full, "triangle_line_sweeping_full");
 }
 } // namespace ra_examples::cartesian2d

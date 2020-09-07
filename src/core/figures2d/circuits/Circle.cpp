@@ -5,14 +5,16 @@
 namespace ra_core::figures2d
 {
 
-Circle::Circle(point2d center, distance_t radius, struct border border)
+Circle::Circle(ra_types::point2i center, distance1ui_t radius,
+               struct border border)
     : CircuitBase(border)
     , center{ center }
     , radius{ radius }
 {
 }
 
-Circle::Circle(point2d center, point2d point, struct border border)
+Circle::Circle(ra_types::point2i center, ra_types::point2i point,
+               struct border border)
     : CircuitBase(border)
     , center{ center }
 {
@@ -25,22 +27,22 @@ void ra_core::figures2d::Circle::AcceptFigure2dVisitor(
     fv->VisitCircle(this);
 }
 
-point2d Circle::getCenter() const
+ra_types::point2i Circle::getCenter() const
 {
     return center;
 }
 
-void Circle::setCenter(const point2d &value)
+void Circle::setCenter(const ra_types::point2i& value)
 {
     center = value;
 }
 
-distance_t Circle::getRadius() const
+distance1ui_t Circle::getRadius() const
 {
     return radius;
 }
 
-void Circle::setRadius(const distance_t &value)
+void Circle::setRadius(const distance1ui_t &value)
 {
     radius = value;
 }

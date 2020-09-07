@@ -1,30 +1,34 @@
 #include "DrawCircuit2dVisitor.h"
-namespace ra_core::canvas2d
+
+#include "Pipeline.h"
+
+namespace ra_core::pipeline
 {
 
-DrawCircuit2dVisitor::DrawCircuit2dVisitor(RectangularPixelBuffer& rpb)
-    : rpb{ rpb }
+DrawCircuit2dVisitor::DrawCircuit2dVisitor(
+    ra_core::pipeline::Pipeline& pipeline)
+    : pipeline{ pipeline }
 {
 }
 
 void DrawCircuit2dVisitor::VisitDot(const ra_core::figures2d::Dot* dot) const
 {
-    rpb.DrawCircuit(*dot);
+    pipeline.DrawCircuit(*dot);
 }
 
 void DrawCircuit2dVisitor::VisitLine(const figures2d::LineSegment* ls) const
 {
-    rpb.DrawCircuit(*ls);
+    pipeline.DrawCircuit(*ls);
 }
 
 void DrawCircuit2dVisitor::VisitCircle(const figures2d::Circle* c) const
 {
-    rpb.DrawCircuit(*c);
+    pipeline.DrawCircuit(*c);
 }
 
 void DrawCircuit2dVisitor::VisitTriangle(const figures2d::Triangle* tr) const
 {
-    rpb.DrawCircuit(*tr);
+    pipeline.DrawCircuit(*tr);
 }
 
 } // namespace ra_core::canvas2d

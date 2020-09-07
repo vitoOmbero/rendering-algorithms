@@ -1,6 +1,7 @@
 #ifndef EXAMPLEPACKBASE_H
 #define EXAMPLEPACKBASE_H
 
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -19,15 +20,17 @@ class ExamplePackBase
 public:
     ExamplePackBase();
 
-    ~ExamplePackBase();
+    virtual ~ExamplePackBase();
 
     typedef std::vector<canvas2d_example_ft>::const_iterator exampleCIterator;
-    typedef std::vector<std::string_view>::const_iterator    nameCIterator;
+    typedef std::vector<std::string>::const_iterator         nameCIterator;
 
     exampleCIterator GetExamplesCBegin() const;
     exampleCIterator GetExamplesCEnd() const;
     nameCIterator    GetNamesCBegin() const;
     nameCIterator    GetNamesCEnd() const;
+
+    virtual std::string getName() const;
 
 protected:
     /**
@@ -37,11 +40,18 @@ protected:
      * @param example_description - name for example
      */
     void AddExample(canvas2d_example_ft exampleFuncPtr,
-                    std::string_view    exampleDescription) const;
+                    std::string         exampleDescription) const;
+
+    /**
+     * @brief name - viewable name of pack will be added to the example samples
+     * names
+     */
+    std::string name;
 
 private:
     std::vector<canvas2d_example_ft>* examples;
-    std::vector<std::string_view>*    names;
+    std::vector<std::string>*         names;
+    std::ostringstream*               oss;
 };
 } // namespace ra_examples
 #endif // EXAMPLEPACKBASE_H

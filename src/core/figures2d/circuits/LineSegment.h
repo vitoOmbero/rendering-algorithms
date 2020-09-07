@@ -4,7 +4,7 @@
 
 #include "CircuitBase.h"
 #include "border.h"
-#include "point2d.h"
+#include "point2i.h"
 #include "typedefs.h"
 
 namespace ra_core::figures2d
@@ -12,37 +12,38 @@ namespace ra_core::figures2d
 class LineSegment final : public CircuitBase
 {
 public:
-    LineSegment(point2d firstPoint, point2d secondPoint, struct border border);
+    LineSegment(ra_types::point2i firstPoint, ra_types::point2i secondPoint,
+                struct border border);
 
-    inline displacement_t getMaxX() const override
+    inline displacement1i_t getMaxX() const override
     {
         return std::max(firstPoint.x, secondPoint.x);
     };
-    inline displacement_t getMaxY() const override
+    inline displacement1i_t getMaxY() const override
     {
         return std::max(firstPoint.y, secondPoint.y);
     };
-    inline displacement_t getMinX() const override
+    inline displacement1i_t getMinX() const override
     {
         return std::min(firstPoint.x, secondPoint.x);
     };
-    inline displacement_t getMinY() const override
+    inline displacement1i_t getMinY() const override
     {
         return std::min(firstPoint.y, secondPoint.y);
     };
 
-    inline point2d getFirstPoint() const { return firstPoint; };
-    inline point2d getSecondPoint() const { return secondPoint; };
+    inline ra_types::point2i getFirstPoint() const { return firstPoint; };
+    inline ra_types::point2i getSecondPoint() const { return secondPoint; };
 
     void AcceptFigure2dVisitor(Figure2dVisitor* fv) const override;
 
-    void setFirstPoint(const point2d& value);
+    void setFirstPoint(const ra_types::point2i& value);
 
-    void setSecondPoint(const point2d& value);
+    void setSecondPoint(const ra_types::point2i& value);
 
 private:
-    point2d firstPoint;
-    point2d secondPoint;
+    ra_types::point2i firstPoint;
+    ra_types::point2i secondPoint;
 };
 } // namespace ra_core::figures2d
 #endif // LINESEGMENT_H

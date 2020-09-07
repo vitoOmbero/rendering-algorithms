@@ -6,7 +6,7 @@
 
 #include "CircuitBase.h"
 #include "border.h"
-#include "point2d.h"
+#include "point2i.h"
 #include "typedefs.h"
 
 namespace ra_core::figures2d
@@ -15,40 +15,41 @@ namespace ra_core::figures2d
 class Triangle final : public CircuitBase
 {
 public:
-    Triangle(point2d p1, point2d p2, point2d p3, struct border border);
+    Triangle(ra_types::point2i p1, ra_types::point2i p2, ra_types::point2i p3,
+             struct border border);
 
-    inline displacement_t getMaxX() const override
+    inline displacement1i_t getMaxX() const override
     {
         return std::max({ p1.x, p2.x, p3.x });
     };
-    inline displacement_t getMaxY() const override
+    inline displacement1i_t getMaxY() const override
     {
         return std::max({ p1.y, p2.y, p3.y });
     };
-    inline displacement_t getMinX() const override
+    inline displacement1i_t getMinX() const override
     {
         return std::min({ p1.x, p2.x, p3.x });
     };
-    inline displacement_t getMinY() const override
+    inline displacement1i_t getMinY() const override
     {
         return std::min({ p1.y, p2.y, p3.y });
     };
 
     void AcceptFigure2dVisitor(Figure2dVisitor* fv) const override;
 
-    point2d getP1() const;
-    void    setP1(const point2d& value);
+    ra_types::point2i getP1() const;
+    void              setP1(const ra_types::point2i& value);
 
-    point2d getP2() const;
-    void    setP2(const point2d& value);
+    ra_types::point2i getP2() const;
+    void              setP2(const ra_types::point2i& value);
 
-    point2d getP3() const;
-    void    setP3(const point2d& value);
+    ra_types::point2i getP3() const;
+    void              setP3(const ra_types::point2i& value);
 
 private:
-    point2d p1;
-    point2d p2;
-    point2d p3;
+    ra_types::point2i p1;
+    ra_types::point2i p2;
+    ra_types::point2i p3;
 };
 } // namespace ra_core::figures2d
 #endif // TRIANGLE_H

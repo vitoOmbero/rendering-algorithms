@@ -26,7 +26,12 @@ struct rgb888 final
      * Special constructor
      * @param val One value for r,g and b color codes.
      */
-    rgb888(uchar val);
+    constexpr rgb888(uchar val)
+    {
+        r = val;
+        g = val;
+        b = val;
+    };
 
     /**
      * @brief rgb888 utility constructor
@@ -34,15 +39,32 @@ struct rgb888 final
      * @param g_ green value 0-255
      * @param b_ blue value 0-255
      */
-    rgb888(uchar r_, uchar g_, uchar b_);
+    rgb888(uchar r_, uchar g_, uchar b_)
+    {
+        r = r_;
+        g = g_;
+        b = b_;
+    };
 
-    bool operator==(const rgb888& b) const;
+    bool operator==(const rgb888& b) const
+    {
+        return (this->r == b.r & this->g == b.g & this->b == b.b);
+    };
 
-    bool operator!=(const rgb888& b) const;
+    bool operator!=(const rgb888& b) const
+    {
+        return (this->r != b.r && this->g != b.g && this->b != b.b);
+    };
 
-    bool operator<(const rgb888& b) const;
+    bool operator<(const rgb888& b) const
+    {
+        return this->r < b.r || this->g < b.g || this->b < b.b;
+    };
 
-    rgb888 operator-(const rgb888& b) const;
+    rgb888 operator-(const rgb888& b) const
+    {
+        return rgb888(r - b.r, g - b.g, this->b - b.b);
+    };
     /**
      * @brief blue - helper getter
      * @return at least 16bit int

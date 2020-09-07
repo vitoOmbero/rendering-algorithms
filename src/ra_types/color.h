@@ -12,7 +12,7 @@ namespace ra_types
  * @details Note that some colors are not properly named, but they are close to
  * originals. That color names have "B" or "_l" chars in names.
  */
-enum class color
+enum class eColor
 {
     No      = -1, ///< Invisible value
     Unnamed = 0,  ///< Unsupported value

@@ -3,9 +3,8 @@
 #include "algorithms_line_classic.h"
 #include "algorithms_lines_naive.h"
 
-inline void bubble_sort_by_y(ra_core::figures2d::point2d& p1,
-                             ra_core::figures2d::point2d& p2,
-                             ra_core::figures2d::point2d& p3)
+inline void bubble_sort_by_y(ra_types::point2i& p1, ra_types::point2i& p2,
+                             ra_types::point2i& p3)
 {
     if (p1.y > p2.y)
         std::swap(p1, p2);
@@ -16,9 +15,8 @@ inline void bubble_sort_by_y(ra_core::figures2d::point2d& p1,
 }
 
 ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping_phase01_sides(
-    ra_core::figures2d::point2d first, ra_core::figures2d::point2d second,
-    ra_core::figures2d::point2d third, ra_types::rgb888 color_code,
-    ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf)
+    ra_types::point2i first, ra_types::point2i second, ra_types::point2i third,
+    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
 {
     ra_types::n0_t counter = 0;
 
@@ -26,22 +24,20 @@ ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping_phase01_sides(
 
     ra_services::color_rgb::ColorMap cm;
 
-    color_code = cm.FindRgbCode(ra_services::color_rgb::color::Lime);
+    color_code = cm.FindRgbCode(ra_services::color_rgb::eColor::Lime);
     counter += line::bresenham_int_line(first, second, color_code, dotbuf);
     counter += line::bresenham_int_line(second, third, color_code, dotbuf);
 
-    color_code = cm.FindRgbCode(ra_services::color_rgb::color::Violet);
+    color_code = cm.FindRgbCode(ra_services::color_rgb::eColor::Violet);
     line::bresenham_int_line(third, first, color_code, dotbuf);
 
     return counter;
 }
 
 ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping_phase02_sides(
-    ra_core::figures2d::point2d first, ra_core::figures2d::point2d second,
-    ra_core::figures2d::point2d third, ra_types::rgb888 color_code,
-    ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf)
+    ra_types::point2i first, ra_types::point2i second, ra_types::point2i third,
+    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
 {
-    using namespace ra_core::figures2d;
 
     auto fillColor = color_code;
 
@@ -58,15 +54,15 @@ ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping_phase02_sides(
         float alpha          = (float)(y - first.y) / total_height;
         float beta           = (float)(y - first.y) / segment_height;
 
-        typedef ra_types::displacement2d vec2i;
+        typedef ra_types::displacement2i vec2i;
 
         vec2i A = make_displacement2d(first + (third - first) * alpha);
         vec2i B = make_displacement2d(first + (second - first) * beta);
 
-        color_code = cm.FindRgbCode(ra_services::color_rgb::color::Violet);
+        color_code = cm.FindRgbCode(ra_services::color_rgb::eColor::Violet);
         counter += line::naive_dot(A.x, y, color_code, dotbuf);
 
-        color_code = cm.FindRgbCode(ra_services::color_rgb::color::Lime);
+        color_code = cm.FindRgbCode(ra_services::color_rgb::eColor::Lime);
         counter += line::naive_dot(B.x, y, color_code, dotbuf);
     }
 
@@ -76,7 +72,7 @@ ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping_phase02_sides(
         float alpha          = (float)(y - first.y) / total_height;
         float beta           = (float)(y - second.y) / segment_height;
 
-        typedef ra_types::displacement2d vec2i;
+        typedef ra_types::displacement2i vec2i;
 
         vec2i A = make_displacement2d(first + (third - first) * alpha);
         vec2i B = make_displacement2d(second + (third - second) * beta);
@@ -90,11 +86,10 @@ ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping_phase02_sides(
 }
 
 ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping(
-    ra_core::figures2d::point2d first, ra_core::figures2d::point2d second,
-    ra_core::figures2d::point2d third, ra_types::rgb888 color_code,
-    ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf)
+    ra_types::point2i first, ra_types::point2i second, ra_types::point2i third,
+    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
 {
-    using namespace ra_core::figures2d;
+
     ra_types::n0_t counter = 0;
 
     bubble_sort_by_y(first, second, third);
@@ -112,7 +107,7 @@ ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping(
         float beta =
             (float)(i - (upper_half ? second.y - first.y : 0)) / segment_height;
 
-        typedef ra_types::displacement2d vec2i;
+        typedef ra_types::displacement2i vec2i;
 
         vec2i A = make_displacement2d(first + (third - first) * alpha);
         vec2i B = upper_half

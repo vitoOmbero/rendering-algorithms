@@ -24,6 +24,6 @@ void ExampleRunner::Run(ra_examples::ExamplePackBase& expack)
     {
         auto result = (*i.first)();
         auto name   = *i.second;
-        actualCanvas2dViewer.ViewResult(*result, name);
+        actualCanvas2dViewer.ViewResult(result, name);
     }
 }

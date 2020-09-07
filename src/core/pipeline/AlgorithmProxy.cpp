@@ -1,13 +1,14 @@
 #include <exception>
 
 #include "AlgorithmProxy.h"
+#include "algorithm_clipping_cohen_sutherland_int.h"
 #include "algorithm_filling_3v_line_sweeping.h"
 #include "algorithms_circle.h"
 #include "algorithms_filling_naive.h"
 #include "algorithms_line_classic.h"
 #include "algorithms_lines_naive.h"
 
-namespace ra_core::canvas2d
+namespace ra_core::pipeline
 {
 
 AlgorithmProxy::AlgorithmProxy()
@@ -25,31 +26,51 @@ AlgorithmProxy::AlgorithmProxy()
         ra_cir_map{ { rendering_algorithm::circle_bresenham_int,
                       ra_core::rendering2d::circuits::bresenham_int_circle } };
 
-    rendering_fill3_map = ra_fill3_map{
-        { rendering_algorithm::fill3_naive_horizontal,
+    fill3_map = ra_fill3_map{
+        { filling_algorithm::fill3_naive_horizontal,
           ra_core::rendering2d::filling::fill3_naive_hr },
-        { rendering_algorithm::fill3_line_sweeping_phase_01,
+        { filling_algorithm::fill3_line_sweeping_phase_01,
           ra_core::rendering2d::filling::fill3_line_sweeping_phase01_sides },
-        { rendering_algorithm::fill3_line_sweeping_phase_02,
+        { filling_algorithm::fill3_line_sweeping_phase_02,
           ra_core::rendering2d::filling::fill3_line_sweeping_phase02_sides },
-        { rendering_algorithm::fill3_line_sweeping,
+        { filling_algorithm::fill3_line_sweeping,
           ra_core::rendering2d::filling::fill3_line_sweeping }
     };
+
+    clip_map = ra_clip_map{
+        { clipping_algorithm::cohen_sutherland,
+          ra_core::rendering2d::clipping::clipping_cohen_sutherland_int }
+    };
+
+    setRenderingCircuitAlgorithm(
+        ra_core::figures2d::eFigure2dType::Dot,
+        ra_core::rendering2d::rendering_algorithm::dot_naive);
+
+    setRenderingCircuitAlgorithm(
+        ra_core::figures2d::eFigure2dType::Line,
+        ra_core::rendering2d::rendering_algorithm::line_bresenham_int);
+    setRenderingCircuitAlgorithm(
+        ra_core::figures2d::eFigure2dType::Circle,
+        ra_core::rendering2d::rendering_algorithm::circle_bresenham_int);
+
+    setFillingAlgorithm(
+        ra_core::figures2d::eFigure2dType::Triangle,
+        ra_core::rendering2d::filling_algorithm::fill3_line_sweeping);
 }
 
-ra_core::rendering2d::rendering_dot_fptr AlgorithmProxy::getRenderingDot() const
+ra_core::rendering2d::rendering_dot_fptr AlgorithmProxy::getRenderDot() const
 {
-    return renderingDot;
+    return renderDot;
 }
 
 ra_core::rendering2d::rendering_line_segment_fptr
-AlgorithmProxy::getRenderingLineSegment() const
+AlgorithmProxy::getRenderLineSegment() const
 {
-    return renderingLineSegment;
+    return renderLineSegment;
 }
 
 bool AlgorithmProxy::setFillingAlgorithm(
-    ra_core::figures2d::eFigure2dType figure2dType, rendering_algorithm ra)
+    ra_core::figures2d::eFigure2dType figure2dType, filling_algorithm ca)
 {
     switch (figure2dType)
     {
@@ -57,13 +78,13 @@ bool AlgorithmProxy::setFillingAlgorithm(
         {
             try
             {
-                renderingTriangleFilled = rendering_fill3_map[ra];
+                fillTriangle = fill3_map[ca];
                 return true;
             }
             catch (std::exception e)
             {
-                renderingTriangleFilled = rendering_fill3_map
-                    [rendering_algorithm::fill3_naive_horizontal];
+                fillTriangle =
+                    fill3_map[filling_algorithm::fill3_naive_horizontal];
                 return false;
             }
         };
@@ -81,13 +102,12 @@ bool AlgorithmProxy::setRenderingCircuitAlgorithm(
         {
             try
             {
-                renderingDot = rendering_dot_map[ra];
+                renderDot = rendering_dot_map[ra];
                 return true;
             }
             catch (std::exception e)
             {
-                renderingDot =
-                    rendering_dot_map[rendering_algorithm::dot_naive];
+                renderDot = rendering_dot_map[rendering_algorithm::dot_naive];
                 return false;
             }
         };
@@ -95,12 +115,12 @@ bool AlgorithmProxy::setRenderingCircuitAlgorithm(
         {
             try
             {
-                renderingLineSegment = rendering_line_segment_map[ra];
+                renderLineSegment = rendering_line_segment_map[ra];
                 return true;
             }
             catch (std::exception e)
             {
-                renderingLineSegment = rendering_line_segment_map
+                renderLineSegment = rendering_line_segment_map
                     [rendering_algorithm::line_naive_hor_vert_diag];
                 return false;
             }
@@ -109,12 +129,12 @@ bool AlgorithmProxy::setRenderingCircuitAlgorithm(
         {
             try
             {
-                renderingCircle = rendering_circle_map[ra];
+                renderCircle = rendering_circle_map[ra];
                 return true;
             }
             catch (std::exception e)
             {
-                renderingCircle = rendering_circle_map
+                renderCircle = rendering_circle_map
                     [rendering_algorithm::circle_bresenham_int];
                 return false;
             }
@@ -135,7 +155,7 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
                 function_ptr);
             if (IsValidRenderingAlgorithm())
             {
-                renderingDot = a;
+                renderDot = a;
                 return true;
             }
 
@@ -154,7 +174,7 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
                 function_ptr);
             if (IsValidRenderingAlgorithm())
             {
-                renderingLineSegment = a;
+                renderLineSegment = a;
                 return true;
             }
             else
@@ -172,7 +192,7 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
                     function_ptr);
             if (IsValidRenderingAlgorithm())
             {
-                renderingCircle = a;
+                renderCircle = a;
                 return true;
             }
             else
@@ -188,20 +208,42 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
     }
 }
 
+bool AlgorithmProxy::setClippingAlgorithm(clipping_algorithm ca)
+{
+    try
+    {
+        clipRectangular = clip_map[ca];
+        return true;
+    }
+    catch (std::exception e)
+    {
+        clipRectangular = clip_map[clipping_algorithm::cohen_sutherland];
+        return false;
+    }
+}
+
 bool AlgorithmProxy::IsValidRenderingAlgorithm()
 {
-    // TODO: add RenderingAlgorithmValidator (based on example running)
+    // TODO: public method & add RenderingAlgorithmValidator (based on pipeleine
+    // running)
     return true;
 }
 
-ra_core::rendering2d::rendering_triangle_filling_fptr
-AlgorithmProxy::getRenderingTriangleFilled() const
+ra_core::rendering2d::clipping_line_fptr AlgorithmProxy::getClipRectangular()
+    const
 {
-    return renderingTriangleFilled;
+    return clipRectangular;
 }
 
-ra_core::rendering2d::rendering_circle_fptr AlgorithmProxy::getRenderingCircle() const
+ra_core::rendering2d::filling_triangle_fptr AlgorithmProxy::getFillTriangle()
+    const
 {
-    return renderingCircle;
+    return fillTriangle;
+}
+
+ra_core::rendering2d::rendering_circle_fptr AlgorithmProxy::getRenderCircle()
+    const
+{
+    return renderCircle;
 }
 } // namespace ra_core::canvas2d

@@ -5,8 +5,7 @@
 #include <string>
 
 #include "Canvas2dViewerInterface.h"
-#include "GetString.h"
-#include "RectangularPixelBuffer.h"
+
 /**
  * @brief The TerminalCanvas2dViewer class prints some info about PixelBuffer
  * into stdout
@@ -17,7 +16,7 @@ public:
     TerminalCanvas2dViewer();
     ~TerminalCanvas2dViewer();
 
-    void ViewResult(const ra_core::canvas2d::RectangularPixelBuffer& pb,
+    void ViewResult(const ra_core::pipeline::Canvas2d& canvas,
                     const std::string_view description) const override;
 };
 

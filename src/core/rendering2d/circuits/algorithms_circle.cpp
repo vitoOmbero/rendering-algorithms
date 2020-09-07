@@ -1,13 +1,12 @@
 #include "algorithms_circle.h"
 
 ra_types::n0_t ra_core::rendering2d::circuits::bresenham_int_circle(
-    ra_core::figures2d::point2d center, ra_types::distance_t radius,
-    ra_types::rgb888                           color_code,
-    ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf)
+    ra_types::point2i center, ra_types::distance1ui_t radius,
+    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
 {
     ra_types::n0_t counter = 0;
     dotbuf.Paint(color_code);
-    typedef ra_types::displacement_t coord_t;
+    typedef ra_types::displacement1i_t coord_t;
 
     auto draw = [&dotbuf, &counter](coord_t x, coord_t y) {
         dotbuf.Mark({ x, y });

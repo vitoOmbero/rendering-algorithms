@@ -1,8 +1,8 @@
 #ifndef NAIVE_H
 #define NAIVE_H
 
-#include "Rectangular1dDotBuffer.h"
-#include "point2d.h"
+#include "RenderingTargetBase.h"
+#include "point2i.h"
 #include "rgb888.h"
 #include "typedefs.h"
 
@@ -17,9 +17,10 @@ namespace ra_core::rendering2d::line
  * applied
  * @return number of dots were rendered
  */
-ra_types::n0_t naive_dot(ra_types::displacement_t x, ra_types::displacement_t y,
-                         ra_types::rgb888                           color_code,
-                         ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf);
+ra_types::n0_t naive_dot(ra_types::displacement1i_t              x,
+                         ra_types::displacement1i_t              y,
+                         ra_types::rgb888                        color_code,
+                         ra_core::pipeline::RenderingTargetBase& dotbuf);
 
 /**
  * @brief naive_hv_line - naive rendering for line segments.
@@ -32,10 +33,9 @@ ra_types::n0_t naive_dot(ra_types::displacement_t x, ra_types::displacement_t y,
  * applied
  * @return number of dots were rendered
  */
-ra_types::n0_t naive_hv_line(ra_core::figures2d::point2d first,
-                             ra_core::figures2d::point2d second,
-                             ra_types::rgb888            color_code,
-                             ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf);
+ra_types::n0_t naive_hv_line(ra_types::point2i first, ra_types::point2i second,
+                             ra_types::rgb888                        color_code,
+                             ra_core::pipeline::RenderingTargetBase& dotbuf);
 
 } // namespace ra_core::rendering2d::line
 #endif // NAIVE_H

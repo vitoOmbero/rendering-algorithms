@@ -3,14 +3,14 @@
 
 #include <cmath>
 
-#include "point2d.h"
+#include "point2i.h"
 #include "typedefs.h"
 
 namespace ra_services::math2d
 {
 
-ra_types::distance_t calc_distance(ra_core::figures2d::point2d from,
-                                   ra_core::figures2d::point2d to)
+ra_types::distance1ui_t calc_distance(ra_types::point2i from,
+                                     ra_types::point2i to)
 {
     auto value = sqrt(pow((from.x - to.x), 2) + pow((from.y - to.y), 2));
     return value;

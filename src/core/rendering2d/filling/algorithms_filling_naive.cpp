@@ -7,19 +7,19 @@
 #include <utility>
 #include <vector>
 
-using namespace ra_types;
-using namespace ra_core::figures2d;
-
-typedef displacement_t coord_t;
+#include <cassert>
 
 // TODO: add doxygen friendly annotations for example of very bad realization
+
+typedef ra_types::displacement1i_t coord_t;
+using namespace ra_types;
 
 struct terriffying_naive_bad_filling_pack
 {
 
-    void line_positions(point2d p1, point2d p2,
-                        std::vector<point2d>& positions_output,
-                        n0_t&                 pixels_count_output)
+    void line_positions(ra_types::point2i p1, ra_types::point2i p2,
+                        std::vector<ra_types::point2i>& positions_output,
+                        ra_types::n0_t&                 pixels_count_output)
     {
         coord_t x1 = p1.x;
         coord_t y1 = p1.y;
@@ -102,11 +102,11 @@ struct terriffying_naive_bad_filling_pack
 
     struct borders
     {
-        std::vector<point2d> left_border;
-        std::vector<point2d> right_border;
+        std::vector<ra_types::point2i> left_border;
+        std::vector<ra_types::point2i> right_border;
     };
 
-    borders get_borders(std::vector<point2d>& v)
+    borders get_borders(std::vector<ra_types::point2i>& v)
     {
         v.shrink_to_fit();
         assert(v.size() == 3);
@@ -117,10 +117,10 @@ struct terriffying_naive_bad_filling_pack
         point2d min{ std::min({ v[0].x, v[1].x, v[2].x }),
                      std::min({ v[0].y, v[1].y, v[2].y }) };
 */
-        auto       LD = new std::vector<point2d>;
-        auto       RD = new std::vector<point2d>;
-        distance_t countL{ 0 };
-        distance_t countR{ 0 };
+        auto       LD = new std::vector<point2i>;
+        auto       RD = new std::vector<point2i>;
+        distance1ui_t countL{ 0 };
+        distance1ui_t countR{ 0 };
 
         // imagine all possible triangles with 3 verteces
         // & collect info about left and right sides
@@ -206,15 +206,15 @@ struct terriffying_naive_bad_filling_pack
         line_positions(v[2], v[0], *RD, countR);
 
         auto distinct_and_sort_by_y_coord =
-            [&](std::vector<point2d>* bigger_side) {
+            [&](std::vector<point2i>* bigger_side) {
                 auto iter = std::unique(
                     bigger_side->begin(), bigger_side->end(),
-                    [](point2d a, point2d b) -> bool { return a.y == b.y; });
+                    [](point2i a, point2i b) -> bool { return a.y == b.y; });
                 bigger_side->erase(iter, bigger_side->end());
                 bigger_side->shrink_to_fit();
                 std::sort(
                     bigger_side->begin(), bigger_side->end(),
-                    [](point2d a, point2d b) -> bool { return a.y < b.y; });
+                    [](point2i a, point2i b) -> bool { return a.y < b.y; });
             };
 
         distinct_and_sort_by_y_coord(RD); // just for sure
@@ -228,13 +228,12 @@ static terriffying_naive_bad_filling_pack
     gebr; ///< good example of bad realization
 
 ra_types::n0_t ra_core::rendering2d::filling::fill3_naive_hr(
-    ra_core::figures2d::point2d first, ra_core::figures2d::point2d second,
-    ra_core::figures2d::point2d third, ra_types::rgb888 color_code,
-    ra_core::canvas2d::Rectangular1dDotBuffer& dotbuf)
+    ra_types::point2i first, ra_types::point2i second, ra_types::point2i third,
+    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
 {
     n0_t counter = 0;
 
-    std::vector<point2d> v{ first, second, third };
+    std::vector<point2i> v{ first, second, third };
     auto                 borders = gebr.get_borders(v);
 
     auto LD = &borders.left_border;  // now read as larger
@@ -246,8 +245,8 @@ ra_types::n0_t ra_core::rendering2d::filling::fill3_naive_hr(
     // filling horizontal line by line
     for (ulong i = 0; i < count - 1; ++i)
     {
-        point2d larger = LD->at(i);
-        point2d lesser = RD->at(i);
+        point2i larger = LD->at(i);
+        point2i lesser = RD->at(i);
         // line we need
         if (larger.y == lesser.y)
             for (int j = lesser.x; j < larger.x; ++j)

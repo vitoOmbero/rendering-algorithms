@@ -13,10 +13,10 @@ class DrawableInterface
 {
 public:
     virtual ~DrawableInterface() {}
-    virtual displacement_t getMaxX() const = 0;
-    virtual displacement_t getMaxY() const = 0;
-    virtual displacement_t getMinX() const = 0;
-    virtual displacement_t getMinY() const = 0;
+    virtual displacement1i_t getMaxX() const = 0;
+    virtual displacement1i_t getMaxY() const = 0;
+    virtual displacement1i_t getMinX() const = 0;
+    virtual displacement1i_t getMinY() const = 0;
 
     virtual const rgb888& GetColorCode() const     = 0;
     virtual void          setColorCode(rgb888 rgb) = 0;

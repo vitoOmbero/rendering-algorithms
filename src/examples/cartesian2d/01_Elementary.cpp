@@ -8,75 +8,78 @@
 #include "Circle.h"
 #include "ColorMap.h"
 #include "Dot.h"
+#include "LineSegment.h"
+#include "Triangle.h"
 #include "examples_types.h"
-#include "typedefs.h"
+#include "ra_types.h"
+#include "renderer.h"
 
-std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer> example_draw_dot()
+ra_core::pipeline::Canvas2d dots()
 {
-    ra_services::color_rgb::ColorMap cm;
+    ra_core::renderer::Init();
+    using namespace ra_core;
+    using namespace ra_types;
+    auto              cm = renderer::getColorMap();
+    figures2d::border border;
 
-    ra_core::canvas2d::Canvas2d canvas; // TODO: forbid deafult ctor
+    figures2d::Dot   dot(0, 0, border);
+    auto             col1 = cm.FindRgbCode(eColor::White);
+    ra_types::rgb888 col2{ 111, 111, 111 };
 
-    ra_core::figures2d::border border;
+    auto width  = renderer::CANVAS_WIDTH_DT;
+    auto height = renderer::CANVAS_HEIGHT_DT;
 
-    ra_core::figures2d::Dot dot(100, 100, border);
+    int step = 50;
 
-    dot.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::White));
-    dot.setColorCode({ 111, 111, 111 });
+    auto switchDotColor = [&dot, col1, col2]() {
+        static bool bstate = false;
+        bstate             = !bstate;
+        if (bstate)
+            dot.setColorCode(col1);
+        else
+            dot.setColorCode(col2);
+    };
 
-    canvas.Draw(dot);
+    for (ra_types::n0_t y = 0; y <= height; y += step)
+    {
+        dot.setY(y);
+        switchDotColor();
+        for (ra_types::n0_t x = 0; x <= width; x += step)
+        {
+            dot.setX(x);
+            renderer::Draw(dot);
+        }
+    }
 
-    return canvas.getPixelBuffer();
+    return renderer::getCanvas();
 }
 
-std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
-example_draw_line_of_dots()
+ra_core::pipeline::Canvas2d line_of_dots()
 {
-    ra_services::color_rgb::ColorMap cm;
-    ra_core::canvas2d::Canvas2d      canvas;
-    ra_core::figures2d::border       border;
+    ra_core::renderer::Init();
+    using namespace ra_core;
+    using namespace ra_types;
+    auto              cm = renderer::getColorMap();
+    figures2d::border border;
 
     ra_core::figures2d::Dot dot(150, 150, border);
 
-    dot.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Green));
+    dot.setColorCode(cm.FindRgbCode(ra_services::color_rgb::eColor::Green));
 
-    for (int i = 0; i < 100; ++i)
+    for (int i = 0; i < 200; ++i)
     {
         dot.setX(150 + i);
-        canvas.Draw(dot);
+        renderer::Draw(dot);
     }
 
-    return canvas.getPixelBuffer();
-}
-
-std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
-example_draw_lines_naive()
-{
-    ra_services::color_rgb::ColorMap cm;
-    ra_core::canvas2d::Canvas2d      canvas;
-    ra_core::figures2d::border       border;
-
-    canvas.UseLineAlgorithm(ra_core::canvas2d::AlgorithmProxy::
-                                rendering_algorithm::line_naive_hor_vert_diag);
-
-    ra_core::figures2d::LineSegment diag_line({ 300, 300 }, { 400, 400 },
-                                              border);
-    diag_line.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Blue));
-    canvas.Draw(diag_line);
-
-    ra_core::figures2d::LineSegment cust_line({ 0, 0 }, { 47, 285 }, border);
-    cust_line.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Red));
-    canvas.Draw(cust_line);
-
-    return canvas.getPixelBuffer();
+    return renderer::getCanvas();
 }
 
 void draw_star_and_cross_lines(const ra_services::color_rgb::ColorMap cm,
-                               const ra_core::canvas2d::Canvas2d&     canvas,
                                const ra_core::figures2d::border&      border)
 {
     typedef ra_core::figures2d::LineSegment ls;
-    typedef ra_services::color_rgb::color   col;
+    typedef ra_services::color_rgb::eColor   col;
 
     auto Red           = cm.FindRgbCode(col::Red);
     auto Yellow        = cm.FindRgbCode(col::Yellow);
@@ -93,163 +96,201 @@ void draw_star_and_cross_lines(const ra_services::color_rgb::ColorMap cm,
     auto Cyan          = cm.FindRgbCode(col::Cyan);
     auto Teal          = cm.FindRgbCode(col::Teal);
 
-    ls lin1({ 87, 87 }, { 177, 177 }, border);
+    auto w = 799;
+    auto h = 599;
+    auto x = 399;
+    auto y = 299;
+    auto d = 100;
+
+    ls lin1({ x, y }, { x + d, y + d }, border);
     lin1.setColorCode(Red);
-    canvas.Draw(lin1);
+    ra_core::renderer::Draw(lin1);
 
-    ls lin3({ 87, 87 }, { 177, 87 }, border);
+    ls lin3({ x, y }, { w, y }, border);
     lin1.setColorCode(Yellow);
-    canvas.Draw(lin3);
+    ra_core::renderer::Draw(lin3);
 
-    ls lin6({ 87, 87 }, { 177, 27 }, border);
+    ls lin6({ x, y }, { x + d, y - d }, border);
     lin6.setColorCode(Indigo);
-    canvas.Draw(lin6);
+    ra_core::renderer::Draw(lin6);
 
-    ls lin2({ 87, 87 }, { 87, 177 }, border);
+    ls lin2({ x, y }, { x, y + d }, border);
     lin2.setColorCode(Orange);
-    canvas.Draw(lin2);
+    ra_core::renderer::Draw(lin2);
 
-    ls lin5({ 87, 87 }, { 87, 27 }, border);
+    ls lin5({ x, y }, { x, y - d }, border);
     lin5.setColorCode(Blue);
-    canvas.Draw(lin5);
+    ra_core::renderer::Draw(lin5);
 
-    ls lin7({ 87, 87 }, { 27, 177 }, border);
+    ls lin7({ x, y }, { x - d, y + d }, border);
     lin7.setColorCode(Purple);
-    canvas.Draw(lin7);
+    ra_core::renderer::Draw(lin7);
 
-    ls lin4({ 87, 87 }, { 27, 87 }, border);
+    ls lin4({ x, y }, { x - d, y }, border);
     lin4.setColorCode(Green);
-    canvas.Draw(lin4);
+    ra_core::renderer::Draw(lin4);
 
-    ls lin8({ 87, 87 }, { 27, 27 }, border);
+    ls lin8({ x, y }, { x - d, y - d }, border);
     lin8.setColorCode(Gray);
-    canvas.Draw(lin8);
+    ra_core::renderer::Draw(lin8);
 
-    ls lin({ 87, 87 }, { 87, 87 }, border);
+    ls lin({ x, y }, { x, y }, border);
     lin.setColorCode(Cyan);
-    canvas.Draw(lin);
+    ra_core::renderer::Draw(lin);
 
-    ls lin9({ 0, 0 }, { 190, 13 }, border);
+    ls lin9({ 0, 0 }, { 190, 150 }, border);
     lin9.setColorCode(Black);
-    canvas.Draw(lin9);
+    ra_core::renderer::Draw(lin9);
 
-    ls lin10({ 190, 14 }, { 0, 1 }, border);
+    ls lin10({ 190, 151 }, { 0, 1 }, border);
     lin10.setColorCode(Orange);
-    canvas.Draw(lin10);
+    ra_core::renderer::Draw(lin10);
 
-    ls lin11({ 0, 13 }, { 190, 0 }, border);
+    ls lin11({ 0, 150 }, { 190, 0 }, border);
     lin11.setColorCode(Green_springB);
-    canvas.Draw(lin11);
+    ra_core::renderer::Draw(lin11);
 
-    ls lin12({ 190, 1 }, { 0, 14 }, border);
+    ls lin12({ 190, 1 }, { 0, 151 }, border);
     lin12.setColorCode(Khaki1_l);
-    canvas.Draw(lin12);
+    ra_core::renderer::Draw(lin12);
 
-    ls lin13({ 0, 0 }, { 13, 190 }, border);
+    ls lin13({ 0, 0 }, { 150, h }, border);
     lin13.setColorCode(Lime);
-    canvas.Draw(lin13);
+    ra_core::renderer::Draw(lin13);
 
-    ls lin14({ 14, 190 }, { 1, 0 }, border);
+    ls lin14({ 151, h }, { 1, 0 }, border);
     lin14.setColorCode(Red);
-    canvas.Draw(lin14);
+    ra_core::renderer::Draw(lin14);
 
-    ls lin15({ 13, 0 }, { 0, 190 }, border);
+    ls lin15({ 150, 0 }, { 0, h }, border);
     lin15.setColorCode(Cyan);
-    canvas.Draw(lin15);
+    ra_core::renderer::Draw(lin15);
 
-    ls lin16({ 1, 190 }, { 14, 0 }, border);
+    ls lin16({ 1, h }, { 151, 0 }, border);
     lin16.setColorCode(Teal);
-    canvas.Draw(lin16);
+    ra_core::renderer::Draw(lin16);
 }
 
-std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
-example_draw_lines_bresenham_int()
+ra_core::pipeline::Canvas2d naive_line_algo()
 {
-    ra_services::color_rgb::ColorMap cm;
-    ra_core::canvas2d::Canvas2d      canvas;
-    ra_core::figures2d::border       border;
+    ra_core::renderer::Init();
+    using namespace ra_core::figures2d;
+    using namespace ra_core::pipeline;
+    using namespace ra_core;
+    using namespace ra_types;
+    auto              cm = renderer::getColorMap();
+    figures2d::border border;
 
-    canvas.UseLineAlgorithm(ra_core::canvas2d::AlgorithmProxy::
-                                rendering_algorithm::line_bresenham_int);
-    draw_star_and_cross_lines(cm, canvas, border);
+    renderer::UseLineAlgorithm(rendering_algorithm::line_naive_hor_vert_diag);
 
-    return canvas.getPixelBuffer();
+    draw_star_and_cross_lines(cm, border);
+
+    return ra_core::renderer::getCanvas();
 }
 
-std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
-example_draw_lines_bresenham_defect()
+ra_core::pipeline::Canvas2d bresenham_int_line()
 {
-    ra_services::color_rgb::ColorMap cm;
-    ra_core::canvas2d::Canvas2d      canvas;
-    ra_core::figures2d::border       border;
+    ra_core::renderer::Init();
+    using namespace ra_core::figures2d;
+    using namespace ra_core::pipeline;
+    using namespace ra_core;
+    using namespace ra_types;
+    auto              cm = renderer::getColorMap();
+    figures2d::border border;
 
-    canvas.UseLineAlgorithm(ra_core::canvas2d::AlgorithmProxy::
-                                rendering_algorithm::line_bresenham_defect);
-    draw_star_and_cross_lines(cm, canvas, border);
+    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
 
-    return canvas.getPixelBuffer();
+    draw_star_and_cross_lines(cm, border);
+
+    return ra_core::renderer::getCanvas();
 }
 
-std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
-example_draw_circles_bresenham()
+ra_core::pipeline::Canvas2d bresenham_defect_line()
 {
-    ra_services::color_rgb::ColorMap cm;
-    ra_core::canvas2d::Canvas2d      canvas;
-    ra_core::figures2d::border       border;
+    ra_core::renderer::Init();
+    using namespace ra_core::figures2d;
+    using namespace ra_core::pipeline;
+    using namespace ra_core;
+    using namespace ra_types;
+    auto              cm = renderer::getColorMap();
+    figures2d::border border;
 
-    canvas.UseCircleAlgorithm(ra_core::canvas2d::AlgorithmProxy::
-                                  rendering_algorithm::circle_bresenham_int);
+    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_defect);
 
-    ra_types::displacement_t x = 400;
-    ra_types::displacement_t y = 300;
+    draw_star_and_cross_lines(cm, border);
 
-    ra_core::figures2d::Circle c({ x, y }, 150, border);
-    c.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Purple_blue));
+    return ra_core::renderer::getCanvas();
+}
 
-    canvas.Draw(c);
+ra_core::pipeline::Canvas2d bresenham_circles()
+{
+    ra_core::renderer::Init();
+    using namespace ra_core::figures2d;
+    using namespace ra_core::pipeline;
+    using namespace ra_core;
+    using namespace ra_types;
+    auto              cm = renderer::getColorMap();
+    figures2d::border border;
+
+    renderer::UseCircleAlgorithm(rendering_algorithm::circle_bresenham_int);
+
+    displacement1i_t x = 400;
+    displacement1i_t y = 300;
+
+    Circle c({ x, y }, 150, border);
+    c.setColorCode(cm.FindRgbCode(eColor::Purple_blue));
+
+    ra_core::renderer::Draw(c);
 
     c.setCenter({ x - 50, y });
-    canvas.Draw(c);
+    renderer::Draw(c);
     c.setCenter({ x + 50, y });
-    canvas.Draw(c);
+    renderer::Draw(c);
     c.setCenter({ x, y - 50 });
-    canvas.Draw(c);
+    renderer::Draw(c);
     c.setCenter({ x, y + 50 });
-    canvas.Draw(c);
+    renderer::Draw(c);
     c.setCenter({ x + 50, y - 50 });
-    canvas.Draw(c);
+    renderer::Draw(c);
     c.setCenter({ x + 50, y + 50 });
-    canvas.Draw(c);
+    renderer::Draw(c);
     c.setCenter({ x - 50, y - 50 });
-    canvas.Draw(c);
+    renderer::Draw(c);
     c.setCenter({ x - 50, y + 50 });
-    canvas.Draw(c);
+    renderer::Draw(c);
 
-    return canvas.getPixelBuffer();
+    return renderer::getCanvas();
 }
 
-std::unique_ptr<ra_core::canvas2d::RectangularPixelBuffer>
-example_draw_triangles()
+ra_core::pipeline::Canvas2d triangles()
 {
-    ra_services::color_rgb::ColorMap cm;
-    ra_core::canvas2d::Canvas2d      canvas;
-    ra_core::figures2d::border       border;
+    ra_core::renderer::Init();
+    using namespace ra_core::figures2d;
+    using namespace ra_core::pipeline;
+    using namespace ra_core;
+    using namespace ra_types;
+    auto              cm = renderer::getColorMap();
+    figures2d::border border;
 
-    canvas.UseLineAlgorithm(ra_core::canvas2d::AlgorithmProxy::
-                                rendering_algorithm::line_bresenham_int);
+    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
 
-    ra_core::figures2d::Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 },
-                                    border);
-    tr.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Orange));
+    Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 }, border);
+    tr.setColorCode(cm.FindRgbCode(eColor::Red));
 
-    canvas.Draw(tr);
+    renderer::Draw(tr);
+
     tr.setP1({ 100, 100 });
     tr.setP2({ 50, 350 });
     tr.setP3({ 15, 400 });
-    tr.setColorCode(cm.FindRgbCode(ra_services::color_rgb::color::Teal));
-    canvas.Draw(tr);
+    tr.setColorCode(cm.FindRgbCode(eColor::Teal));
+    renderer::Draw(tr);
 
-    return canvas.getPixelBuffer();
+    tr.setP1({ 0, 0 });
+    tr.setP2({ 799, 599 });
+    tr.setP3({ 199, 299 });
+    renderer::Draw(tr);
+
+    return renderer::getCanvas();
 }
 
 namespace ra_examples::cartesian2d
@@ -257,16 +298,14 @@ namespace ra_examples::cartesian2d
 
 Elementary::Elementary()
 {
-    AddExample(example_draw_dot, "example_draw_dot");
-    // AddExample(example_draw_line_of_dots, "example_draw_line_of_dots");
-    AddExample(example_draw_lines_naive, "example_draw_lines_naive");
-    AddExample(example_draw_lines_bresenham_int,
-               "example_draw_lines_bresenham_int");
-    AddExample(example_draw_lines_bresenham_defect,
-               "example_draw_lines_bresenham_defect");
-    AddExample(example_draw_circles_bresenham,
-               "example_draw_circles_bresenham");
-    AddExample(example_draw_triangles, "example_draw_triangles");
+    name = "01_elementary";
+    AddExample(dots, "dots");
+    AddExample(line_of_dots, "line_of_dots");
+    AddExample(naive_line_algo, "naive_line_algo");
+    AddExample(bresenham_defect_line, "bresenham_defect_line");
+    AddExample(bresenham_int_line, "bresenham_int_line");
+    AddExample(bresenham_circles, "bresenham_circles");
+    AddExample(triangles, "triangles");
 }
 
 } // namespace ra_examples::cartesian2d

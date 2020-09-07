@@ -5,7 +5,8 @@ namespace ra_examples
 
 ExamplePackBase::ExamplePackBase()
     : examples{ new std::vector<canvas2d_example_ft>() }
-    , names{ new std::vector<std::string_view>() }
+    , names{ new std::vector<std::string>() }
+    , oss{ new std::ostringstream() }
 {
 }
 
@@ -13,6 +14,7 @@ ExamplePackBase::~ExamplePackBase()
 {
     delete examples;
     delete names;
+    delete oss;
 }
 
 ExamplePackBase::nameCIterator ExamplePackBase::GetNamesCEnd() const
@@ -20,13 +22,32 @@ ExamplePackBase::nameCIterator ExamplePackBase::GetNamesCEnd() const
     return names->cend();
 }
 
-void ExamplePackBase::AddExample(canvas2d_example_ft example_func_ptr,
-                                 std::string_view    example_description) const
+std::string ExamplePackBase::getName() const
 {
-    // TODO: provide function name with compiler detection for every example
-    // with macros?
+    return name;
+}
+
+// TODO: provide function name with preprocessor macros ADD + __func__?
+void ExamplePackBase::AddExample(canvas2d_example_ft example_func_ptr,
+                                 std::string         example_description) const
+{
+    static unsigned int counter = 1;
     examples->push_back(example_func_ptr);
-    names->push_back(example_description);
+    *oss << "example_";
+    *oss << getName();
+    *oss << "_";
+    if (counter < 10)
+        *oss << "0";
+    *oss << counter;
+    *oss << "__";
+    *oss << example_description;
+
+    std::string fullname = oss->str();
+
+    names->push_back(fullname);
+
+    oss->str(std::string());
+    ++counter;
 }
 
 ExamplePackBase::exampleCIterator ExamplePackBase::GetExamplesCBegin() const
