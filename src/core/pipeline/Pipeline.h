@@ -14,6 +14,7 @@
 #include "Circle.h"
 #include "Dot.h"
 #include "LineSegment.h"
+#include "Quadrangle.h"
 #include "Triangle.h"
 
 namespace ra_core::pipeline
@@ -56,6 +57,17 @@ public:
      * @param tr
      */
     void DrawShape(const ra_core::figures2d::Triangle& tr);
+
+    /**
+     * @brief DrawCircuit using world coordinate system
+     * @param tr
+     */
+    void DrawCircuit(const ra_core::figures2d::Quadrangle& tr);
+    /**
+     * @brief DrawShape using world coordinate system
+     * @param tr
+     */
+    void DrawShape(const ra_core::figures2d::Quadrangle& tr);
 
     /**
      * @brief IsVisible - visability check with clipping in canvas coordinate

@@ -16,6 +16,8 @@ public:
     void VisitLine(const ra_core::figures2d::LineSegment* ls) const override;
     void VisitCircle(const ra_core::figures2d::Circle* c) const override;
     void VisitTriangle(const ra_core::figures2d::Triangle* tr) const override;
+    void VisitQuadrangle(
+        const ra_core::figures2d::Quadrangle* tr) const override;
 
 private:
     Pipeline& pipeline;

@@ -6,6 +6,7 @@
 #include "DEFAULT_PIPELINE_VALUES.h"
 #include "DrawableInterface.h"
 #include "DrawingMode.h"
+#include "MatrixCalculatorSimple.h"
 #include "PipelineTargets.h"
 #include "algorithms_registry.h"
 
@@ -32,6 +33,14 @@ void Destroy();
  * @return reference to color name conversion service
  */
 const ra_services::color_rgb::ColorMap& getColorMap();
+
+/**
+ * @brief getMatrixCalculatorSimple
+ * @return reference to stateful matrix calculation service
+ */
+ra_services::geometric_transformations_in_homogeneous_coordinates::
+    MatrixCalculatorSimple&
+    getMatrixCalculatorSimple();
 
 /**
  * @brief Draw - try to draw supported object

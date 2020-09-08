@@ -18,6 +18,8 @@ bool IsInitialized = false;
 #include "INIT_GUARD_MACRO.inc"
 
 static const ra_services::color_rgb::ColorMap              cm;
+static ra_services::geometric_transformations_in_homogeneous_coordinates::
+    MatrixCalculatorSimple                                 mcx;
 static ra_core::pipeline::AlgorithmProxy                   raproxy;
 
 ra_core::pipeline::Pipeline*                        pipeline_ptr;
@@ -155,6 +157,13 @@ void UseNoClippingWindow()
         clipwin_ptr = nullptr;
         pipeline_ptr->setClipwin_ptr(nullptr);
     }
+}
+
+ra_services::geometric_transformations_in_homogeneous_coordinates::
+    MatrixCalculatorSimple&
+    getMatrixCalculatorSimple()
+{
+    return mcx;
 }
 
 } // namespace ra_core::renderer

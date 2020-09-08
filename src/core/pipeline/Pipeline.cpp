@@ -266,6 +266,61 @@ void Pipeline::DrawShape(const figures2d::Triangle& tr)
     dotbuf.UpdateDotsNumber(dotsdrawn);
 }
 
+void Pipeline::DrawCircuit(const figures2d::Quadrangle& qd)
+{
+    std::cout << "Draw Quadrangle " << ra_types::GetString(qd.getP1(), true)
+              << "-" << ra_types::GetString(qd.getP2(), true) << "-"
+              << ra_types::GetString(qd.getP3(), true) << "-"
+              << ra_types::GetString(qd.getP4(), true) << "with rgb "
+              << GetString(qd.GetColorCode()) << std::endl;
+
+    auto p1 = qd.getP1();
+    auto p2 = qd.getP2();
+    auto p3 = qd.getP3();
+    auto p4 = qd.getP4();
+
+    spaceCoordTransRef.TranslateWorldToCanvas(p1);
+    spaceCoordTransRef.TranslateWorldToCanvas(p2);
+    spaceCoordTransRef.TranslateWorldToCanvas(p3);
+    spaceCoordTransRef.TranslateWorldToCanvas(p4);
+
+    if (!IsVisible(qd.getMaxX(), qd.getMaxY()) ||
+        !IsVisible(qd.getMinX(), qd.getMinY()))
+
+    {
+        std::cout << "Clipping is applied." << std::endl;
+        std::cout << "Cliping for Quadrangle Circuit is not implemented! <<<"
+                  << std::endl;
+    }
+
+    // NOTE: actually can be 8 vertices, todo Polygon_partition
+    IsVisibleLineSegment(p1, p2);
+    IsVisibleLineSegment(p2, p3);
+    IsVisibleLineSegment(p3, p4);
+    IsVisibleLineSegment(p4, p1);
+
+    ra_types::point2i P1{ TranslateToRenderingTarget(p1).point2i };
+    ra_types::point2i P2{ TranslateToRenderingTarget(p2).point2i };
+    ra_types::point2i P3{ TranslateToRenderingTarget(p3).point2i };
+    ra_types::point2i P4{ TranslateToRenderingTarget(p4).point2i };
+
+    auto ra_ls_func = raproxyRef.getRenderLineSegment();
+
+    auto dotsdrawn = ra_ls_func(P1, P2, qd.GetColorCode(), dotbuf);
+    dotsdrawn += ra_ls_func(P2, P3, qd.GetColorCode(), dotbuf);
+    dotsdrawn += ra_ls_func(P3, P4, qd.GetColorCode(), dotbuf);
+    dotsdrawn += ra_ls_func(P4, P1, qd.GetColorCode(), dotbuf);
+
+    dotbuf.UpdateDotsNumber(dotsdrawn);
+}
+
+void Pipeline::DrawShape(const figures2d::Quadrangle& tr)
+{
+    DrawCircuit(tr);
+    std::cout << ">>>  Draw Quadrangle Shape is not implemented! <<<"
+              << std::endl;
+}
+
 ra_core::pipeline::Canvas2d ra_core::pipeline::Pipeline::ExportCanvas()
 {
     if (exportTarget == pipeline::eTarget::PixelBuffer)

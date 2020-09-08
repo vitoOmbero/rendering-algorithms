@@ -35,7 +35,6 @@ typedef std::uint32_t n0_t;
  * @brief n1_t natural numbers
  */
 typedef std::uint32_t n1_t;
-
 } // namespace ra_types
 
 #endif // TYPEDEFS_H

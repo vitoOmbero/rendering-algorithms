@@ -30,4 +30,9 @@ void DrawShape2dVisitor::VisitTriangle(const figures2d::Triangle* tr) const
     pipeline.DrawShape(*tr);
 }
 
+void DrawShape2dVisitor::VisitQuadrangle(const figures2d::Quadrangle* tr) const
+{
+    pipeline.DrawShape(*tr);
+}
+
 } // namespace ra_core::canvas2d

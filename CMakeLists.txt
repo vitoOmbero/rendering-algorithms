@@ -53,6 +53,7 @@ set(EXAMPLES_SRC
     src/examples/cartesian2d/01_Elementary.cpp
     src/examples/cartesian2d/02_Shapes.cpp
     src/examples/cartesian2d/03_Clipping.cpp
+    src/examples/cartesian2d/04_Transitions.cpp
     )
 
 set(CANVAS2DVIEWERS_DIR src/canvas2dViewers)
@@ -87,6 +88,7 @@ set(CORE_SRC
     src/core/figures2d/circuits/LineSegment.cpp
     src/core/figures2d/circuits/Circle.cpp
     src/core/figures2d/circuits/Triangle.cpp
+    src/core/figures2d/circuits/Quadrangle.cpp
     src/core/rendering2d/line/algorithms_lines_naive.cpp
     src/core/rendering2d/line/algorithms_line_classic.cpp
     src/core/rendering2d/circuits/algorithms_circle.cpp
@@ -114,6 +116,7 @@ set(RASERVICES_DIRS
 
 set(RASERVCIES_SRC
     src/ra_services/color_rgb/ColorMap.cpp
+    src/ra_services/geo_trans_homogen_coord/MatrixCalculatorSimple.cpp
     )
 
 

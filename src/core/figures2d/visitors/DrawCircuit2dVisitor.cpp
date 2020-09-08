@@ -31,4 +31,10 @@ void DrawCircuit2dVisitor::VisitTriangle(const figures2d::Triangle* tr) const
     pipeline.DrawCircuit(*tr);
 }
 
+void DrawCircuit2dVisitor::VisitQuadrangle(
+    const figures2d::Quadrangle* tr) const
+{
+    pipeline.DrawCircuit(*tr);
+}
+
 } // namespace ra_core::canvas2d
