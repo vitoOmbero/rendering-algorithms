@@ -22,10 +22,10 @@ ra_core::figures2d::LineSegment MatrixCalculatorSimple::Move(
     ra_core::figures2d::LineSegment ls, ra_types::displacement1i_t dx,
     ra_types::displacement1i_t dy) const
 {
-    vec2h<ra_types::displacement1i_t> v1(
-        make_displacement2d(ls.getFirstPoint()));
-    vec2h<ra_types::displacement1i_t> v2(
-        make_displacement2d(ls.getSecondPoint()));
+    vec2h<ra_types::displacement1i_t> v1(ls.getFirstPoint().x,
+                                         ls.getFirstPoint().y);
+    vec2h<ra_types::displacement1i_t> v2(ls.getSecondPoint().x,
+                                         ls.getSecondPoint().y);
 
     auto v1m = MakeMoveMatrix<displacement1i_t>(dx, dy) * v1;
     auto v2m = MakeMoveMatrix<displacement1i_t>(dx, dy) * v2;
@@ -39,7 +39,7 @@ ra_core::figures2d::Circle MatrixCalculatorSimple::Move(
     ra_core::figures2d::Circle cr, displacement1i_t dx,
     displacement1i_t dy) const
 {
-    vec2h<ra_types::displacement1i_t> v1(make_displacement2d(cr.getCenter()));
+    vec2h<ra_types::displacement1i_t> v1(cr.getCenter().x, cr.getCenter().y);
 
     auto v1m = MakeMoveMatrix<displacement1i_t>(dx, dy) * v1;
 
@@ -47,12 +47,4 @@ ra_core::figures2d::Circle MatrixCalculatorSimple::Move(
     return cr;
 }
 
-/*
-ra_core::figures2d::LineSegment MatrixCalculatorSimple::Stretch(
-    ra_core::figures2d::LineSegment ls, float xCoef, float yCoef) const
-{
-
-    auto vecline = calc_distance(ls.getFirstPoint(), ls.getSecondPoint());
-}
-*/
 } // namespace ra_services::geometric_transformations_in_homogeneous_coordinates

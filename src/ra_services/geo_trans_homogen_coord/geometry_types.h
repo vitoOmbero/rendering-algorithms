@@ -1,6 +1,8 @@
 #ifndef GEOMETRY_TYPES_H
 #define GEOMETRY_TYPES_H
 
+#include <cmath>
+
 #include "ra_types.h"
 
 // geometric transformations in homogeneous coordinates
@@ -24,6 +26,9 @@ struct vec2
 
     vec2(const T arr[2])
         : col1{ arr[0], arr[1] } {};
+
+    vec2(T val0, T val1)
+        : col1{ val0, val1 } {};
 };
 
 template <typename T>
@@ -36,6 +41,9 @@ struct vec2h
 
     vec2h(const T arr[3])
         : col1{ arr[0], arr[1], arr[2] } {};
+
+    vec2h(T val0, T val1)
+        : col1{ val0, val1, T(1) } {};
 };
 
 template <typename T>
@@ -61,8 +69,8 @@ struct mat2x2
         , col2{ T(), T(1) } {};
 
     mat2x2(T arr1[], T arr2[])
-        : col1{ arr1 }
-        , col2{ arr2 } {};
+        : col1{ arr1[0], arr1[1] }
+        , col2{ arr2[0], arr2[1] } {};
 };
 
 template <typename T>
@@ -78,9 +86,9 @@ struct mat2x2h
         , col3{ T(), T(), T(1) } {};
 
     mat2x2h(T arr1[], T arr2[], T arr3[])
-        : col1{ arr1 }
-        , col2{ arr2 }
-        , col3{ arr3 } {};
+        : col1{ arr1[0], arr1[1], arr1[2] }
+        , col2{ arr2[0], arr2[1], arr2[2] }
+        , col3{ arr3[0], arr3[1], arr3[2] } {};
 
     /**
      * @brief operator *
@@ -110,26 +118,26 @@ struct mat2x2h
      */
     mat2x2h<T> operator*(const mat2x2h<T> m) const
     {
-        return mat2x2h<T>{
-            { this->col1[0] * m.col1[0] + this->col2[0] * m.col1[1] +
-                  this->col3[0] * m.col1[2],
-              this->col1[0] * m.col2[0] + this->col2[0] * m.col2[1] +
-                  this->col3[0] * m.col2[2],
-              this->col1[0] * m.col3[0] + this->col2[0] * m.col3[1] +
-                  this->col3[0] * m.col3[2] },
-            { this->col1[1] * m.col1[0] + this->col2[1] * m.col1[1] +
-                  this->col3[1] * m.col1[2],
-              this->col1[1] * m.col2[0] + this->col2[1] * m.col2[1] +
-                  this->col3[1] * m.col2[2],
-              this->col1[1] * m.col3[0] + this->col2[1] * m.col3[1] +
-                  this->col3[1] * m.col3[2] },
-            { this->col1[2] * m.col1[0] + this->col2[2] * m.col1[1] +
-                  this->col3[2] * m.col1[2],
-              this->col1[2] * m.col2[0] + this->col2[2] * m.col2[1] +
-                  this->col3[2] * m.col2[2],
-              this->col1[2] * m.col3[0] + this->col2[2] * m.col3[1] +
-                  this->col3[2] * m.col3[2] }
-        };
+        T arr1[]{ this->col1[0] * m.col1[0] + this->col2[0] * m.col1[1] +
+                      this->col3[0] * m.col1[2],
+                  this->col1[0] * m.col2[0] + this->col2[0] * m.col2[1] +
+                      this->col3[0] * m.col2[2],
+                  this->col1[0] * m.col3[0] + this->col2[0] * m.col3[1] +
+                      this->col3[0] * m.col3[2] };
+        T arr2[]{ this->col1[1] * m.col1[0] + this->col2[1] * m.col1[1] +
+                      this->col3[1] * m.col1[2],
+                  this->col1[1] * m.col2[0] + this->col2[1] * m.col2[1] +
+                      this->col3[1] * m.col2[2],
+                  this->col1[1] * m.col3[0] + this->col2[1] * m.col3[1] +
+                      this->col3[1] * m.col3[2] };
+        T arr3[]{ this->col1[2] * m.col1[0] + this->col2[2] * m.col1[1] +
+                      this->col3[2] * m.col1[2],
+                  this->col1[2] * m.col2[0] + this->col2[2] * m.col2[1] +
+                      this->col3[2] * m.col2[2],
+                  this->col1[2] * m.col3[0] + this->col2[2] * m.col3[1] +
+                      this->col3[2] * m.col3[2] };
+
+        return mat2x2h<T>(arr1, arr2, arr3);
     };
 };
 
