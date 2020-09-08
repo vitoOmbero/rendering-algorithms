@@ -12,6 +12,7 @@
 #include "Triangle.h"
 #include "algorithms_registry.h"
 #include "examples_types.h"
+#include "math2d.h"
 #include "ra_types.h"
 #include "renderer.h"
 
@@ -138,7 +139,7 @@ ra_core::pipeline::Canvas2d stretching()
     displacement1i_t dx = 100;
     mc.Move<7>(vertices, dx);
 
-    // prepare edges
+    // prepare data
     std::array<point2i, 4> quadrangle{ vertices[0], vertices[1], vertices[2],
                                        vertices[3] };
     std::array<point2i, 3> triangle{ vertices[4], vertices[5], vertices[6] };
@@ -159,6 +160,66 @@ ra_core::pipeline::Canvas2d stretching()
     return renderer::getCanvas();
 }
 
+ra_core::pipeline::Canvas2d rotation()
+{
+    ra_core::renderer::Init();
+    using namespace ra_core;
+    using namespace ra_core::pipeline;
+    using namespace ra_types;
+    using namespace ra_services::
+        geometric_transformations_in_homogeneous_coordinates;
+
+    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
+    renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
+
+    point2i qA_1{ 50, 50 };
+    point2i qA_2{ 100, 50 };
+    point2i qA_3{ 100, 100 };
+    point2i qA_4{ 50, 100 };
+
+    point2i tB_1{ 100, 200 - 40 };
+    point2i tB_2{ 150, 305 - 40 };
+    point2i tB_3{ 15, 378 - 40 };
+
+    // initial state draw
+    draw_figures(qA_1, qA_2, qA_3, qA_4, tB_1, tB_2, tB_3);
+
+    // prepare points
+    std::array<point2i, 4 + 3> vertices{ qA_1, qA_2, qA_3, qA_4,
+                                         tB_1, tB_2, tB_3 };
+    // go
+    auto mc = renderer::getMatrixCalculatorSimple();
+
+    // next state draw will be done righter
+    displacement1i_t dx = 100;
+    mc.Move<7>(vertices, dx);
+
+    // prepare data
+    std::array<point2i, 4> quadrangle{ vertices[0], vertices[1], vertices[2],
+                                       vertices[3] };
+    std::array<point2i, 3> triangle{ vertices[4], vertices[5], vertices[6] };
+
+    // rotation
+
+    auto ang45 = ra_services::math2d::make_angle_radians(45);
+    auto ang30 = ra_services::math2d::make_angle_radians(30);
+
+    mc.Rotate<4, float>(quadrangle, ang45);
+    mc.Rotate<3>(triangle, ang30, eRotationDirection2d::Anticlock);
+
+    // draw rotated
+
+    mc.Move<4>(quadrangle, -100, -100);
+    mc.Move<3>(triangle, 100, -450);
+
+    draw_figures(quadrangle[0], quadrangle[1], quadrangle[2], quadrangle[3],
+                 triangle[0], triangle[1], triangle[2]);
+
+    using namespace ra_core::figures2d;
+
+    return renderer::getCanvas();
+}
+
 namespace ra_examples::cartesian2d
 {
 Transitions::Transitions()
@@ -167,5 +228,6 @@ Transitions::Transitions()
     AddExample(initial, "initial");
     AddExample(move, "move");
     AddExample(stretching, "stretching");
+    AddExample(rotation, "rotation");
 }
 } // namespace ra_examples::cartesian2d

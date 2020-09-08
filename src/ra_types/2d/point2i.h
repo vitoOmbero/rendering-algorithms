@@ -58,6 +58,12 @@ struct point2i final
         p.y = std::round(static_cast<double>(y) * val);
         return p;
     };
+
+    point2i operator/(std::size_t num) const
+    {
+        return { std::lrint((float)this->x / num),
+                 std::lrint((float)this->y / num) };
+    }
 };
 
 inline ra_types::displacement2i make_displacement2d(const point2i p)

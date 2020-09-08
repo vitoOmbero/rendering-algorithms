@@ -28,6 +28,18 @@ inline ra_types::point2i calc_midddle_point(ra_types::point2i p1,
     return p;
 }
 
+/*static*/ const float PI = 3.14159265;
+
+inline ra_types::n0_t make_angle_degrees(float radians)
+{
+    return radians * 180. / PI;
+}
+
+inline float make_angle_radians(ra_types::n0_t degrees)
+{
+    return degrees * PI / 180.;
+}
+
 } // namespace ra_services::math2d
 
 #endif // MATH2D_H
