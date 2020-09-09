@@ -61,11 +61,11 @@ int main(int argc, char* argv[])
     }
 */
     {
-        GlutViewerSimple                  glutViewer;
+        GlutViewerSimple                  glutViewer(argc, argv);
         ExampleRunner                     er(glutViewer);
         ra_examples::cartesian2d::Shaders expack;
         er.Run(expack);
-        glutViewer.glutMainLoop(argc, argv); // never return from this
+        glutViewer.glutMainLoop(); // never return from this
     }
     return 0;
 }

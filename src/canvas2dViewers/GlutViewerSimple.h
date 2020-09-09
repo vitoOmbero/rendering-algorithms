@@ -2,6 +2,7 @@
 #define GLUTVIEWERSIMPLE_H
 
 #include "Canvas2dViewerInterface.h"
+#include "ra_get_string.h"
 
 #include "GL/freeglut.h"
 #include <iostream>
@@ -55,7 +56,6 @@ public:
 
     ~visual_tests_glut_window() { delete image_registry; }
 
-private:
     // callback for glut - vertical line
     static void display_test_v()
     {
@@ -222,8 +222,8 @@ private:
 
     // produce window with glut for showing image
     template <size_t N>
-    static void test_window_image(const char*                      title,
-                                  std::array<ra_types::rgb888, N>& image)
+    static void test_window_image(const char*                     title,
+                                  std::array<ra_types::rgb888, N> image)
     {
         // implicit static binding with ordered number of function call and
         // index in image registry
@@ -262,12 +262,44 @@ std::vector<
 class GlutViewerSimple : public Canvas2dViewerInterface
 {
 public:
-    GlutViewerSimple();
+    GlutViewerSimple(int argc, char* argv[])
+        : glut_win_producer{ glut_win_producer_t(argc, argv) } {};
 
     void ViewResult(const ra_core::pipeline::Canvas2d& canvas,
-                    const std::string_view description) const override;
+                    const std::string_view description) const override
+    {
 
-    void glutMainLoop(int argc, char* argv[]);
+        using namespace std;
+        cout << endl;
+        cout << "Current canvas 2d viewer provides only basic view." << endl;
+        cout << "Do not resize windows." << endl;
+        cout << std::string(50, '=') << endl;
+        cout << description << endl;
+        cout << ra_core::pipeline::GetString(canvas);
+        cout << std::string(50, '=') << endl;
+        cout << endl;
+
+        auto im = canvas.getImage();
+
+        glut_win_producer_t::test_window_image<
+            ra_core::renderer::CANVAS_WIDTH_PX *
+            ra_core::renderer::CANVAS_HEIGHT_PX>(description.data(), im);
+    };
+
+    void glutMainLoop()
+    {
+        // never return from this
+        glut_win_producer.run();
+    };
+
+private:
+    typedef visual_tests_glut_window<ra_core::renderer::CANVAS_WIDTH_PX,
+                                     ra_core::renderer::CANVAS_HEIGHT_PX,
+                                     ra_core::renderer::CANVAS_WIDTH_PX *
+                                         ra_core::renderer::CANVAS_HEIGHT_PX>
+        glut_win_producer_t;
+
+    glut_win_producer_t glut_win_producer;
 };
 
 #endif // GLUTVIEWERSIMPLE_H
