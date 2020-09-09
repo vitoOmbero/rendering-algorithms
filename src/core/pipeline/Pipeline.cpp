@@ -19,7 +19,8 @@ Pipeline::Pipeline(const ClippingRectangularWindow*       clipwin_ptr,
     , canvas{ spaceCoordTransRef.getCanvas2dSpaceRef() }
     , rasterizer(dotbuf, pixbuf, canvas, spaceCoordTransRef)
     , renderingTarget{ pipeline::eTarget::DotBuffer } // NOTE: Draw depends on
-    , exportTarget{ pipeline::eTarget::PixelBuffer }  // NOTE: Draw depends on
+    , exportTarget{ pipeline::eTarget::DotBuffer }    // NOTE: Draw depends on
+    , renderingTarget_ptr{ &dotbuf }
 
 {
 }
@@ -65,6 +66,10 @@ pipeline::eTarget Pipeline::getRenderingTarget() const
 void Pipeline::setRenderingTarget(const pipeline::eTarget& value)
 {
     renderingTarget = value;
+    if (renderingTarget == eTarget::DotBuffer)
+        renderingTarget_ptr = &dotbuf;
+    else
+        renderingTarget_ptr = &pixbuf;
 }
 
 inline ra_types::displacement2i Cartesian2dToCanvas2d(
@@ -78,19 +83,30 @@ ra_types::pointXi Pipeline::TranslateToRenderingTarget(
 {
     ra_types::pointXi point;
 
+    // NOTE: ignores spce offset currently
+
     if (renderingTarget == eTarget::DotBuffer)
     {
-        if (exportTarget == eTarget::DotBuffer)
-            point.point1d = spaceCoordTransRef.TranslateCanvasToDotBuffer(
-                p, dotbuf.getLineWidth());
-        else
-            point.point2i = p;
+        point.point2i = p;
     }
     else
     {
         point.point2i = spaceCoordTransRef.TranslateCanvasToPixelBuffer(p);
     }
     return point;
+}
+
+void Pipeline::StumpCanvas()
+{
+    if (exportTarget == pipeline::eTarget::DotBuffer)
+    {
+        rasterizer.ImageDotBufferToPixelBuffer();
+        canvas.imagePixelBuffer2d(pixbuf);
+    }
+    else
+    {
+        canvas.imagePixelBuffer2d(pixbuf);
+    }
 }
 
 void Pipeline::DrawCircuit(const ra_core::figures2d::Dot& dot)
@@ -110,9 +126,9 @@ void Pipeline::DrawCircuit(const ra_core::figures2d::Dot& dot)
     {
         auto ra_dot_func = raproxyRef.getRenderDot();
         auto point       = TranslateToRenderingTarget(p).point2i;
-        auto dotsdrawn =
-            ra_dot_func(point.x, point.y, dot.GetColorCode(), dotbuf);
-        dotbuf.UpdateDotsNumber(dotsdrawn);
+        auto dotsdrawn   = ra_dot_func(point.x, point.y, dot.GetColorCode(),
+                                     *renderingTarget_ptr);
+        (*renderingTarget_ptr).UpdateDotsNumber(dotsdrawn);
     }
 }
 
@@ -140,10 +156,10 @@ void Pipeline::DrawCircuit(const figures2d::LineSegment& ls)
         auto point1 = TranslateToRenderingTarget(p1).point2i;
         auto point2 = TranslateToRenderingTarget(p2).point2i;
 
-        auto dotsdrawn =
-            ra_linesegment_func(point1, point2, ls.GetColorCode(), dotbuf);
+        auto dotsdrawn = ra_linesegment_func(point1, point2, ls.GetColorCode(),
+                                             *renderingTarget_ptr);
 
-        dotbuf.UpdateDotsNumber(dotsdrawn);
+        renderingTarget_ptr->UpdateDotsNumber(dotsdrawn);
     }
 }
 
@@ -171,9 +187,9 @@ void Pipeline::DrawCircuit(const figures2d::Circle& c)
         auto ra_circle_func = raproxyRef.getRenderCircle();
 
         auto dotsdrawn = ra_circle_func(centerPoint, c.getRadius(),
-                                        c.GetColorCode(), dotbuf);
+                                        c.GetColorCode(), *renderingTarget_ptr);
 
-        dotbuf.UpdateDotsNumber(dotsdrawn);
+        renderingTarget_ptr->UpdateDotsNumber(dotsdrawn);
     }
 }
 
@@ -212,11 +228,12 @@ void Pipeline::DrawCircuit(const figures2d::Triangle& tr)
 
     auto ra_ls_func = raproxyRef.getRenderLineSegment();
 
-    auto dotsdrawn = ra_ls_func(P1, P2, tr.GetColorCode(), dotbuf);
-    dotsdrawn += ra_ls_func(P2, P3, tr.GetColorCode(), dotbuf);
-    dotsdrawn += ra_ls_func(P3, P1, tr.GetColorCode(), dotbuf);
+    auto dotsdrawn =
+        ra_ls_func(P1, P2, tr.GetColorCode(), *renderingTarget_ptr);
+    dotsdrawn += ra_ls_func(P2, P3, tr.GetColorCode(), *renderingTarget_ptr);
+    dotsdrawn += ra_ls_func(P3, P1, tr.GetColorCode(), *renderingTarget_ptr);
 
-    dotbuf.UpdateDotsNumber(dotsdrawn);
+    renderingTarget_ptr->UpdateDotsNumber(dotsdrawn);
 }
 
 void Pipeline::DrawShape(const figures2d::Circle& c)
@@ -261,9 +278,10 @@ void Pipeline::DrawShape(const figures2d::Triangle& tr)
 
     auto ra_trf_func = raproxyRef.getFillTriangle();
 
-    auto dotsdrawn = ra_trf_func(P1, P2, P3, tr.GetColorCode(), dotbuf);
+    auto dotsdrawn =
+        ra_trf_func(P1, P2, P3, tr.GetColorCode(), *renderingTarget_ptr);
 
-    dotbuf.UpdateDotsNumber(dotsdrawn);
+    renderingTarget_ptr->UpdateDotsNumber(dotsdrawn);
 }
 
 void Pipeline::DrawCircuit(const figures2d::Quadrangle& qd)
@@ -306,12 +324,13 @@ void Pipeline::DrawCircuit(const figures2d::Quadrangle& qd)
 
     auto ra_ls_func = raproxyRef.getRenderLineSegment();
 
-    auto dotsdrawn = ra_ls_func(P1, P2, qd.GetColorCode(), dotbuf);
-    dotsdrawn += ra_ls_func(P2, P3, qd.GetColorCode(), dotbuf);
-    dotsdrawn += ra_ls_func(P3, P4, qd.GetColorCode(), dotbuf);
-    dotsdrawn += ra_ls_func(P4, P1, qd.GetColorCode(), dotbuf);
+    auto dotsdrawn =
+        ra_ls_func(P1, P2, qd.GetColorCode(), *renderingTarget_ptr);
+    dotsdrawn += ra_ls_func(P2, P3, qd.GetColorCode(), *renderingTarget_ptr);
+    dotsdrawn += ra_ls_func(P3, P4, qd.GetColorCode(), *renderingTarget_ptr);
+    dotsdrawn += ra_ls_func(P4, P1, qd.GetColorCode(), *renderingTarget_ptr);
 
-    dotbuf.UpdateDotsNumber(dotsdrawn);
+    renderingTarget_ptr->UpdateDotsNumber(dotsdrawn);
 }
 
 void Pipeline::DrawShape(const figures2d::Quadrangle& tr)
@@ -323,11 +342,7 @@ void Pipeline::DrawShape(const figures2d::Quadrangle& tr)
 
 ra_core::pipeline::Canvas2d ra_core::pipeline::Pipeline::ExportCanvas()
 {
-    if (exportTarget == pipeline::eTarget::PixelBuffer)
-    {
-        rasterizer.ImageDotBufferToPixelBuffer();
-        canvas.imagePixelBuffer2d(pixbuf);
-    }
+    StumpCanvas();
 
     auto copy(canvas);
 

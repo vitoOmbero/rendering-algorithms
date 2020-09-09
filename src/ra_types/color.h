@@ -48,7 +48,7 @@ enum class eColor
     Khaki1_l,      ///<#FFFF00	(255,255,128)
     White,         ///<#FFFFFF	(255,255,255)
 
-    _LAST_ = __INT_MAX__ ///< Iteration value
+    _LAST_ ///< Iteration value
 };
 
 } // namespace ra_types

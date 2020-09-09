@@ -166,4 +166,16 @@ ra_services::geometric_transformations_in_homogeneous_coordinates::
     return mcx;
 }
 
+void UseCustomFillingTriangle(rendering2d::filling_triangle_fptr func_ptr)
+{
+    raproxy.setCustomFillingAlgorithm(
+        ra_core::figures2d::eFigure2dType::Triangle,
+        reinterpret_cast<void*>(func_ptr));
+}
+
+void StumpCanvas()
+{
+    pipeline_ptr->StumpCanvas();
+}
+
 } // namespace ra_core::renderer

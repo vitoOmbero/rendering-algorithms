@@ -52,6 +52,9 @@ public:
     bool setCustomRenderingAlgorithm(
         ra_core::figures2d::eFigure2dType figure2dType, void* function_ptr);
 
+    bool setCustomFillingAlgorithm(
+        ra_core::figures2d::eFigure2dType figure2dType, void* function_ptr);
+
     bool setClippingAlgorithm(clipping_algorithm alro_ptr);
 
     ra_core::rendering2d::rendering_circle_fptr getRenderCircle() const;

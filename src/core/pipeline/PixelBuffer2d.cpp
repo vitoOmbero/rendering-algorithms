@@ -56,6 +56,12 @@ void PixelBuffer2d::Mark(const ra_types::rgb888  code,
     }
 }
 
+ra_types::rgb888 PixelBuffer2d::getColorCode(const ra_types::point2i point)
+{
+    auto p = ctsRef.TranslateCanvasToPixelBuffer(point);
+    return (*vector2d_ptr)[p.y][p.x];
+}
+
 std::unique_ptr<std::vector<ra_types::rgb888>> PixelBuffer2d::CreateCopy() const
 {
     std::vector<ra_types::rgb888>* v = new std::vector<ra_types::rgb888>(

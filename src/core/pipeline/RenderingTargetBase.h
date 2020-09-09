@@ -51,6 +51,8 @@ public:
     virtual std::unique_ptr<std::vector<ra_types::rgb888>> CreateCopy()
         const = 0;
 
+    virtual ra_types::rgb888 getColorCode(const ra_types::point2i point) = 0;
+
     ra_types::n0_t getTotalElementsDrawn() const { return total; };
 
 protected:

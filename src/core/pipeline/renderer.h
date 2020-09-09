@@ -9,6 +9,7 @@
 #include "MatrixCalculatorSimple.h"
 #include "PipelineTargets.h"
 #include "algorithms_registry.h"
+#include "algorithms_types.h"
 
 #include "ra_types.h"
 
@@ -99,6 +100,13 @@ void UseCircleAlgorithm(ra_core::rendering2d::rendering_algorithm algo_ptr);
 void UseFillingTriangle(ra_core::rendering2d::filling_algorithm algo_ptr);
 
 /**
+ * @brief UseCustomFillingTriangle
+ * @param func_ptr - function with triangle filling algorithm
+ */
+void UseCustomFillingTriangle(
+    ra_core::rendering2d::filling_triangle_fptr func_ptr);
+
+/**
  * @brief UseClippingWindow - forces to use centered rectangular clipping window
  * @param offsetX - 0x offset for central point of the clipping window
  * @param offsetY -  0y offset for central point of the clipping window
@@ -113,6 +121,11 @@ void UseClippingWindow(ra_types::n0_t offsetX, ra_types::n0_t offsetY,
  * @brief UseNoClippingWindow - destroy clipping window if it is set
  */
 void UseNoClippingWindow();
+
+/**
+ * @brief StumpCanvas - stump target buffer into canvas
+ */
+void StumpCanvas();
 
 } // namespace ra_core::renderer
 

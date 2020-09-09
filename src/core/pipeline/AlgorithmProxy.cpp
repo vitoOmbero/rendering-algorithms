@@ -208,6 +208,34 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
     }
 }
 
+bool AlgorithmProxy::setCustomFillingAlgorithm(
+    figures2d::eFigure2dType figure2dType, void* function_ptr)
+{
+    switch (figure2dType)
+    {
+        case (ra_core::figures2d::eFigure2dType::Triangle):
+        {
+            auto a =
+                reinterpret_cast<ra_core::rendering2d::filling_triangle_fptr>(
+                    function_ptr);
+            if (IsValidRenderingAlgorithm())
+            {
+                fillTriangle = a;
+                return true;
+            }
+
+            else
+            {
+                setFillingAlgorithm(ra_core::figures2d::eFigure2dType::Triangle,
+                                    filling_algorithm::fill3_line_sweeping);
+                return false;
+            }
+        };
+        default:
+            return false;
+    }
+}
+
 bool AlgorithmProxy::setClippingAlgorithm(clipping_algorithm ca)
 {
     try

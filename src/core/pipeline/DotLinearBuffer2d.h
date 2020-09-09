@@ -38,6 +38,8 @@ public:
     void Mark(const ra_types::rgb888 code, const ra_types::point2i start,
               const ra_types::point2i end) override;
 
+    ra_types::rgb888 getColorCode(const ra_types::point2i point) override;
+
     std::unique_ptr<std::vector<ra_types::rgb888>> CreateCopy() const override;
 
     ra_types::n0_t getLastIndex() const;

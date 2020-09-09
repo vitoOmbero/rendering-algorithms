@@ -54,6 +54,7 @@ set(EXAMPLES_SRC
     src/examples/cartesian2d/02_Shapes.cpp
     src/examples/cartesian2d/03_Clipping.cpp
     src/examples/cartesian2d/04_Transitions.cpp
+    src/examples/cartesian2d/05_Shaders.cpp
     )
 
 set(CANVAS2DVIEWERS_DIR src/canvas2dViewers)

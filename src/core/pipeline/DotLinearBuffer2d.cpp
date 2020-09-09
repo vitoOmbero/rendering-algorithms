@@ -50,6 +50,12 @@ void DotLinearBuffer2d::Mark(const ra_types::rgb888  code,
     }
 }
 
+ra_types::rgb888 DotLinearBuffer2d::getColorCode(const ra_types::point2i point)
+{
+    auto i = ctsRef.TranslateCanvasToDotBuffer(point, lineWidth);
+    return dots->at(i);
+}
+
 std::unique_ptr<std::vector<ra_types::rgb888>>
 DotLinearBuffer2d::CreateCopy() const
 {

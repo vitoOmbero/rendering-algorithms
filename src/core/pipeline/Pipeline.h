@@ -118,6 +118,11 @@ public:
         const ra_types::point2i& p) const;
 
     /**
+     * @brief StumpCanvas - stump target buffer into canvas
+     */
+    void StumpCanvas();
+
+    /**
      * @brief ExportCanvas - render export target into image and get result
      * canvas
      * @return reasult Canvas2d value copy
@@ -147,6 +152,7 @@ private:
 
     pipeline::eTarget renderingTarget;
     pipeline::eTarget exportTarget;
+    RenderingTargetBase* renderingTarget_ptr;
 };
 
 } // namespace ra_core::pipeline
