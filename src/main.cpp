@@ -6,6 +6,7 @@
 #include "04_Transitions.h"
 #include "05_Shaders.h"
 #include "ExampleRunner.h"
+#include "GlutViewerSimple.h"
 #include "PpxCanvas2dViewer.h"
 #include "TerminalCanvas2dViewer.h"
 
@@ -51,12 +52,20 @@ int main(int argc, char* argv[])
         ra_examples::cartesian2d::Transitions expack;
         er.Run(expack);
     }
-  */
+
     {
         PpxCanvas2dViewer                 ppxViewer;
         ExampleRunner                     er(ppxViewer);
         ra_examples::cartesian2d::Shaders expack;
         er.Run(expack);
+    }
+*/
+    {
+        GlutViewerSimple                  glutViewer;
+        ExampleRunner                     er(glutViewer);
+        ra_examples::cartesian2d::Shaders expack;
+        er.Run(expack);
+        glutViewer.glutMainLoop(argc, argv); // never return from this
     }
     return 0;
 }
