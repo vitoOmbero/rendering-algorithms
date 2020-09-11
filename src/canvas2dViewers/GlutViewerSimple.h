@@ -24,7 +24,6 @@ static inline ra_types::displacement1i_t coords_to_index(
 }
 
 // only GL_POINTS mode is used for drawing with opengl
-// this approach shows how simple_drawing::algorithmes work
 
 template <size_t width, size_t height, size_t display_size>
 class visual_tests_glut_window
@@ -220,7 +219,7 @@ public:
         glutSwapBuffers();
     }
 
-    // produce window with glut for showing image
+    // produce window with glut to show image
     template <size_t N>
     static void test_window_image(const char*                     title,
                                   std::array<ra_types::rgb888, N> image)

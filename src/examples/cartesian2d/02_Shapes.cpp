@@ -50,6 +50,7 @@ ra_core::pipeline::Canvas2d triangle_line_sweeping_ph01()
     auto              cm = renderer::getColorMap();
     figures2d::border border;
 
+    renderer::setDrawingMode(eDrawingMode::Shape);
     renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
     renderer::UseFillingTriangle(
         filling_algorithm::fill3_line_sweeping_phase_01);
@@ -89,6 +90,7 @@ ra_core::pipeline::Canvas2d triangle_line_sweeping_ph02()
     auto              cm = renderer::getColorMap();
     figures2d::border border;
 
+    renderer::setDrawingMode(eDrawingMode::Shape);
     renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
     renderer::UseFillingTriangle(
         filling_algorithm::fill3_line_sweeping_phase_02);
@@ -125,6 +127,7 @@ ra_core::pipeline::Canvas2d triangle_line_sweeping_full()
     auto              cm = renderer::getColorMap();
     figures2d::border border;
 
+    renderer::setDrawingMode(eDrawingMode::Shape);
     renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
     renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
 

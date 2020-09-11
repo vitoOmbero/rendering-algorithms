@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
             ra_examples::cartesian2d::Elementary expack;
             er.Run(expack);
         }
-
+*/
     {
         PpxCanvas2dViewer                    ppxViewer;
         ExampleRunner                        er(ppxViewer);
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
         ra_examples::cartesian2d::Shaders expack;
         er.Run(expack);
     }
-*/
+
     {
         GlutViewerSimple                  glutViewer(argc, argv);
         ExampleRunner                     er(glutViewer);

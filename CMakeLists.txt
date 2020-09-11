@@ -62,7 +62,6 @@ set(CANVAS2DVIEWERS_DIR src/canvas2dViewers)
 set(CANVAS2DVIEWERS_SRC
     ${CANVAS2DVIEWERS_DIR}/PpxCanvas2dViewer.cpp
     ${CANVAS2DVIEWERS_DIR}/TerminalCanvas2dViewer.cpp
-    src/canvas2dViewers/GlutViewerSimple.cpp
     )
 
 set(CORE_DIR src/core)
