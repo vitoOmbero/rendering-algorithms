@@ -13,78 +13,78 @@ namespace ra_core::pipeline
 
 AlgorithmProxy::AlgorithmProxy()
 {
-    rendering_dot_map = ra_dot_map{ { rendering_algorithm::dot_naive,
-                                      ra_core::rendering2d::line::naive_dot } };
-    rendering_line_segment_map =
-        ra_ls_map{ { rendering_algorithm::line_naive_hor_vert_diag,
-                     ra_core::rendering2d::line::naive_hv_line },
-                   { rendering_algorithm::line_bresenham_defect,
-                     ra_core::rendering2d::line::bresenham_defect_diag_line },
-                   { rendering_algorithm::line_bresenham_int,
-                     ra_core::rendering2d::line::bresenham_int_line } };
-    rendering_circle_map =
-        ra_cir_map{ { rendering_algorithm::circle_bresenham_int,
-                      ra_core::rendering2d::circuits::bresenham_int_circle } };
+    rendering_dot_map_ = DotMap{ { RenderingAlgorithm::kDotNaive,
+                                   ra_core::rendering2d::line::naive_dot } };
+    rendering_line_segment_map_ =
+        LineSegMap{ { RenderingAlgorithm::kLineNaiveHorVertDiag,
+                      ra_core::rendering2d::line::naive_hv_line },
+                    { RenderingAlgorithm::kLineBresenhamDefect,
+                      ra_core::rendering2d::line::bresenham_defect_diag_line },
+                    { RenderingAlgorithm::kLineBresenhamInt,
+                      ra_core::rendering2d::line::bresenham_int_line } };
+    rendering_circle_map_ =
+        CircMap{ { RenderingAlgorithm::kCircleBresenhamInt,
+                   ra_core::rendering2d::circuits::bresenham_int_circle } };
 
-    fill3_map = ra_fill3_map{
-        { filling_algorithm::fill3_naive_horizontal,
+    fill3_map_ = Fill3Map{
+        { FillingAlgorithm::kFill3NaiveHorizontal,
           ra_core::rendering2d::filling::fill3_naive_hr },
-        { filling_algorithm::fill3_line_sweeping_phase_01,
+        { FillingAlgorithm::kFill3LineSweepingPhase01,
           ra_core::rendering2d::filling::fill3_line_sweeping_phase01_sides },
-        { filling_algorithm::fill3_line_sweeping_phase_02,
+        { FillingAlgorithm::kFill3LineSweepingPhase02,
           ra_core::rendering2d::filling::fill3_line_sweeping_phase02_sides },
-        { filling_algorithm::fill3_line_sweeping,
+        { FillingAlgorithm::kFill3LineSweeping,
           ra_core::rendering2d::filling::fill3_line_sweeping }
     };
 
-    clip_map = ra_clip_map{
-        { clipping_algorithm::cohen_sutherland,
+    clip_map_ = ClipMap{
+        { ClippingAlgorithm::kCohenSutherland,
           ra_core::rendering2d::clipping::clipping_cohen_sutherland_int }
     };
 
     setRenderingCircuitAlgorithm(
-        ra_core::figures2d::eFigure2dType::Dot,
-        ra_core::rendering2d::rendering_algorithm::dot_naive);
+        ra_core::figures2d::Figure2dType::kDot,
+        ra_core::rendering2d::RenderingAlgorithm::kDotNaive);
 
     setRenderingCircuitAlgorithm(
-        ra_core::figures2d::eFigure2dType::Line,
-        ra_core::rendering2d::rendering_algorithm::line_bresenham_int);
+        ra_core::figures2d::Figure2dType::kLine,
+        ra_core::rendering2d::RenderingAlgorithm::kLineBresenhamInt);
     setRenderingCircuitAlgorithm(
-        ra_core::figures2d::eFigure2dType::Circle,
-        ra_core::rendering2d::rendering_algorithm::circle_bresenham_int);
+        ra_core::figures2d::Figure2dType::kCircle,
+        ra_core::rendering2d::RenderingAlgorithm::kCircleBresenhamInt);
 
     setFillingAlgorithm(
-        ra_core::figures2d::eFigure2dType::Triangle,
-        ra_core::rendering2d::filling_algorithm::fill3_line_sweeping);
+        ra_core::figures2d::Figure2dType::kTriangle,
+        ra_core::rendering2d::FillingAlgorithm::kFill3LineSweeping);
 }
 
-ra_core::rendering2d::rendering_dot_fptr AlgorithmProxy::getRenderDot() const
+ra_core::rendering2d::RenderingDotFunction AlgorithmProxy::getRenderDot() const
 {
-    return renderDot;
+    return render_dot_func_;
 }
 
-ra_core::rendering2d::rendering_line_segment_fptr
+ra_core::rendering2d::RenderingLineSegmentFunction
 AlgorithmProxy::getRenderLineSegment() const
 {
-    return renderLineSegment;
+    return render_line_segment_func_;
 }
 
 bool AlgorithmProxy::setFillingAlgorithm(
-    ra_core::figures2d::eFigure2dType figure2dType, filling_algorithm ca)
+    ra_core::figures2d::Figure2dType figure2d_type, FillingAlgorithm ca)
 {
-    switch (figure2dType)
+    switch (figure2d_type)
     {
-        case (ra_core::figures2d::eFigure2dType::Triangle):
+        case (ra_core::figures2d::Figure2dType::kTriangle):
         {
             try
             {
-                fillTriangle = fill3_map[ca];
+                fill_triangle_func_ = fill3_map_[ca];
                 return true;
             }
             catch (std::exception e)
             {
-                fillTriangle =
-                    fill3_map[filling_algorithm::fill3_naive_horizontal];
+                fill_triangle_func_ =
+                    fill3_map_[FillingAlgorithm::kFill3NaiveHorizontal];
                 return false;
             }
         };
@@ -94,48 +94,49 @@ bool AlgorithmProxy::setFillingAlgorithm(
 }
 
 bool AlgorithmProxy::setRenderingCircuitAlgorithm(
-    ra_core::figures2d::eFigure2dType figure2dType, rendering_algorithm ra)
+    ra_core::figures2d::Figure2dType figure2d_type, RenderingAlgorithm ra)
 {
-    switch (figure2dType)
+    switch (figure2d_type)
     {
-        case (ra_core::figures2d::eFigure2dType::Dot):
+        case (ra_core::figures2d::Figure2dType::kDot):
         {
             try
             {
-                renderDot = rendering_dot_map[ra];
+                render_dot_func_ = rendering_dot_map_[ra];
                 return true;
             }
             catch (std::exception e)
             {
-                renderDot = rendering_dot_map[rendering_algorithm::dot_naive];
+                render_dot_func_ =
+                    rendering_dot_map_[RenderingAlgorithm::kDotNaive];
                 return false;
             }
         };
-        case (ra_core::figures2d::eFigure2dType::Line):
+        case (ra_core::figures2d::Figure2dType::kLine):
         {
             try
             {
-                renderLineSegment = rendering_line_segment_map[ra];
+                render_line_segment_func_ = rendering_line_segment_map_[ra];
                 return true;
             }
             catch (std::exception e)
             {
-                renderLineSegment = rendering_line_segment_map
-                    [rendering_algorithm::line_naive_hor_vert_diag];
+                render_line_segment_func_ = rendering_line_segment_map_
+                    [RenderingAlgorithm::kLineNaiveHorVertDiag];
                 return false;
             }
         };
-        case (ra_core::figures2d::eFigure2dType::Circle):
+        case (ra_core::figures2d::Figure2dType::kCircle):
         {
             try
             {
-                renderCircle = rendering_circle_map[ra];
+                render_circle_func_ = rendering_circle_map_[ra];
                 return true;
             }
             catch (std::exception e)
             {
-                renderCircle = rendering_circle_map
-                    [rendering_algorithm::circle_bresenham_int];
+                render_circle_func_ = rendering_circle_map_
+                    [RenderingAlgorithm::kCircleBresenhamInt];
                 return false;
             }
         };
@@ -145,61 +146,62 @@ bool AlgorithmProxy::setRenderingCircuitAlgorithm(
 }
 
 bool AlgorithmProxy::setCustomRenderingAlgorithm(
-    ra_core::figures2d::eFigure2dType figure2dType, void* function_ptr)
+    ra_core::figures2d::Figure2dType figure2d_type, void* function_ptr)
 {
-    switch (figure2dType)
+    switch (figure2d_type)
     {
-        case (ra_core::figures2d::eFigure2dType::Dot):
+        case (ra_core::figures2d::Figure2dType::kDot):
         {
-            auto a = reinterpret_cast<ra_core::rendering2d::rendering_dot_fptr>(
-                function_ptr);
+            auto a =
+                reinterpret_cast<ra_core::rendering2d::RenderingDotFunction>(
+                    function_ptr);
             if (IsValidRenderingAlgorithm())
             {
-                renderDot = a;
+                render_dot_func_ = a;
                 return true;
             }
 
             else
             {
                 setRenderingCircuitAlgorithm(
-                    ra_core::figures2d::eFigure2dType::Dot,
-                    rendering_algorithm::dot_naive);
+                    ra_core::figures2d::Figure2dType::kDot,
+                    RenderingAlgorithm::kDotNaive);
                 return false;
             }
         };
-        case (ra_core::figures2d::eFigure2dType::Line):
+        case (ra_core::figures2d::Figure2dType::kLine):
         {
             auto a = reinterpret_cast<
-                ra_core::rendering2d::rendering_line_segment_fptr>(
+                ra_core::rendering2d::RenderingLineSegmentFunction>(
                 function_ptr);
             if (IsValidRenderingAlgorithm())
             {
-                renderLineSegment = a;
+                render_line_segment_func_ = a;
                 return true;
             }
             else
             {
                 setRenderingCircuitAlgorithm(
-                    ra_core::figures2d::eFigure2dType::Line,
-                    rendering_algorithm::line_naive_hor_vert_diag);
+                    ra_core::figures2d::Figure2dType::kLine,
+                    RenderingAlgorithm::kLineNaiveHorVertDiag);
                 return false;
             }
         };
-        case (ra_core::figures2d::eFigure2dType::Circle):
+        case (ra_core::figures2d::Figure2dType::kCircle):
         {
             auto a =
-                reinterpret_cast<ra_core::rendering2d::rendering_circle_fptr>(
+                reinterpret_cast<ra_core::rendering2d::RenderingCircleFunction>(
                     function_ptr);
             if (IsValidRenderingAlgorithm())
             {
-                renderCircle = a;
+                render_circle_func_ = a;
                 return true;
             }
             else
             {
                 setRenderingCircuitAlgorithm(
-                    ra_core::figures2d::eFigure2dType::Circle,
-                    rendering_algorithm::circle_bresenham_int);
+                    ra_core::figures2d::Figure2dType::kCircle,
+                    RenderingAlgorithm::kCircleBresenhamInt);
                 return false;
             }
         };
@@ -209,25 +211,25 @@ bool AlgorithmProxy::setCustomRenderingAlgorithm(
 }
 
 bool AlgorithmProxy::setCustomFillingAlgorithm(
-    figures2d::eFigure2dType figure2dType, void* function_ptr)
+    figures2d::Figure2dType figure2d_type, void* function_ptr)
 {
-    switch (figure2dType)
+    switch (figure2d_type)
     {
-        case (ra_core::figures2d::eFigure2dType::Triangle):
+        case (ra_core::figures2d::Figure2dType::kTriangle):
         {
             auto a =
-                reinterpret_cast<ra_core::rendering2d::filling_triangle_fptr>(
+                reinterpret_cast<ra_core::rendering2d::FillingTriangleFunction>(
                     function_ptr);
             if (IsValidRenderingAlgorithm())
             {
-                fillTriangle = a;
+                fill_triangle_func_ = a;
                 return true;
             }
 
             else
             {
-                setFillingAlgorithm(ra_core::figures2d::eFigure2dType::Triangle,
-                                    filling_algorithm::fill3_line_sweeping);
+                setFillingAlgorithm(ra_core::figures2d::Figure2dType::kTriangle,
+                                    FillingAlgorithm::kFill3LineSweeping);
                 return false;
             }
         };
@@ -236,16 +238,16 @@ bool AlgorithmProxy::setCustomFillingAlgorithm(
     }
 }
 
-bool AlgorithmProxy::setClippingAlgorithm(clipping_algorithm ca)
+bool AlgorithmProxy::setClippingAlgorithm(ClippingAlgorithm ca)
 {
     try
     {
-        clipRectangular = clip_map[ca];
+        clip_rectangular_func_ = clip_map_[ca];
         return true;
     }
     catch (std::exception e)
     {
-        clipRectangular = clip_map[clipping_algorithm::cohen_sutherland];
+        clip_rectangular_func_ = clip_map_[ClippingAlgorithm::kCohenSutherland];
         return false;
     }
 }
@@ -257,21 +259,21 @@ bool AlgorithmProxy::IsValidRenderingAlgorithm()
     return true;
 }
 
-ra_core::rendering2d::clipping_line_fptr AlgorithmProxy::getClipRectangular()
+ra_core::rendering2d::ClippingLineFunction AlgorithmProxy::getClipRectangular()
     const
 {
-    return clipRectangular;
+    return clip_rectangular_func_;
 }
 
-ra_core::rendering2d::filling_triangle_fptr AlgorithmProxy::getFillTriangle()
+ra_core::rendering2d::FillingTriangleFunction AlgorithmProxy::getFillTriangle()
     const
 {
-    return fillTriangle;
+    return fill_triangle_func_;
 }
 
-ra_core::rendering2d::rendering_circle_fptr AlgorithmProxy::getRenderCircle()
+ra_core::rendering2d::RenderingCircleFunction AlgorithmProxy::getRenderCircle()
     const
 {
-    return renderCircle;
+    return render_circle_func_;
 }
 } // namespace ra_core::canvas2d

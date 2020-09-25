@@ -23,8 +23,8 @@ ra_core::pipeline::Canvas2d dots()
     figures2d::border border;
 
     figures2d::Dot   dot(0, 0, border);
-    auto             col1 = cm.FindRgbCode(eColor::White);
-    ra_types::rgb888 col2{ 111, 111, 111 };
+    auto             col1 = cm.FindRgbCode(Color::kWhite);
+    ra_types::Rgb888 col2{ 111, 111, 111 };
 
     auto width  = renderer::CANVAS_WIDTH_DT;
     auto height = renderer::CANVAS_HEIGHT_DT;
@@ -64,7 +64,7 @@ ra_core::pipeline::Canvas2d line_of_dots()
 
     ra_core::figures2d::Dot dot(150, 150, border);
 
-    dot.setColorCode(cm.FindRgbCode(ra_services::color_rgb::eColor::Green));
+    dot.setColorCode(cm.FindRgbCode(ra_services::color_rgb::Color::kGreen));
 
     for (int i = 0; i < 200; ++i)
     {
@@ -79,22 +79,22 @@ void draw_star_and_cross_lines(const ra_services::color_rgb::ColorMap cm,
                                const ra_core::figures2d::border&      border)
 {
     typedef ra_core::figures2d::LineSegment ls;
-    typedef ra_services::color_rgb::eColor   col;
+    typedef ra_services::color_rgb::Color   col;
 
-    auto Red           = cm.FindRgbCode(col::Red);
-    auto Yellow        = cm.FindRgbCode(col::Yellow);
-    auto Indigo        = cm.FindRgbCode(col::Indigo);
-    auto Orange        = cm.FindRgbCode(col::Orange);
-    auto Blue          = cm.FindRgbCode(col::Blue);
-    auto Purple        = cm.FindRgbCode(col::Purple);
-    auto Green         = cm.FindRgbCode(col::Green);
-    auto Gray          = cm.FindRgbCode(col::Gray);
-    auto Black         = cm.FindRgbCode(col::Black);
-    auto Green_springB = cm.FindRgbCode(col::Green_springB);
-    auto Khaki1_l      = cm.FindRgbCode(col::Khaki1_l);
-    auto Lime          = cm.FindRgbCode(col::Lime);
-    auto Cyan          = cm.FindRgbCode(col::Cyan);
-    auto Teal          = cm.FindRgbCode(col::Teal);
+    auto Red           = cm.FindRgbCode(col::kRed);
+    auto Yellow        = cm.FindRgbCode(col::kYellow);
+    auto Indigo        = cm.FindRgbCode(col::kIndigo);
+    auto Orange        = cm.FindRgbCode(col::kOrange);
+    auto Blue          = cm.FindRgbCode(col::kBlue);
+    auto Purple        = cm.FindRgbCode(col::kPurple);
+    auto Green         = cm.FindRgbCode(col::kGreen);
+    auto Gray          = cm.FindRgbCode(col::kGray);
+    auto Black         = cm.FindRgbCode(col::kBlack);
+    auto Green_springB = cm.FindRgbCode(col::kGreenSpringB);
+    auto Khaki1_l      = cm.FindRgbCode(col::kKhaki1L);
+    auto Lime          = cm.FindRgbCode(col::kLime);
+    auto Cyan          = cm.FindRgbCode(col::kCyan);
+    auto Teal          = cm.FindRgbCode(col::kTeal);
 
     auto w = 799;
     auto h = 599;
@@ -181,7 +181,7 @@ ra_core::pipeline::Canvas2d naive_line_algo()
     auto              cm = renderer::getColorMap();
     figures2d::border border;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_naive_hor_vert_diag);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineNaiveHorVertDiag);
 
     draw_star_and_cross_lines(cm, border);
 
@@ -198,7 +198,7 @@ ra_core::pipeline::Canvas2d bresenham_int_line()
     auto              cm = renderer::getColorMap();
     figures2d::border border;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamInt);
 
     draw_star_and_cross_lines(cm, border);
 
@@ -215,7 +215,7 @@ ra_core::pipeline::Canvas2d bresenham_defect_line()
     auto              cm = renderer::getColorMap();
     figures2d::border border;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_defect);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamDefect);
 
     draw_star_and_cross_lines(cm, border);
 
@@ -232,13 +232,13 @@ ra_core::pipeline::Canvas2d bresenham_circles()
     auto              cm = renderer::getColorMap();
     figures2d::border border;
 
-    renderer::UseCircleAlgorithm(rendering_algorithm::circle_bresenham_int);
+    renderer::UseCircleAlgorithm(RenderingAlgorithm::kCircleBresenhamInt);
 
     displacement1i_t x = 400;
     displacement1i_t y = 300;
 
     Circle c({ x, y }, 150, border);
-    c.setColorCode(cm.FindRgbCode(eColor::Purple_blue));
+    c.setColorCode(cm.FindRgbCode(Color::kPurpleBlue));
 
     ra_core::renderer::Draw(c);
 
@@ -272,17 +272,17 @@ ra_core::pipeline::Canvas2d triangles()
     auto              cm = renderer::getColorMap();
     figures2d::border border;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamInt);
 
     Triangle tr({ 50, 50 }, { 100, 300 }, { 0, 500 }, border);
-    tr.setColorCode(cm.FindRgbCode(eColor::Red));
+    tr.setColorCode(cm.FindRgbCode(Color::kRed));
 
     renderer::Draw(tr);
 
     tr.setP1({ 100, 100 });
     tr.setP2({ 50, 350 });
     tr.setP3({ 15, 400 });
-    tr.setColorCode(cm.FindRgbCode(eColor::Teal));
+    tr.setColorCode(cm.FindRgbCode(Color::kTeal));
     renderer::Draw(tr);
 
     tr.setP1({ 0, 0 });
@@ -298,7 +298,7 @@ namespace ra_examples::cartesian2d
 
 Elementary::Elementary()
 {
-    name = "01_elementary";
+    name_ = "01_elementary";
     AddExample(dots, "dots");
     AddExample(line_of_dots, "line_of_dots");
     AddExample(naive_line_algo, "naive_line_algo");

@@ -7,10 +7,10 @@ namespace ra_types
 /**
  * @brief The eAxes enum - axes enum pointers
  */
-enum class eAxes
+enum class Axes
 {
-    Ox, ///< 0x axis
-    Oy  ///< 0y axis
+    kOx, ///< 0x axis
+    kOy  ///< 0y axis
 };
 
 } // namespace ra_types

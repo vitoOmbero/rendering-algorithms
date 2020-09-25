@@ -3,8 +3,8 @@
 #include "algorithms_line_classic.h"
 #include "algorithms_lines_naive.h"
 
-inline void bubble_sort_by_y(ra_types::point2i& p1, ra_types::point2i& p2,
-                             ra_types::point2i& p3)
+inline void bubble_sort_by_y(ra_types::Point2i& p1, ra_types::Point2i& p2,
+                             ra_types::Point2i& p3)
 {
     if (p1.y > p2.y)
         std::swap(p1, p2);
@@ -15,8 +15,8 @@ inline void bubble_sort_by_y(ra_types::point2i& p1, ra_types::point2i& p2,
 }
 
 ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping_phase01_sides(
-    ra_types::point2i first, ra_types::point2i second, ra_types::point2i third,
-    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
+    ra_types::Point2i first, ra_types::Point2i second, ra_types::Point2i third,
+    ra_types::Rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
 {
     ra_types::n0_t counter = 0;
 
@@ -24,19 +24,19 @@ ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping_phase01_sides(
 
     ra_services::color_rgb::ColorMap cm;
 
-    color_code = cm.FindRgbCode(ra_services::color_rgb::eColor::Lime);
+    color_code = cm.FindRgbCode(ra_services::color_rgb::Color::kLime);
     counter += line::bresenham_int_line(first, second, color_code, dotbuf);
     counter += line::bresenham_int_line(second, third, color_code, dotbuf);
 
-    color_code = cm.FindRgbCode(ra_services::color_rgb::eColor::Violet);
+    color_code = cm.FindRgbCode(ra_services::color_rgb::Color::kViolet);
     line::bresenham_int_line(third, first, color_code, dotbuf);
 
     return counter;
 }
 
 ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping_phase02_sides(
-    ra_types::point2i first, ra_types::point2i second, ra_types::point2i third,
-    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
+    ra_types::Point2i first, ra_types::Point2i second, ra_types::Point2i third,
+    ra_types::Rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
 {
 
     auto fillColor = color_code;
@@ -59,10 +59,10 @@ ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping_phase02_sides(
         vec2i A = make_displacement2d(first + (third - first) * alpha);
         vec2i B = make_displacement2d(first + (second - first) * beta);
 
-        color_code = cm.FindRgbCode(ra_services::color_rgb::eColor::Violet);
+        color_code = cm.FindRgbCode(ra_services::color_rgb::Color::kViolet);
         counter += line::naive_dot(A.x, y, color_code, dotbuf);
 
-        color_code = cm.FindRgbCode(ra_services::color_rgb::eColor::Lime);
+        color_code = cm.FindRgbCode(ra_services::color_rgb::Color::kLime);
         counter += line::naive_dot(B.x, y, color_code, dotbuf);
     }
 
@@ -86,8 +86,8 @@ ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping_phase02_sides(
 }
 
 ra_types::n0_t ra_core::rendering2d::filling::fill3_line_sweeping(
-    ra_types::point2i first, ra_types::point2i second, ra_types::point2i third,
-    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
+    ra_types::Point2i first, ra_types::Point2i second, ra_types::Point2i third,
+    ra_types::Rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
 {
 
     ra_types::n0_t counter = 0;

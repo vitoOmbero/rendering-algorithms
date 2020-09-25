@@ -4,12 +4,11 @@
 namespace ra_core::pipeline
 {
 
-enum class eTarget
+enum class Target
 {
-    DotBuffer,
-    PixelBuffer,
+    kDotBuffer,
+    kPixelBuffer,
 };
-
 }
 
 #endif // PIPELINETARGETS_H

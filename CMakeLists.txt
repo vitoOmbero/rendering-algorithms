@@ -118,7 +118,6 @@ set(RASERVICES_DIRS
 set(RASERVCIES_SRC
     src/ra_services/color_rgb/ColorMap.cpp
     src/ra_services/geo_trans_homogen_coord/MatrixCalculatorSimple.cpp
-    src/ra_services/geo_trans_homogen_coord/geometry_types.cpp
     )
 
 

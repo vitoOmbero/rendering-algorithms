@@ -21,7 +21,7 @@
 namespace ra_examples::cartesian2d
 {
 
-void draw_triangles(ra_core::pipeline::eDrawingMode mode)
+void draw_triangles(ra_core::pipeline::DrawingMode mode)
 {
     using namespace ra_core;
     using namespace ra_core::figures2d;
@@ -31,20 +31,20 @@ void draw_triangles(ra_core::pipeline::eDrawingMode mode)
 
     renderer::setDrawingMode(mode);
 
-    eColor col_eptr = eColor::_FIRST_;
+    Color col_eptr = Color::k_FIRST_;
 
     auto generateColor = [&cm, &col_eptr]() {
-        col_eptr = static_cast<eColor>(1 + (int)col_eptr);
-        if (col_eptr == eColor::_LAST_)
-            col_eptr = static_cast<eColor>(1 + (int)eColor::_FIRST_);
+        col_eptr = static_cast<Color>(1 + (int)col_eptr);
+        if (col_eptr == Color::k_LAST_)
+            col_eptr = static_cast<Color>(1 + (int)Color::k_FIRST_);
         return cm.FindRgbCode(col_eptr);
     };
 
-    point2i        c{ 399, 299 };
+    Point2i        c{ 399, 299 };
     displacement2i dx = { 15, 0 };
     displacement2i dy = { 0, 15 };
 
-    for (point2i tB_1{ 399, 0 }, tB_2{ 0, 599 }, tB_3{ 799, 599 };
+    for (Point2i tB_1{ 399, 0 }, tB_2{ 0, 599 }, tB_3{ 799, 599 };
          tB_1.y < c.y;)
     {
         tB_1 = tB_1 + dy;
@@ -65,16 +65,16 @@ ra_core::pipeline::Canvas2d initial()
     using namespace ra_core::pipeline;
     using namespace ra_types;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
-    renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamInt);
+    renderer::UseFillingTriangle(FillingAlgorithm::kFill3LineSweeping);
 
-    draw_triangles(pipeline::eDrawingMode::Shape);
+    draw_triangles(pipeline::DrawingMode::kShape);
 
     return renderer::getCanvas();
 }
 
-inline void bubble_sort_by_y(ra_types::point2i& p1, ra_types::point2i& p2,
-                             ra_types::point2i& p3)
+inline void bubble_sort_by_y(ra_types::Point2i& p1, ra_types::Point2i& p2,
+                             ra_types::Point2i& p3)
 {
     if (p1.y > p2.y)
         std::swap(p1, p2);
@@ -91,14 +91,14 @@ ra_core::pipeline::Canvas2d pixel_shader_concept_invert()
     using namespace ra_core::pipeline;
     using namespace ra_types;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
-    renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamInt);
+    renderer::UseFillingTriangle(FillingAlgorithm::kFill3LineSweeping);
 
-    draw_triangles(pipeline::eDrawingMode::Shape);
+    draw_triangles(pipeline::DrawingMode::kShape);
 
     auto pshader_invert_color =
-        [](ra_types::point2i first, ra_types::point2i second,
-           ra_types::point2i third, ra_types::rgb888 color_code,
+        [](ra_types::Point2i first, ra_types::Point2i second,
+           ra_types::Point2i third, ra_types::Rgb888 color_code,
            ra_core::pipeline::RenderingTargetBase& target) {
             ra_types::n0_t counter = 0;
 
@@ -152,8 +152,8 @@ ra_core::pipeline::Canvas2d pixel_shader_concept_invert()
     renderer::StumpCanvas();
 
     // setup to draw in pixel buffer
-    renderer::setRenderingTarget(pipeline::eTarget::PixelBuffer);
-    renderer::setExportTarget(pipeline::eTarget::PixelBuffer);
+    renderer::setRenderingTarget(pipeline::Target::kPixelBuffer);
+    renderer::setExportTarget(pipeline::Target::kPixelBuffer);
 
     // shader is autonomous program which is using rendering pipeline API to
     // manipulate data.
@@ -167,9 +167,9 @@ ra_core::pipeline::Canvas2d pixel_shader_concept_invert()
     // uses Filling renderer API
 
     renderer::UseCustomFillingTriangle(pshader_invert_color);
-    renderer::setDrawingMode(pipeline::eDrawingMode::Shape);
+    renderer::setDrawingMode(pipeline::DrawingMode::kShape);
 
-    point2i tB_1{ 0, 399 }, tB_2{ 599, 0 }, tB_3{ 599, 599 };
+    Point2i tB_1{ 0, 399 }, tB_2{ 599, 0 }, tB_3{ 599, 599 };
 
     figures2d::border   border;
     figures2d::Triangle inversion_area(tB_1, tB_2, tB_3, border);
@@ -186,14 +186,14 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient()
     using namespace ra_core::pipeline;
     using namespace ra_types;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
-    renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamInt);
+    renderer::UseFillingTriangle(FillingAlgorithm::kFill3LineSweeping);
 
-    draw_triangles(pipeline::eDrawingMode::Shape);
+    draw_triangles(pipeline::DrawingMode::kShape);
 
     auto vshader_gradient_color =
-        [](ra_types::point2i first, ra_types::point2i second,
-           ra_types::point2i third, ra_types::rgb888 color_code,
+        [](ra_types::Point2i first, ra_types::Point2i second,
+           ra_types::Point2i third, ra_types::Rgb888 color_code,
            ra_core::pipeline::RenderingTargetBase& target) {
             ra_types::n0_t counter = 0;
 
@@ -261,8 +261,8 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient()
     renderer::StumpCanvas();
 
     // setup to draw in pixel buffer
-    renderer::setRenderingTarget(pipeline::eTarget::PixelBuffer);
-    renderer::setExportTarget(pipeline::eTarget::PixelBuffer);
+    renderer::setRenderingTarget(pipeline::Target::kPixelBuffer);
+    renderer::setExportTarget(pipeline::Target::kPixelBuffer);
 
     // shader is autonomous program which is using rendering pipeline API to
     // manipulate data.
@@ -276,9 +276,9 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient()
     // uses Filling renderer API
 
     renderer::UseCustomFillingTriangle(vshader_gradient_color);
-    renderer::setDrawingMode(pipeline::eDrawingMode::Shape);
+    renderer::setDrawingMode(pipeline::DrawingMode::kShape);
 
-    point2i tB_1{ 0, 399 }, tB_2{ 599, 0 }, tB_3{ 599, 599 };
+    Point2i tB_1{ 0, 399 }, tB_2{ 599, 0 }, tB_3{ 599, 599 };
 
     figures2d::border   border;
     figures2d::Triangle inversion_area(tB_1, tB_2, tB_3, border);
@@ -295,14 +295,14 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient2()
     using namespace ra_core::pipeline;
     using namespace ra_types;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
-    renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamInt);
+    renderer::UseFillingTriangle(FillingAlgorithm::kFill3LineSweeping);
 
-    draw_triangles(pipeline::eDrawingMode::Shape);
+    draw_triangles(pipeline::DrawingMode::kShape);
 
     auto vshader_gradient_color =
-        [](ra_types::point2i first, ra_types::point2i second,
-           ra_types::point2i third, ra_types::rgb888 color_code,
+        [](ra_types::Point2i first, ra_types::Point2i second,
+           ra_types::Point2i third, ra_types::Rgb888 color_code,
            ra_core::pipeline::RenderingTargetBase& target) {
             ra_types::n0_t counter = 0;
 
@@ -346,12 +346,12 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient2()
                     // shader code would be:
 
                     auto              c = (v1 + v2 + v3) / 3;
-                    ra_types::point2i p{ x, y };
+                    ra_types::Point2i p{ x, y };
 
-                    auto ndp = [&c](ra_types::point2i p, ra_types::point2i v) {
+                    auto ndp = [&c](ra_types::Point2i p, ra_types::Point2i v) {
                         return (
-                            (float)ra_services::math2d::calc_distance(v, p) /
-                            ra_services::math2d::calc_distance(v, c));
+                            (float)ra_services::math2d::CalcDistance(v, p) /
+                            ra_services::math2d::CalcDistance(v, c));
                     };
 
                     color_code.r = 255 * ndp(p, v1);
@@ -371,8 +371,8 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient2()
     renderer::StumpCanvas();
 
     // setup to draw in pixel buffer
-    renderer::setRenderingTarget(pipeline::eTarget::PixelBuffer);
-    renderer::setExportTarget(pipeline::eTarget::PixelBuffer);
+    renderer::setRenderingTarget(pipeline::Target::kPixelBuffer);
+    renderer::setExportTarget(pipeline::Target::kPixelBuffer);
 
     // shader is autonomous program which is using rendering pipeline API to
     // manipulate data.
@@ -386,9 +386,9 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient2()
     // uses Filling renderer API
 
     renderer::UseCustomFillingTriangle(vshader_gradient_color);
-    renderer::setDrawingMode(pipeline::eDrawingMode::Shape);
+    renderer::setDrawingMode(pipeline::DrawingMode::kShape);
 
-    point2i tB_1{ 0, 399 }, tB_2{ 599, 0 }, tB_3{ 599, 599 };
+    Point2i tB_1{ 0, 399 }, tB_2{ 599, 0 }, tB_3{ 599, 599 };
 
     figures2d::border   border;
     figures2d::Triangle inversion_area(tB_1, tB_2, tB_3, border);
@@ -405,14 +405,14 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient3()
     using namespace ra_core::pipeline;
     using namespace ra_types;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
-    renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamInt);
+    renderer::UseFillingTriangle(FillingAlgorithm::kFill3LineSweeping);
 
-    draw_triangles(pipeline::eDrawingMode::Shape);
+    draw_triangles(pipeline::DrawingMode::kShape);
 
     auto vshader_gradient_color =
-        [](ra_types::point2i first, ra_types::point2i second,
-           ra_types::point2i third, ra_types::rgb888 color_code,
+        [](ra_types::Point2i first, ra_types::Point2i second,
+           ra_types::Point2i third, ra_types::Rgb888 color_code,
            ra_core::pipeline::RenderingTargetBase& target) {
             ra_types::n0_t counter = 0;
 
@@ -452,26 +452,26 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient3()
                     auto v2 = second;
                     auto v3 = third;
 
-                    auto nd = [](ra_types::point2i p, ra_types::point2i v_min,
-                                 ra_types::point2i v_max) {
+                    auto nd = [](ra_types::Point2i p, ra_types::Point2i v_min,
+                                 ra_types::Point2i v_max) {
                         return (
-                            (float)ra_services::math2d::calc_distance(v_min,
+                            (float)ra_services::math2d::CalcDistance(v_min,
                                                                       p) /
-                            ra_services::math2d::calc_distance(v_min, v_max));
+                            ra_services::math2d::CalcDistance(v_min, v_max));
                     };
 
                     using namespace ra_services::math2d;
 
                     // if ra_core::pipeline had vertex and primitive stages, all
                     // shader code would be:
-                    point2i p{ x, y };
+                    Point2i p{ x, y };
 
                     color_code.r =
-                        255 - 255 * nd(p, v1, calc_midddle_point(v2, v3));
+                        255 - 255 * nd(p, v1, CalcMidddlePoint(v2, v3));
                     color_code.g =
-                        255 - 255 * nd(p, v2, calc_midddle_point(v1, v3));
+                        255 - 255 * nd(p, v2, CalcMidddlePoint(v1, v3));
                     color_code.b =
-                        255 - 255 * nd(p, v3, calc_midddle_point(v1, v2));
+                        255 - 255 * nd(p, v3, CalcMidddlePoint(v1, v2));
 
                     // end;
                     target.Mark(color_code, { x, y });
@@ -485,8 +485,8 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient3()
     renderer::StumpCanvas();
 
     // setup to draw in pixel buffer
-    renderer::setRenderingTarget(pipeline::eTarget::PixelBuffer);
-    renderer::setExportTarget(pipeline::eTarget::PixelBuffer);
+    renderer::setRenderingTarget(pipeline::Target::kPixelBuffer);
+    renderer::setExportTarget(pipeline::Target::kPixelBuffer);
 
     // shader is autonomous program which is using rendering pipeline API to
     // manipulate data.
@@ -500,9 +500,9 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient3()
     // uses Filling renderer API
 
     renderer::UseCustomFillingTriangle(vshader_gradient_color);
-    renderer::setDrawingMode(pipeline::eDrawingMode::Shape);
+    renderer::setDrawingMode(pipeline::DrawingMode::kShape);
 
-    point2i tB_1{ 0, 399 }, tB_2{ 599, 0 }, tB_3{ 599, 599 };
+    Point2i tB_1{ 0, 399 }, tB_2{ 599, 0 }, tB_3{ 599, 599 };
 
     figures2d::border   border;
     figures2d::Triangle inversion_area(tB_1, tB_2, tB_3, border);
@@ -514,7 +514,7 @@ ra_core::pipeline::Canvas2d vertex_shader_concept_gradient3()
 
 Shaders::Shaders()
 {
-    name = "05_shaders";
+    name_ = "05_shaders";
     AddExample(initial, "initial");
     AddExample(pixel_shader_concept_invert, "pixel_shader_concept_invert");
     AddExample(vertex_shader_concept_gradient,

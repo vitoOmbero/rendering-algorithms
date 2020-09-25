@@ -4,65 +4,65 @@ namespace ra_examples
 {
 
 ExamplePackBase::ExamplePackBase()
-    : examples{ new std::vector<canvas2d_example_ft>() }
-    , names{ new std::vector<std::string>() }
-    , oss{ new std::ostringstream() }
+    : examples_{ new std::vector<Canvas2dExampleFunction>() }
+    , names_{ new std::vector<std::string>() }
+    , oss_{ new std::ostringstream() }
 {
 }
 
 ExamplePackBase::~ExamplePackBase()
 {
-    delete examples;
-    delete names;
-    delete oss;
+    delete examples_;
+    delete names_;
+    delete oss_;
 }
 
-ExamplePackBase::nameCIterator ExamplePackBase::GetNamesCEnd() const
+ExamplePackBase::NameCIterator ExamplePackBase::getNamesCEnd() const
 {
-    return names->cend();
+    return names_->cend();
 }
 
 std::string ExamplePackBase::getName() const
 {
-    return name;
+    return name_;
 }
 
 // TODO: provide function name with preprocessor macros ADD + __func__?
-void ExamplePackBase::AddExample(canvas2d_example_ft example_func_ptr,
+void ExamplePackBase::AddExample(Canvas2dExampleFunction example_func_ptr,
                                  std::string         example_description) const
 {
     static unsigned int counter = 1;
-    examples->push_back(example_func_ptr);
-    *oss << "example_";
-    *oss << getName();
-    *oss << "_";
+    examples_->push_back(example_func_ptr);
+    *oss_ << "example_";
+    *oss_ << getName();
+    *oss_ << "_";
     if (counter < 10)
-        *oss << "0";
-    *oss << counter;
-    *oss << "__";
-    *oss << example_description;
+        *oss_ << "0";
+    *oss_ << counter;
+    *oss_ << "__";
+    *oss_ << example_description;
 
-    std::string fullname = oss->str();
+    std::string fullname = oss_->str();
 
-    names->push_back(fullname);
+    names_->push_back(fullname);
 
-    oss->str(std::string());
+    oss_->str(std::string());
     ++counter;
 }
 
-ExamplePackBase::exampleCIterator ExamplePackBase::GetExamplesCBegin() const
+ExamplePackBase::ExampleCIterator ExamplePackBase::getExamplesCBegin() const
 {
-    return examples->cbegin();
+    return examples_->cbegin();
 }
 
-ExamplePackBase::exampleCIterator ExamplePackBase::GetExamplesCEnd() const
+ExamplePackBase::ExampleCIterator ExamplePackBase::getExamplesCEnd() const
 {
-    return examples->cend();
+    return examples_->cend();
 }
 
-ExamplePackBase::nameCIterator ExamplePackBase::GetNamesCBegin() const
+ExamplePackBase::NameCIterator ExamplePackBase::getNamesCBegin() const
 {
-    return names->cbegin();
+    return names_->cbegin();
 }
 
 } // namespace ra_examples

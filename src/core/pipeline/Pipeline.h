@@ -23,9 +23,9 @@ namespace ra_core::pipeline
 class Pipeline
 {
 public:
-    Pipeline(const ClippingRectangularWindow*       clipwin_ptr,
-             const AlgorithmProxy&                  raproxyRef,
-             const SpaceCoordinateTranslatorSimple& spaceCoordTransRef);
+    Pipeline(const ClippingRectangularWindow*       clipwin_ptr_,
+             const AlgorithmProxy&                  raproxy,
+             const SpaceCoordinateTranslatorSimple& space_coord_trans);
 
     /**     * @brief DrawCircuit using world coordinate system
      * @param dot
@@ -75,7 +75,7 @@ public:
      * @param point - 2d point
      * @return a truth you have to come to terms with
      */
-    inline bool IsVisible(ra_types::point2i point) const
+    inline bool IsVisible(ra_types::Point2i point) const
     {
         return IsVisibleLineSegment(point, point);
     };
@@ -100,14 +100,14 @@ public:
      * @param p2 - second point
      * @return  a truth you have to come to terms with
      */
-    bool IsVisibleLineSegment(ra_types::point2i& p1,
-                              ra_types::point2i& p2) const;
+    bool IsVisibleLineSegment(ra_types::Point2i& p1,
+                              ra_types::Point2i& p2) const;
 
-    pipeline::eTarget getExportTarget() const;
-    void              setExportTarget(const pipeline::eTarget& value);
+    pipeline::Target getExportTarget() const;
+    void              setExportTarget(const pipeline::Target& value);
 
-    pipeline::eTarget getRenderingTarget() const;
-    void              setRenderingTarget(const pipeline::eTarget& value);
+    pipeline::Target getRenderingTarget() const;
+    void              setRenderingTarget(const pipeline::Target& value);
 
     /**
      * @brief TranslateToRenderingTarget - translate coordinates to actual
@@ -115,7 +115,7 @@ public:
      * @param p
      */
     ra_types::pointXi TranslateToRenderingTarget(
-        const ra_types::point2i& p) const;
+        const ra_types::Point2i& p) const;
 
     /**
      * @brief StumpCanvas - stump target buffer into canvas
@@ -136,23 +136,23 @@ public:
     void setClipwin_ptr(const ClippingRectangularWindow* value);
 
 private:
-    const ClippingRectangularWindow* clipwin_ptr;
+    const ClippingRectangularWindow* clipwin_ptr_;
 
-    const AlgorithmProxy& raproxyRef;
+    const AlgorithmProxy& raproxy_;
 
-    const SpaceCoordinateTranslatorSimple& spaceCoordTransRef;
+    const SpaceCoordinateTranslatorSimple& space_coord_trans_;
 
-    DotLinearBuffer2d dotbuf;
+    DotLinearBuffer2d dotbuf_;
 
-    PixelBuffer2d pixbuf;
+    PixelBuffer2d pixbuf_;
 
-    Canvas2d canvas;
+    Canvas2d canvas_;
 
-    RasterizerSimple rasterizer;
+    RasterizerSimple rasterizer_;
 
-    pipeline::eTarget renderingTarget;
-    pipeline::eTarget exportTarget;
-    RenderingTargetBase* renderingTarget_ptr;
+    pipeline::Target     rendering_target_;
+    pipeline::Target     export_target_;
+    RenderingTargetBase* renderingTarget_ptr_;
 };
 
 } // namespace ra_core::pipeline

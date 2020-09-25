@@ -4,21 +4,21 @@ namespace ra_core::pipeline
 {
 ra_types::n0_t RasterizerSimple::getDotSize() const
 {
-    return dotSize;
+    return dot_size_;
 }
 
 void RasterizerSimple::ImageDotBufferToPixelBuffer() const
 {
     // NOTE: currently ignore axes directions
-    if (dotSize == 1)
+    if (dot_size_ == 1)
     {
-        auto dbcopy = dotbufRef.CreateCopy();
+        auto dbcopy = dotbuf_.CreateCopy();
 
         ra_types::n0_t coord = 0;
         for (auto i = dbcopy->cbegin(); i != dbcopy->cend(); ++i)
         {
-            pixbufRef.Mark(*i, ctsRef.TranslateDotBufferToCanvas(
-                                   coord, dotbufRef.getLineWidth()));
+            pixbuf_.Mark(*i, cts_.TranslateDotBufferToCanvas(
+                                   coord, dotbuf_.getLineWidth()));
             ++coord;
         }
     }
@@ -26,12 +26,12 @@ void RasterizerSimple::ImageDotBufferToPixelBuffer() const
 
 ra_core::pipeline::Canvas2d& RasterizerSimple::getCanvasRef() const
 {
-    return canvasRef;
+    return canvas_;
 }
 
 const ra_core::pipeline::SpaceCoordinateTranslatorSimple &RasterizerSimple::getCtsRef() const
 {
-    return ctsRef;
+    return cts_;
 }
 
 RasterizerSimple::RasterizerSimple(
@@ -39,10 +39,10 @@ RasterizerSimple::RasterizerSimple(
         ra_core::pipeline::PixelBuffer2d&                         pixbufRef,
     ra_core::pipeline::Canvas2d&                              canvasRef,
     const ra_core::pipeline::SpaceCoordinateTranslatorSimple& ctsRef)
-    : dotbufRef{ dotbufRef }
-    , pixbufRef{ pixbufRef }
-    , canvasRef{ canvasRef }
-    , ctsRef{ ctsRef }
+    : dotbuf_{ dotbufRef }
+    , pixbuf_{ pixbufRef }
+    , canvas_{ canvasRef }
+    , cts_{ ctsRef }
 {
 }
 } // namespace ra_core::pipeline

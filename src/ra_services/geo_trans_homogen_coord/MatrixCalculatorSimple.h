@@ -16,15 +16,15 @@
 namespace ra_services::geometric_transformations_in_homogeneous_coordinates
 {
 
-enum class eRotationDirection2d
+enum class RotationDirection2d
 {
-    Clockwise,
-    Anticlock
+    kClockwise,
+    kAnticlock
 };
 
-enum class eNotation
+enum class Notation
 {
-    VerticalOriented,
+    kVerticalOriented,
     // NOTE: HorizontalOriented notation is not supported currently
 };
 
@@ -33,24 +33,24 @@ class MatrixCalculatorSimple
 public:
     MatrixCalculatorSimple();
 
-    eNotation getNotation() const;
+    Notation getNotation() const;
 
     template <typename T>
-    mat2x2h<T> MakeMoveMatrix(ra_types::displacement1i_t dx,
-                              ra_types::displacement1i_t dy) const;
+    Mat2x2h<T> MoveMatrix(ra_types::displacement1i_t dx,
+                          ra_types::displacement1i_t dy) const;
 
     template <typename T>
-    mat2x2h<T> MakeMoveMatrixReverse(ra_types::displacement1i_t dx,
-                                     ra_types::displacement1i_t dy) const;
+    Mat2x2h<T> MoveMatrixReverse(ra_types::displacement1i_t dx,
+                                 ra_types::displacement1i_t dy) const;
 
     template <typename T>
-    mat2x2h<T> MakeStretchMatrix(float xCoef, float yCoef) const;
+    Mat2x2h<T> StretchMatrix(float xCoef, float yCoef) const;
 
     template <typename T>
-    mat2x2h<T> MakeRotateClockwiseMatrix(T angle) const;
+    Mat2x2h<T> RotateClockwiseMatrix(T angle) const;
 
     template <typename T>
-    mat2x2h<T> MakeRotateAntiClockMatrix(T angle) const;
+    Mat2x2h<T> RotateAntiClockMatrix(T angle) const;
 
     ra_core::figures2d::LineSegment Move(ra_core::figures2d::LineSegment ls,
                                          ra_types::displacement1i_t      dx,
@@ -73,7 +73,7 @@ public:
      * @param dy
      */
     template <ra_types::n1_t N>
-    void Move(std::array<ra_types::point2i, N>& vertices,
+    void Move(std::array<ra_types::Point2i, N>& vertices,
               ra_types::displacement1i_t        dx = 0,
               ra_types::displacement1i_t        dy = 0) const;
 
@@ -85,7 +85,7 @@ public:
      * @param yCoef - streching above Oy
      */
     template <ra_types::n1_t N>
-    void Stretch(std::array<ra_types::point2i, N>& vertices, float xCoef,
+    void Stretch(std::array<ra_types::Point2i, N>& vertices, float xCoef,
                  float yCoef) const;
 
     /**
@@ -98,8 +98,8 @@ public:
      */
     template <std::size_t N, typename T>
     void Rotate(
-        std::array<ra_types::point2i, N>& vertices, T angle,
-        eRotationDirection2d dir = eRotationDirection2d::Clockwise) const;
+        std::array<ra_types::Point2i, N>& vertices, T angle,
+        RotationDirection2d dir = RotationDirection2d::kClockwise) const;
 
     /**
      * @brief Rotate - rotate each point in provided std::array relative to
@@ -111,29 +111,29 @@ public:
      */
     template <std::size_t N, typename T>
     void Rotate(
-        std::array<ra_types::point2i, N>& vertices, T angle,
-        ra_types::point2i    rcenter,
-        eRotationDirection2d dir = eRotationDirection2d::Clockwise) const;
+        std::array<ra_types::Point2i, N>& vertices, T angle,
+        ra_types::Point2i   rcenter,
+        RotationDirection2d dir = RotationDirection2d::kClockwise) const;
 
 private:
-    const eNotation notation{ 0 };
+    const Notation notation_{ 0 };
 };
 
 template <std::size_t N, typename T>
-void MatrixCalculatorSimple::Rotate(std::array<ra_types::point2i, N>& vertices,
-                                    T angle, ra_types::point2i rcenter,
-                                    eRotationDirection2d dir) const
+void MatrixCalculatorSimple::Rotate(std::array<ra_types::Point2i, N>& vertices,
+                                    T angle, ra_types::Point2i rcenter,
+                                    RotationDirection2d dir) const
 {
-    auto R = dir == eRotationDirection2d::Clockwise
-                 ? MakeRotateClockwiseMatrix<T>(angle)
-                 : MakeRotateAntiClockMatrix<T>(angle);
+    auto R = dir == RotationDirection2d::kClockwise
+                 ? RotateClockwiseMatrix<T>(angle)
+                 : RotateAntiClockMatrix<T>(angle);
 
-    auto M  = MakeMoveMatrix<float>(rcenter.x, rcenter.y);
-    auto MR = MakeMoveMatrixReverse<float>(rcenter.x, rcenter.y);
+    auto M  = MoveMatrix<float>(rcenter.x, rcenter.y);
+    auto MR = MoveMatrixReverse<float>(rcenter.x, rcenter.y);
 
     for (auto i = vertices.begin(); i != vertices.end(); ++i)
     {
-        vec2h<T> vhp(i->x, i->y);
+        Vec2h<T> vhp(i->x, i->y);
 
         vhp = M * R * MR * vhp;
 
@@ -143,13 +143,13 @@ void MatrixCalculatorSimple::Rotate(std::array<ra_types::point2i, N>& vertices,
 }
 
 template <std::size_t N, typename T>
-void MatrixCalculatorSimple::Rotate(std::array<ra_types::point2i, N>& vertices,
-                                    T angle, eRotationDirection2d dir) const
+void MatrixCalculatorSimple::Rotate(std::array<ra_types::Point2i, N>& vertices,
+                                    T angle, RotationDirection2d dir) const
 {
 
     auto centroid = std::accumulate(
-        vertices.cbegin(), vertices.cend(), ra_types::point2i{ 0, 0 },
-        [](ra_types::point2i sum_point, ra_types::point2i const& point) {
+        vertices.cbegin(), vertices.cend(), ra_types::Point2i{ 0, 0 },
+        [](ra_types::Point2i sum_point, ra_types::Point2i const& point) {
             return sum_point + point;
         });
 
@@ -157,9 +157,9 @@ void MatrixCalculatorSimple::Rotate(std::array<ra_types::point2i, N>& vertices,
 }
 
 template <typename T>
-mat2x2h<T> MatrixCalculatorSimple::MakeRotateAntiClockMatrix(T angle) const
+Mat2x2h<T> MatrixCalculatorSimple::RotateAntiClockMatrix(T angle) const
 {
-    mat2x2h<T> R;
+    Mat2x2h<T> R;
     auto       cos = std::cos(angle);
     auto       sin = std::sin(angle);
     R.col1[0]      = cos;
@@ -170,9 +170,9 @@ mat2x2h<T> MatrixCalculatorSimple::MakeRotateAntiClockMatrix(T angle) const
 }
 
 template <typename T>
-mat2x2h<T> MatrixCalculatorSimple::MakeRotateClockwiseMatrix(T angle) const
+Mat2x2h<T> MatrixCalculatorSimple::RotateClockwiseMatrix(T angle) const
 {
-    mat2x2h<T> R;
+    Mat2x2h<T> R;
     auto       cos = std::cos(angle);
     auto       sin = std::sin(angle);
     R.col1[0]      = cos;
@@ -183,28 +183,28 @@ mat2x2h<T> MatrixCalculatorSimple::MakeRotateClockwiseMatrix(T angle) const
 }
 
 template <typename T>
-mat2x2h<T> MatrixCalculatorSimple::MakeMoveMatrixReverse(
+Mat2x2h<T> MatrixCalculatorSimple::MoveMatrixReverse(
     ra_types::displacement1i_t dx, ra_types::displacement1i_t dy) const
 {
-    return MakeMoveMatrix<T>(-dx, -dy);
+    return MoveMatrix<T>(-dx, -dy);
 }
 
 template <ra_types::n1_t N>
-void MatrixCalculatorSimple::Stretch(std::array<ra_types::point2i, N>& vertices,
+void MatrixCalculatorSimple::Stretch(std::array<ra_types::Point2i, N>& vertices,
                                      float xCoef, float yCoef) const
 {
-    auto S = MakeStretchMatrix<float>(xCoef, yCoef);
+    auto S = StretchMatrix<float>(xCoef, yCoef);
 
     // point with minimum potential should be moved to zero point
 
     auto* min = std::min_element(vertices.cbegin(), vertices.cend());
 
-    auto M  = MakeMoveMatrix<float>(min->x, min->y);
-    auto MR = MakeMoveMatrixReverse<float>(min->x, min->y);
+    auto M  = MoveMatrix<float>(min->x, min->y);
+    auto MR = MoveMatrixReverse<float>(min->x, min->y);
 
     for (auto i = vertices.begin(); i != vertices.end(); ++i)
     {
-        vec2h<float> vhp1(i->x, i->y);
+        Vec2h<float> vhp1(i->x, i->y);
 
         vhp1 = M * S * MR * vhp1;
 
@@ -214,38 +214,37 @@ void MatrixCalculatorSimple::Stretch(std::array<ra_types::point2i, N>& vertices,
 }
 
 template <ra_types::n1_t N>
-void MatrixCalculatorSimple::Move(std::array<ra_types::point2i, N>& vertices,
+void MatrixCalculatorSimple::Move(std::array<ra_types::Point2i, N>& vertices,
                                   ra_types::displacement1i_t        dx,
                                   ra_types::displacement1i_t        dy) const
 {
     if (dx == 0 && dy == 0)
         return;
 
-    auto M = MakeMoveMatrix<ra_types::displacement1i_t>(dx, dy);
+    auto M = MoveMatrix<ra_types::displacement1i_t>(dx, dy);
 
     for (auto i = vertices.begin(); i != vertices.end(); ++i)
     {
-        vec2h<ra_types::displacement1i_t> v1((*i).x, (*i).y);
+        Vec2h<ra_types::displacement1i_t> v1((*i).x, (*i).y);
         auto                              v1m = M * v1;
         *i                                    = { v1m.col1[0], v1m.col1[1] };
     }
 }
 
 template <typename T>
-mat2x2h<T> MatrixCalculatorSimple::MakeMoveMatrix(
+Mat2x2h<T> MatrixCalculatorSimple::MoveMatrix(
     ra_types::displacement1i_t dx, ra_types::displacement1i_t dy) const
 {
-    mat2x2h<T> mat;
+    Mat2x2h<T> mat;
     mat.col3[0] = T(dx);
     mat.col3[1] = T(dy);
     return mat;
 }
 
 template <typename T>
-mat2x2h<T> MatrixCalculatorSimple::MakeStretchMatrix(float xCoef,
-                                                     float yCoef) const
+Mat2x2h<T> MatrixCalculatorSimple::StretchMatrix(float xCoef, float yCoef) const
 {
-    mat2x2h<T> mat;
+    Mat2x2h<T> mat;
     mat.col1[0] = T(xCoef);
     mat.col2[1] = T(yCoef);
     return mat;

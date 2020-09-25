@@ -7,33 +7,33 @@
 namespace ra_core::pipeline
 {
 Pipeline::Pipeline(const ClippingRectangularWindow*       clipwin_ptr,
-                   const AlgorithmProxy&                  raproxyRef,
-                   const SpaceCoordinateTranslatorSimple& spaceCoordTransRef)
-    : clipwin_ptr{ clipwin_ptr }
-    , raproxyRef{ raproxyRef }
-    , spaceCoordTransRef{ spaceCoordTransRef }
-    , dotbuf(spaceCoordTransRef.getDotBuffer1dSpaceRef(), spaceCoordTransRef,
-             ra_core::renderer::CANVAS_WIDTH_DT)
-    , pixbuf(spaceCoordTransRef.getPixelBuffer2dSpaceRef(), spaceCoordTransRef,
-             ra_core::renderer::WORLD_DEFAULT_COLOR_CODE)
-    , canvas{ spaceCoordTransRef.getCanvas2dSpaceRef() }
-    , rasterizer(dotbuf, pixbuf, canvas, spaceCoordTransRef)
-    , renderingTarget{ pipeline::eTarget::DotBuffer } // NOTE: Draw depends on
-    , exportTarget{ pipeline::eTarget::DotBuffer }    // NOTE: Draw depends on
-    , renderingTarget_ptr{ &dotbuf }
+                   const AlgorithmProxy&                  rp,
+                   const SpaceCoordinateTranslatorSimple& sct)
+    : clipwin_ptr_{ clipwin_ptr }
+    , raproxy_{ rp }
+    , space_coord_trans_{ sct }
+    , dotbuf_(sct.getDotBuffer1dSpaceRef(), sct,
+              ra_core::renderer::CANVAS_WIDTH_DT)
+    , pixbuf_(sct.getPixelBuffer2dSpaceRef(), sct,
+              ra_core::renderer::WORLD_DEFAULT_COLOR_CODE)
+    , canvas_{ sct.getCanvas2dSpaceRef() }
+    , rasterizer_(dotbuf_, pixbuf_, canvas_, sct)
+    , rendering_target_{ pipeline::Target::kDotBuffer } // NOTE: Draw depends on
+    , export_target_{ pipeline::Target::kDotBuffer }    // NOTE: Draw depends on
+    , renderingTarget_ptr_{ &dotbuf_ }
 
 {
 }
 
-bool Pipeline::IsVisibleLineSegment(ra_types::point2i& p1,
-                                    ra_types::point2i& p2) const
+bool Pipeline::IsVisibleLineSegment(ra_types::Point2i& p1,
+                                    ra_types::Point2i& p2) const
 {
-    if (clipwin_ptr != nullptr)
+    if (clipwin_ptr_ != nullptr)
     {
-        auto clip = raproxyRef.getClipRectangular();
+        auto clip = raproxy_.getClipRectangular();
 
-        auto result = clip(p1, p2, clipwin_ptr->getMax_X_max_Y(),
-                           clipwin_ptr->getMin_X_min_Y());
+        auto result = clip(p1, p2, clipwin_ptr_->getMax_X_max_Y(),
+                           clipwin_ptr_->getMin_X_min_Y());
 
         if (result[0].x < 0) // NOTE: result.empty() // for vector, but array is
                              // already initialized
@@ -48,28 +48,28 @@ bool Pipeline::IsVisibleLineSegment(ra_types::point2i& p1,
     return true;
 }
 
-pipeline::eTarget Pipeline::getExportTarget() const
+pipeline::Target Pipeline::getExportTarget() const
 {
-    return exportTarget;
+    return export_target_;
 }
 
-void Pipeline::setExportTarget(const pipeline::eTarget& value)
+void Pipeline::setExportTarget(const pipeline::Target& value)
 {
-    exportTarget = value;
+    export_target_ = value;
 }
 
-pipeline::eTarget Pipeline::getRenderingTarget() const
+pipeline::Target Pipeline::getRenderingTarget() const
 {
-    return renderingTarget;
+    return rendering_target_;
 }
 
-void Pipeline::setRenderingTarget(const pipeline::eTarget& value)
+void Pipeline::setRenderingTarget(const pipeline::Target& value)
 {
-    renderingTarget = value;
-    if (renderingTarget == eTarget::DotBuffer)
-        renderingTarget_ptr = &dotbuf;
+    rendering_target_ = value;
+    if (rendering_target_ == Target::kDotBuffer)
+        renderingTarget_ptr_ = &dotbuf_;
     else
-        renderingTarget_ptr = &pixbuf;
+        renderingTarget_ptr_ = &pixbuf_;
 }
 
 inline ra_types::displacement2i Cartesian2dToCanvas2d(
@@ -79,33 +79,33 @@ inline ra_types::displacement2i Cartesian2dToCanvas2d(
 }
 
 ra_types::pointXi Pipeline::TranslateToRenderingTarget(
-    const ra_types::point2i& p) const
+    const ra_types::Point2i& p) const
 {
     ra_types::pointXi point;
 
     // NOTE: ignores spce offset currently
 
-    if (renderingTarget == eTarget::DotBuffer)
+    if (rendering_target_ == Target::kDotBuffer)
     {
         point.point2i = p;
     }
     else
     {
-        point.point2i = spaceCoordTransRef.TranslateCanvasToPixelBuffer(p);
+        point.point2i = space_coord_trans_.TranslateCanvasToPixelBuffer(p);
     }
     return point;
 }
 
 void Pipeline::StumpCanvas()
 {
-    if (exportTarget == pipeline::eTarget::DotBuffer)
+    if (export_target_ == pipeline::Target::kDotBuffer)
     {
-        rasterizer.ImageDotBufferToPixelBuffer();
-        canvas.imagePixelBuffer2d(pixbuf);
+        rasterizer_.ImageDotBufferToPixelBuffer();
+        canvas_.imagePixelBuffer2d(pixbuf_);
     }
     else
     {
-        canvas.imagePixelBuffer2d(pixbuf);
+        canvas_.imagePixelBuffer2d(pixbuf_);
     }
 }
 
@@ -116,7 +116,7 @@ void Pipeline::DrawCircuit(const ra_core::figures2d::Dot& dot)
 
     auto p = dot.getPoint();
 
-    spaceCoordTransRef.TranslateWorldToCanvas(p);
+    space_coord_trans_.TranslateWorldToCanvas(p);
 
     if (!IsVisible(p))
     {
@@ -124,11 +124,11 @@ void Pipeline::DrawCircuit(const ra_core::figures2d::Dot& dot)
     }
     else
     {
-        auto ra_dot_func = raproxyRef.getRenderDot();
+        auto ra_dot_func = raproxy_.getRenderDot();
         auto point       = TranslateToRenderingTarget(p).point2i;
         auto dotsdrawn   = ra_dot_func(point.x, point.y, dot.GetColorCode(),
-                                     *renderingTarget_ptr);
-        (*renderingTarget_ptr).UpdateDotsNumber(dotsdrawn);
+                                     *renderingTarget_ptr_);
+        (*renderingTarget_ptr_).UpdateDotsNumber(dotsdrawn);
     }
 }
 
@@ -142,8 +142,8 @@ void Pipeline::DrawCircuit(const figures2d::LineSegment& ls)
     auto p1 = ls.getFirstPoint();
     auto p2 = ls.getSecondPoint();
 
-    spaceCoordTransRef.TranslateWorldToCanvas(p1);
-    spaceCoordTransRef.TranslateWorldToCanvas(p2);
+    space_coord_trans_.TranslateWorldToCanvas(p1);
+    space_coord_trans_.TranslateWorldToCanvas(p2);
 
     if (!IsVisibleLineSegment(p1, p2))
     {
@@ -151,15 +151,15 @@ void Pipeline::DrawCircuit(const figures2d::LineSegment& ls)
     }
     else
     {
-        auto ra_linesegment_func = raproxyRef.getRenderLineSegment();
+        auto ra_linesegment_func = raproxy_.getRenderLineSegment();
 
         auto point1 = TranslateToRenderingTarget(p1).point2i;
         auto point2 = TranslateToRenderingTarget(p2).point2i;
 
         auto dotsdrawn = ra_linesegment_func(point1, point2, ls.GetColorCode(),
-                                             *renderingTarget_ptr);
+                                             *renderingTarget_ptr_);
 
-        renderingTarget_ptr->UpdateDotsNumber(dotsdrawn);
+        renderingTarget_ptr_->UpdateDotsNumber(dotsdrawn);
     }
 }
 
@@ -170,7 +170,7 @@ void Pipeline::DrawCircuit(const figures2d::Circle& c)
               << GetString(c.GetColorCode()) << std::endl;
 
     auto center = c.getCenter();
-    spaceCoordTransRef.TranslateWorldToCanvas(center);
+    space_coord_trans_.TranslateWorldToCanvas(center);
 
     if (!IsVisible(c.getMaxX(), c.getMaxY()) ||
         !IsVisible(c.getMinX(), c.getMinY()))
@@ -184,12 +184,12 @@ void Pipeline::DrawCircuit(const figures2d::Circle& c)
     {
         auto centerPoint = TranslateToRenderingTarget(center).point2i;
 
-        auto ra_circle_func = raproxyRef.getRenderCircle();
+        auto ra_circle_func = raproxy_.getRenderCircle();
 
         auto dotsdrawn = ra_circle_func(centerPoint, c.getRadius(),
-                                        c.GetColorCode(), *renderingTarget_ptr);
+                                        c.GetColorCode(), *renderingTarget_ptr_);
 
-        renderingTarget_ptr->UpdateDotsNumber(dotsdrawn);
+        renderingTarget_ptr_->UpdateDotsNumber(dotsdrawn);
     }
 }
 
@@ -204,9 +204,9 @@ void Pipeline::DrawCircuit(const figures2d::Triangle& tr)
     auto p2 = tr.getP2();
     auto p3 = tr.getP3();
 
-    spaceCoordTransRef.TranslateWorldToCanvas(p1);
-    spaceCoordTransRef.TranslateWorldToCanvas(p2);
-    spaceCoordTransRef.TranslateWorldToCanvas(p3);
+    space_coord_trans_.TranslateWorldToCanvas(p1);
+    space_coord_trans_.TranslateWorldToCanvas(p2);
+    space_coord_trans_.TranslateWorldToCanvas(p3);
 
     if (!IsVisible(tr.getMaxX(), tr.getMaxY()) ||
         !IsVisible(tr.getMinX(), tr.getMinY()))
@@ -222,18 +222,18 @@ void Pipeline::DrawCircuit(const figures2d::Triangle& tr)
     IsVisibleLineSegment(p2, p3);
     IsVisibleLineSegment(p3, p1);
 
-    ra_types::point2i P1{ TranslateToRenderingTarget(p1).point2i };
-    ra_types::point2i P2{ TranslateToRenderingTarget(p2).point2i };
-    ra_types::point2i P3{ TranslateToRenderingTarget(p3).point2i };
+    ra_types::Point2i P1{ TranslateToRenderingTarget(p1).point2i };
+    ra_types::Point2i P2{ TranslateToRenderingTarget(p2).point2i };
+    ra_types::Point2i P3{ TranslateToRenderingTarget(p3).point2i };
 
-    auto ra_ls_func = raproxyRef.getRenderLineSegment();
+    auto ra_ls_func = raproxy_.getRenderLineSegment();
 
     auto dotsdrawn =
-        ra_ls_func(P1, P2, tr.GetColorCode(), *renderingTarget_ptr);
-    dotsdrawn += ra_ls_func(P2, P3, tr.GetColorCode(), *renderingTarget_ptr);
-    dotsdrawn += ra_ls_func(P3, P1, tr.GetColorCode(), *renderingTarget_ptr);
+        ra_ls_func(P1, P2, tr.GetColorCode(), *renderingTarget_ptr_);
+    dotsdrawn += ra_ls_func(P2, P3, tr.GetColorCode(), *renderingTarget_ptr_);
+    dotsdrawn += ra_ls_func(P3, P1, tr.GetColorCode(), *renderingTarget_ptr_);
 
-    renderingTarget_ptr->UpdateDotsNumber(dotsdrawn);
+    renderingTarget_ptr_->UpdateDotsNumber(dotsdrawn);
 }
 
 void Pipeline::DrawShape(const figures2d::Circle& c)
@@ -256,9 +256,9 @@ void Pipeline::DrawShape(const figures2d::Triangle& tr)
     auto p3 = tr.getP3();
 
     // NOTE: actually can be 6 vertices, todo Polygon_partition
-    spaceCoordTransRef.TranslateWorldToCanvas(p1);
-    spaceCoordTransRef.TranslateWorldToCanvas(p2);
-    spaceCoordTransRef.TranslateWorldToCanvas(p3);
+    space_coord_trans_.TranslateWorldToCanvas(p1);
+    space_coord_trans_.TranslateWorldToCanvas(p2);
+    space_coord_trans_.TranslateWorldToCanvas(p3);
 
     if (!IsVisible(tr.getMaxX(), tr.getMaxY()) ||
         !IsVisible(tr.getMinX(), tr.getMinY()))
@@ -272,16 +272,16 @@ void Pipeline::DrawShape(const figures2d::Triangle& tr)
     IsVisibleLineSegment(p2, p3);
     IsVisibleLineSegment(p3, p1);
 
-    ra_types::point2i P1{ TranslateToRenderingTarget(p1).point2i };
-    ra_types::point2i P2{ TranslateToRenderingTarget(p2).point2i };
-    ra_types::point2i P3{ TranslateToRenderingTarget(p3).point2i };
+    ra_types::Point2i P1{ TranslateToRenderingTarget(p1).point2i };
+    ra_types::Point2i P2{ TranslateToRenderingTarget(p2).point2i };
+    ra_types::Point2i P3{ TranslateToRenderingTarget(p3).point2i };
 
-    auto ra_trf_func = raproxyRef.getFillTriangle();
+    auto ra_trf_func = raproxy_.getFillTriangle();
 
     auto dotsdrawn =
-        ra_trf_func(P1, P2, P3, tr.GetColorCode(), *renderingTarget_ptr);
+        ra_trf_func(P1, P2, P3, tr.GetColorCode(), *renderingTarget_ptr_);
 
-    renderingTarget_ptr->UpdateDotsNumber(dotsdrawn);
+    renderingTarget_ptr_->UpdateDotsNumber(dotsdrawn);
 }
 
 void Pipeline::DrawCircuit(const figures2d::Quadrangle& qd)
@@ -297,10 +297,10 @@ void Pipeline::DrawCircuit(const figures2d::Quadrangle& qd)
     auto p3 = qd.getP3();
     auto p4 = qd.getP4();
 
-    spaceCoordTransRef.TranslateWorldToCanvas(p1);
-    spaceCoordTransRef.TranslateWorldToCanvas(p2);
-    spaceCoordTransRef.TranslateWorldToCanvas(p3);
-    spaceCoordTransRef.TranslateWorldToCanvas(p4);
+    space_coord_trans_.TranslateWorldToCanvas(p1);
+    space_coord_trans_.TranslateWorldToCanvas(p2);
+    space_coord_trans_.TranslateWorldToCanvas(p3);
+    space_coord_trans_.TranslateWorldToCanvas(p4);
 
     if (!IsVisible(qd.getMaxX(), qd.getMaxY()) ||
         !IsVisible(qd.getMinX(), qd.getMinY()))
@@ -317,20 +317,20 @@ void Pipeline::DrawCircuit(const figures2d::Quadrangle& qd)
     IsVisibleLineSegment(p3, p4);
     IsVisibleLineSegment(p4, p1);
 
-    ra_types::point2i P1{ TranslateToRenderingTarget(p1).point2i };
-    ra_types::point2i P2{ TranslateToRenderingTarget(p2).point2i };
-    ra_types::point2i P3{ TranslateToRenderingTarget(p3).point2i };
-    ra_types::point2i P4{ TranslateToRenderingTarget(p4).point2i };
+    ra_types::Point2i P1{ TranslateToRenderingTarget(p1).point2i };
+    ra_types::Point2i P2{ TranslateToRenderingTarget(p2).point2i };
+    ra_types::Point2i P3{ TranslateToRenderingTarget(p3).point2i };
+    ra_types::Point2i P4{ TranslateToRenderingTarget(p4).point2i };
 
-    auto ra_ls_func = raproxyRef.getRenderLineSegment();
+    auto ra_ls_func = raproxy_.getRenderLineSegment();
 
     auto dotsdrawn =
-        ra_ls_func(P1, P2, qd.GetColorCode(), *renderingTarget_ptr);
-    dotsdrawn += ra_ls_func(P2, P3, qd.GetColorCode(), *renderingTarget_ptr);
-    dotsdrawn += ra_ls_func(P3, P4, qd.GetColorCode(), *renderingTarget_ptr);
-    dotsdrawn += ra_ls_func(P4, P1, qd.GetColorCode(), *renderingTarget_ptr);
+        ra_ls_func(P1, P2, qd.GetColorCode(), *renderingTarget_ptr_);
+    dotsdrawn += ra_ls_func(P2, P3, qd.GetColorCode(), *renderingTarget_ptr_);
+    dotsdrawn += ra_ls_func(P3, P4, qd.GetColorCode(), *renderingTarget_ptr_);
+    dotsdrawn += ra_ls_func(P4, P1, qd.GetColorCode(), *renderingTarget_ptr_);
 
-    renderingTarget_ptr->UpdateDotsNumber(dotsdrawn);
+    renderingTarget_ptr_->UpdateDotsNumber(dotsdrawn);
 }
 
 void Pipeline::DrawShape(const figures2d::Quadrangle& tr)
@@ -344,14 +344,14 @@ ra_core::pipeline::Canvas2d ra_core::pipeline::Pipeline::ExportCanvas()
 {
     StumpCanvas();
 
-    auto copy(canvas);
+    auto copy(canvas_);
 
     return copy;
 }
 
 void Pipeline::setClipwin_ptr(const ClippingRectangularWindow* value)
 {
-    clipwin_ptr = value;
+    clipwin_ptr_ = value;
 }
 
 } // namespace ra_core::pipeline

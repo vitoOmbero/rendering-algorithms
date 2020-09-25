@@ -17,7 +17,7 @@ bool IsInitialized = false;
 
 #include "INIT_GUARD_MACRO.inc"
 
-static const ra_services::color_rgb::ColorMap              cm;
+static const ra_services::color_rgb::ColorMap kColorMap;
 static ra_services::geometric_transformations_in_homogeneous_coordinates::
     MatrixCalculatorSimple                                 mcx;
 static ra_core::pipeline::AlgorithmProxy                   raproxy;
@@ -38,7 +38,7 @@ void Init()
     pipeline_ptr  = new Pipeline(clipwin_ptr, raproxy, *spaceCoordTrans_ptr);
     IsInitialized = true;
 
-    setDrawingMode(pipeline::eDrawingMode::Circuit);
+    setDrawingMode(pipeline::DrawingMode::kCircuit);
 }
 
 void Destroy()
@@ -64,46 +64,45 @@ void Draw(const ra_core::figures2d::DrawableInterface& drawable)
         drawable.AcceptFigure2dVisitor(drawVisitor_ptr);
     else
     {
-        setDrawingMode(pipeline::eDrawingMode::Circuit);
+        setDrawingMode(pipeline::DrawingMode::kCircuit);
         drawable.AcceptFigure2dVisitor(drawVisitor_ptr);
     }
 }
 
-void setDrawingMode(pipeline::eDrawingMode mode)
+void setDrawingMode(pipeline::DrawingMode mode)
 {
     INIT_GUARD(IsInitialized, )
 
     if (drawVisitor_ptr != nullptr)
         delete drawVisitor_ptr;
 
-    if (mode == pipeline::eDrawingMode::Circuit)
+    if (mode == pipeline::DrawingMode::kCircuit)
         drawVisitor_ptr = new pipeline::DrawCircuit2dVisitor(*pipeline_ptr);
     else
         drawVisitor_ptr = new pipeline::DrawShape2dVisitor(*pipeline_ptr);
 }
 
-void UseLineAlgorithm(ra_core::rendering2d::rendering_algorithm algo_ptr)
+void UseLineAlgorithm(ra_core::rendering2d::RenderingAlgorithm kAlgo)
 {
     INIT_GUARD(IsInitialized, )
-    raproxy.setRenderingCircuitAlgorithm(figures2d::eFigure2dType::Line,
-                                         algo_ptr);
+    raproxy.setRenderingCircuitAlgorithm(figures2d::Figure2dType::kLine, kAlgo);
 }
 
-void UseCircleAlgorithm(ra_core::rendering2d::rendering_algorithm algo_ptr)
+void UseCircleAlgorithm(ra_core::rendering2d::RenderingAlgorithm kAlgo)
 {
     INIT_GUARD(IsInitialized, )
-    raproxy.setRenderingCircuitAlgorithm(figures2d::eFigure2dType::Circle,
-                                         algo_ptr);
+    raproxy.setRenderingCircuitAlgorithm(figures2d::Figure2dType::kCircle,
+                                         kAlgo);
 }
 
-void UseFillingTriangle(ra_core::rendering2d::filling_algorithm algo_ptr)
+void UseFillingTriangle(ra_core::rendering2d::FillingAlgorithm kAlgo)
 {
     INIT_GUARD(IsInitialized, )
-    raproxy.setFillingAlgorithm(figures2d::eFigure2dType::Triangle, algo_ptr);
+    raproxy.setFillingAlgorithm(figures2d::Figure2dType::kTriangle, kAlgo);
 }
 
 void UseClippingWindow(ra_types::n0_t offsetX, ra_types::n0_t offsetY,
-                       ra_core::rendering2d::clipping_algorithm algo_ptr)
+                       ra_core::rendering2d::ClippingAlgorithm kAlgo)
 {
     INIT_GUARD(IsInitialized, )
 
@@ -117,10 +116,10 @@ void UseClippingWindow(ra_types::n0_t offsetX, ra_types::n0_t offsetY,
                                         displacement1i_t{ -offsetY });
 
     clipwin_ptr = new pipeline::ClippingRectangularWindow(
-        spaceCoordTrans_ptr->getClipwin2dSpaceRef(), algo_ptr);
+        spaceCoordTrans_ptr->getClipwin2dSpaceRef(), kAlgo);
     pipeline_ptr->setClipwin_ptr(clipwin_ptr);
 
-    raproxy.setClippingAlgorithm(clipwin_ptr->getClippingAlgo_ptr());
+    raproxy.setClippingAlgorithm(clipwin_ptr->getClippingAlgo());
 }
 
 ra_core::pipeline::Canvas2d getCanvas()
@@ -130,14 +129,14 @@ ra_core::pipeline::Canvas2d getCanvas()
     return pipeline_ptr->ExportCanvas();
 }
 
-void setExportTarget(pipeline::eTarget target)
+void setExportTarget(pipeline::Target target)
 {
     INIT_GUARD(IsInitialized, )
 
     pipeline_ptr->setExportTarget(target);
 }
 
-void setRenderingTarget(pipeline::eTarget target)
+void setRenderingTarget(pipeline::Target target)
 {
     INIT_GUARD(IsInitialized, )
 
@@ -146,7 +145,7 @@ void setRenderingTarget(pipeline::eTarget target)
 
 const ra_services::color_rgb::ColorMap& getColorMap()
 {
-    return cm;
+    return kColorMap;
 }
 
 void UseNoClippingWindow()
@@ -166,10 +165,10 @@ ra_services::geometric_transformations_in_homogeneous_coordinates::
     return mcx;
 }
 
-void UseCustomFillingTriangle(rendering2d::filling_triangle_fptr func_ptr)
+void UseCustomFillingTriangle(rendering2d::FillingTriangleFunction func_ptr)
 {
     raproxy.setCustomFillingAlgorithm(
-        ra_core::figures2d::eFigure2dType::Triangle,
+        ra_core::figures2d::Figure2dType::kTriangle,
         reinterpret_cast<void*>(func_ptr));
 }
 

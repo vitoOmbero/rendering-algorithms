@@ -3,26 +3,26 @@
 
 namespace ra_core::rendering2d
 {
-enum class clipping_algorithm
+enum class ClippingAlgorithm
 {
-    cohen_sutherland,
-    cyrus_beck,
+    kCohenSutherland,
+    kCyrusBeck,
 };
-enum class filling_algorithm
+enum class FillingAlgorithm
 {
-    fill3_naive_horizontal,
-    fill3_line_sweeping_phase_01,
-    fill3_line_sweeping_phase_02,
-    fill3_line_sweeping,
+    kFill3NaiveHorizontal,
+    kFill3LineSweepingPhase01,
+    kFill3LineSweepingPhase02,
+    kFill3LineSweeping,
 };
-enum class rendering_algorithm
+enum class RenderingAlgorithm
 {
-    custom,
-    dot_naive,
-    line_naive_hor_vert_diag,
-    line_bresenham_defect,
-    line_bresenham_int,
-    circle_bresenham_int,
+    kCustom,
+    kDotNaive,
+    kLineNaiveHorVertDiag,
+    kLineBresenhamDefect,
+    kLineBresenhamInt,
+    kCircleBresenhamInt,
 };
 }; // namespace ra_core::rendering2d
 

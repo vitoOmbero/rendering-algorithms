@@ -9,8 +9,8 @@
 namespace ra_core::rendering2d::circuits
 {
 ra_types::n0_t bresenham_int_circle(
-    ra_types::point2i center, ra_types::distance1ui_t radius,
-    ra_types::rgb888                        color_code,
+    ra_types::Point2i center, ra_types::distance1ui_t radius,
+    ra_types::Rgb888                        color_code,
     ra_core::pipeline::RenderingTargetBase& dotbuf);
 }
 

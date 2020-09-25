@@ -10,9 +10,9 @@ namespace ra_types
 {
 
 template <std::size_t N>
-using ImageRgb888Const = std::array<rgb888, N>;
+using ImageRgb888Const = std::array<Rgb888, N>;
 
-using ImageRgb888Volatile = std::vector<rgb888>;
+using ImageRgb888Volatile = std::vector<Rgb888>;
 
 } // namespace ra_types
 

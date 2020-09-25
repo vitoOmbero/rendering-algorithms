@@ -6,10 +6,10 @@
 namespace ra_core::renderer
 {
 
-inline constexpr ra_types::rgb888 CANVAS_DEFAULT_COLOR_CODE =
-    ra_types::rgb888();
-inline constexpr ra_types::rgb888 WORLD_DEFAULT_COLOR_CODE =
-    ra_types::rgb888(127);
+inline constexpr ra_types::Rgb888 CANVAS_DEFAULT_COLOR_CODE =
+    ra_types::Rgb888();
+inline constexpr ra_types::Rgb888 WORLD_DEFAULT_COLOR_CODE =
+    ra_types::Rgb888(127);
 inline constexpr ra_types::n0_t           CANVAS_WIDTH_DT        = 800;
 inline constexpr ra_types::n0_t           CANVAS_HEIGHT_DT       = 600;
 inline constexpr ra_types::n0_t           RASTERIZATION_DOT_SIZE = 1;

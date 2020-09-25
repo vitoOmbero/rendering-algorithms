@@ -11,7 +11,7 @@
 #include "ra_types.h"
 
 template <typename T> // NOTE: where T is integral
-static inline ra_types::displacement1i_t coords_to_index(
+static inline ra_types::displacement1i_t CoordsToIndex(
     T x, T y, ra_types::distance1ui_t w, ra_types::distance1ui_t h)
 {
     if ((x < 0) || (y < 0))
@@ -26,7 +26,7 @@ static inline ra_types::displacement1i_t coords_to_index(
 // only GL_POINTS mode is used for drawing with opengl
 
 template <size_t width, size_t height, size_t display_size>
-class visual_tests_glut_window
+class GlutWindowProducer
 {
 private:
     // lightwieght abstraction
@@ -35,15 +35,15 @@ private:
     static std::vector<image>* image_registry;
 
 public:
-    static void run()
+    static void Run()
     {
-        test_opengl_points_only();
+        DrawOpenglWithPointsOnly();
 
         // never return from this
         glutMainLoop();
     }
 
-    visual_tests_glut_window(int argc, char* argv[])
+    GlutWindowProducer(int argc, char* argv[])
     {
         // one time init
         glutInit(&argc, argv);
@@ -53,10 +53,10 @@ public:
         image_registry = new std::vector<image>();
     }
 
-    ~visual_tests_glut_window() { delete image_registry; }
+    ~GlutWindowProducer() { delete image_registry; }
 
     // callback for glut - vertical line
-    static void display_test_v()
+    static void DisplayVertical()
     {
         // clear buf
         glClear(GL_COLOR_BUFFER_BIT);
@@ -92,7 +92,7 @@ public:
     }
 
     // callback for glut - horizontal line
-    static void display_test_h()
+    static void DisplayHorizontal()
     {
         // clear buf
         glClear(GL_COLOR_BUFFER_BIT);
@@ -124,7 +124,7 @@ public:
     }
 
     // glut produces windows
-    static void test_window_line_vertical()
+    static void ShowWindowForVertical()
     {
         // get window 1
         GLint window1;
@@ -138,14 +138,14 @@ public:
         glOrtho(0.0, width, 0.0, height, -1., 1.);
         glViewport(0, 0, width, height);
 
-        glutDisplayFunc(display_test_v);
+        glutDisplayFunc(DisplayVertical);
 
         glClearColor(1., 1., 1., 1.);
         std::cout << "Open window " << window1 << " for " << window_title1
                   << std::endl;
     }
 
-    static void test_window_line_horizontal()
+    static void ShowWindowForHorizontal()
     {
         // get window 2 (yes, this is the reason)
         GLint window2;
@@ -159,7 +159,7 @@ public:
         glOrtho(0.0, width, 0.0, height, -1., 1.);
         glViewport(0, 0, width, height);
 
-        glutDisplayFunc(display_test_h);
+        glutDisplayFunc(DisplayHorizontal);
 
         // glClearColor(1.0, 1.0, 1.0, 1.0);
         std::cout << "Open window " << window2 << " for " << window_title2
@@ -168,16 +168,16 @@ public:
 
     // tests for pure glut
 
-    static void test_opengl_points_only()
+    static void DrawOpenglWithPointsOnly()
     {
-        test_window_line_vertical();
+        ShowWindowForVertical();
 
-        test_window_line_horizontal();
+        ShowWindowForHorizontal();
     }
 
     // callback for glut - draw images from canvas
     // NOTE: right now canvas coordinate system and window's one are different
-    static void display_image()
+    static void DisplayImage()
     {
         static size_t number;
         image         img = image_registry->at(number++);
@@ -204,8 +204,7 @@ public:
                 GLint current_x = 0;
                 while (current_x < w)
                 {
-                    auto i =
-                        coords_to_index(current_x, current_y, width, height);
+                    auto i = CoordsToIndex(current_x, current_y, width, height);
                     glColor3ub(img[i].r, img[i].g, img[i].b);
 
                     glVertex2i(current_x * step_x, current_y * step_y);
@@ -221,8 +220,8 @@ public:
 
     // produce window with glut to show image
     template <size_t N>
-    static void test_window_image(const char*                     title,
-                                  std::array<ra_types::rgb888, N> image)
+    static void ShowWindowForImage(const char*                     title,
+                                   std::array<ra_types::Rgb888, N> image)
     {
         // implicit static binding with ordered number of function call and
         // index in image registry
@@ -240,7 +239,7 @@ public:
         glViewport(0, 0, width, height);
 
         // expects void(*)(), so we explictly use static registry of images
-        glutDisplayFunc([]() -> void { display_image(); });
+        glutDisplayFunc([]() -> void { DisplayImage(); });
 
         // NOTE: commented line show artifacts borned by bad callback;
         // Right now, gl clear color is Black, and white color in canvas
@@ -254,9 +253,8 @@ public:
 
 // static member of template class declaration
 template <size_t width, size_t height, size_t display_size>
-std::vector<
-    typename visual_tests_glut_window<width, height, display_size>::image>*
-    visual_tests_glut_window<width, height, display_size>::image_registry;
+std::vector<typename GlutWindowProducer<width, height, display_size>::image>*
+    GlutWindowProducer<width, height, display_size>::image_registry;
 
 class GlutViewerSimple : public Canvas2dViewerInterface
 {
@@ -280,7 +278,7 @@ public:
 
         auto im = canvas.getImage();
 
-        glut_win_producer_t::test_window_image<
+        glut_win_producer_t::ShowWindowForImage<
             ra_core::renderer::CANVAS_WIDTH_PX *
             ra_core::renderer::CANVAS_HEIGHT_PX>(description.data(), im);
     };
@@ -288,14 +286,14 @@ public:
     void glutMainLoop()
     {
         // never return from this
-        glut_win_producer.run();
+        glut_win_producer.Run();
     };
 
 private:
-    typedef visual_tests_glut_window<ra_core::renderer::CANVAS_WIDTH_PX,
-                                     ra_core::renderer::CANVAS_HEIGHT_PX,
-                                     ra_core::renderer::CANVAS_WIDTH_PX *
-                                         ra_core::renderer::CANVAS_HEIGHT_PX>
+    typedef GlutWindowProducer<ra_core::renderer::CANVAS_WIDTH_PX,
+                               ra_core::renderer::CANVAS_HEIGHT_PX,
+                               ra_core::renderer::CANVAS_WIDTH_PX *
+                                   ra_core::renderer::CANVAS_HEIGHT_PX>
         glut_win_producer_t;
 
     glut_win_producer_t glut_win_producer;

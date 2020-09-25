@@ -19,8 +19,8 @@ namespace ra_core::rendering2d::line
  * @return dots drawn number
  */
 ra_types::n0_t bresenham_defect_diag_line(
-    ra_types::point2i first, ra_types::point2i second,
-    ra_types::rgb888                        color_code,
+    ra_types::Point2i first, ra_types::Point2i second,
+    ra_types::Rgb888                        color_code,
     ra_core::pipeline::RenderingTargetBase& target);
 
 /**
@@ -34,8 +34,8 @@ ra_types::n0_t bresenham_defect_diag_line(
  * @return dots drawn number
  */
 ra_types::n0_t bresenham_int_line(
-    ra_types::point2i first, ra_types::point2i second,
-    ra_types::rgb888                        color_code,
+    ra_types::Point2i first, ra_types::Point2i second,
+    ra_types::Rgb888                        color_code,
     ra_core::pipeline::RenderingTargetBase& target);
 #endif // ALGORITHMS_LINE_CLASSIC_H
 }

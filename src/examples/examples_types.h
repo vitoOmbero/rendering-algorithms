@@ -7,10 +7,10 @@ namespace ra_examples
 {
 
 /**
- * @brief canvas2d_example_ft - type for functions with client code using 2d
+ * @brief Canvas2dExampleFunction - type for functions with client code using 2d
  * canvas
  */
-typedef ra_core::pipeline::Canvas2d (*canvas2d_example_ft)(void);
+typedef ra_core::pipeline::Canvas2d (*Canvas2dExampleFunction)(void);
 
 } // namespace ra_examples
 #endif // EXAMPLES_TYPES_H

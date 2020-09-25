@@ -5,20 +5,20 @@
 namespace ra_core::figures2d
 {
 
-Circle::Circle(ra_types::point2i center, distance1ui_t radius,
+Circle::Circle(ra_types::Point2i center, distance1ui_t radius,
                struct border border)
     : CircuitBase(border)
-    , center{ center }
-    , radius{ radius }
+    , center_{ center }
+    , radius_{ radius }
 {
 }
 
-Circle::Circle(ra_types::point2i center, ra_types::point2i point,
+Circle::Circle(ra_types::Point2i center, ra_types::Point2i point,
                struct border border)
     : CircuitBase(border)
-    , center{ center }
+    , center_{ center }
 {
-    radius = ra_services::math2d::calc_distance(center, point);
+    radius_ = ra_services::math2d::CalcDistance(center, point);
 }
 
 void ra_core::figures2d::Circle::AcceptFigure2dVisitor(
@@ -27,23 +27,23 @@ void ra_core::figures2d::Circle::AcceptFigure2dVisitor(
     fv->VisitCircle(this);
 }
 
-ra_types::point2i Circle::getCenter() const
+ra_types::Point2i Circle::getCenter() const
 {
-    return center;
+    return center_;
 }
 
-void Circle::setCenter(const ra_types::point2i& value)
+void Circle::setCenter(const ra_types::Point2i& value)
 {
-    center = value;
+    center_ = value;
 }
 
 distance1ui_t Circle::getRadius() const
 {
-    return radius;
+    return radius_;
 }
 
 void Circle::setRadius(const distance1ui_t &value)
 {
-    radius = value;
+    radius_ = value;
 }
 } // namespace ra_core::figures2d

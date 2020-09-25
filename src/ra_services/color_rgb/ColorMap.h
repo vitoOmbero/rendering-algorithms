@@ -24,12 +24,12 @@ class ColorMap final
 public:
     ColorMap();
 
-    eColor  FindColor(const rgb888 rgb) const;
-    rgb888 FindRgbCode(const eColor colorName) const;
-    eColor  FindClosestColor(const rgb888 rgb) const;
+    Color  FindColor(const Rgb888 rgb) const;
+    Rgb888 FindRgbCode(const Color colorName) const;
+    Color  FindClosestColor(const Rgb888 rgb) const;
 
 private:
-    static const std::map<eColor, rgb888> color_map;
+    static const std::map<Color, Rgb888> color_map_;
 };
 } // namespace ra_services::color_rgb
 #endif // COLORMAP_H

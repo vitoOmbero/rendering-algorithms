@@ -22,13 +22,14 @@ public:
 
     virtual ~ExamplePackBase();
 
-    typedef std::vector<canvas2d_example_ft>::const_iterator exampleCIterator;
-    typedef std::vector<std::string>::const_iterator         nameCIterator;
+    typedef std::vector<Canvas2dExampleFunction>::const_iterator
+                                                     ExampleCIterator;
+    typedef std::vector<std::string>::const_iterator NameCIterator;
 
-    exampleCIterator GetExamplesCBegin() const;
-    exampleCIterator GetExamplesCEnd() const;
-    nameCIterator    GetNamesCBegin() const;
-    nameCIterator    GetNamesCEnd() const;
+    ExampleCIterator getExamplesCBegin() const;
+    ExampleCIterator getExamplesCEnd() const;
+    NameCIterator    getNamesCBegin() const;
+    NameCIterator    getNamesCEnd() const;
 
     virtual std::string getName() const;
 
@@ -39,19 +40,19 @@ protected:
      * example
      * @param example_description - name for example
      */
-    void AddExample(canvas2d_example_ft exampleFuncPtr,
+    void AddExample(Canvas2dExampleFunction exampleFuncPtr,
                     std::string         exampleDescription) const;
 
     /**
      * @brief name - viewable name of pack will be added to the example samples
      * names
      */
-    std::string name;
+    std::string name_;
 
 private:
-    std::vector<canvas2d_example_ft>* examples;
-    std::vector<std::string>*         names;
-    std::ostringstream*               oss;
+    std::vector<Canvas2dExampleFunction>* examples_;
+    std::vector<std::string>*             names_;
+    std::ostringstream*                   oss_;
 };
 } // namespace ra_examples
 #endif // EXAMPLEPACKBASE_H

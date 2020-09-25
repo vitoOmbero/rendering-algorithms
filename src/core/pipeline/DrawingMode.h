@@ -3,12 +3,11 @@
 
 namespace ra_core::pipeline
 {
-enum eDrawingMode
+enum DrawingMode
 {
-    Circuit,
-    Shape
+    kCircuit,
+    kShape
 };
-
 }
 
 #endif // DRAWMODE_H

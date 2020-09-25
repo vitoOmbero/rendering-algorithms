@@ -26,7 +26,7 @@ public:
     void Run(ra_examples::ExamplePackBase& expack);
 
 private:
-    Canvas2dViewerInterface& actualCanvas2dViewer;
+    Canvas2dViewerInterface& actual_canvas2d_viewer_;
 };
 
 #endif // EXAMPLERUNNER_H

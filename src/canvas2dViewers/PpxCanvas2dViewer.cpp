@@ -16,7 +16,7 @@ void PpxCanvas2dViewer::ViewResult(const ra_core::pipeline::Canvas2d& canvas,
 
     auto pixv = canvas.getImage();
 
-    std::array<ra_types::rgb888, ra_core::renderer::CANVAS_WIDTH_DT *
+    std::array<ra_types::Rgb888, ra_core::renderer::CANVAS_WIDTH_DT *
                                      ra_core::renderer::CANVAS_HEIGHT_DT>
         arr;
 

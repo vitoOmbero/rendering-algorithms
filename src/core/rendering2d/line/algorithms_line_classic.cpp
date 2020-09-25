@@ -5,23 +5,24 @@
 namespace ra_core::rendering2d::line
 {
 
+// NOTE: It's 2020 and still there is no sign function in STL...
 template <typename T>
 int sign(T val)
 {
     return (T(0) < val) - (val < T(0));
 }
 
-ra_types::n0_t bresenham_defect_diag_line(ra_types::point2i first,
-                                          ra_types::point2i second,
-                                          ra_types::rgb888  color_code,
+ra_types::n0_t bresenham_defect_diag_line(ra_types::Point2i first,
+                                          ra_types::Point2i second,
+                                          ra_types::Rgb888  color_code,
                                           pipeline::RenderingTargetBase& target)
 {
     ra_types::n0_t counter = 0;
     target.Paint(color_code);
     typedef ra_types::displacement1i_t coord_t;
     // 1. income points
-    ra_types::point2i& closestToMinInf  = first <= second ? first : second;
-    ra_types::point2i& farthestToMinInf = first <= second ? second : first;
+    ra_types::Point2i& closestToMinInf  = first <= second ? first : second;
+    ra_types::Point2i& farthestToMinInf = first <= second ? second : first;
     // 2. deltas along axes
     coord_t delta_x = farthestToMinInf.x - closestToMinInf.x;
     coord_t delta_y = farthestToMinInf.y - closestToMinInf.y;
@@ -87,8 +88,8 @@ ra_types::n0_t bresenham_defect_diag_line(ra_types::point2i first,
 }
 
 ra_types::n0_t bresenham_int_line(
-    ra_types::point2i first, ra_types::point2i second,
-    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& target)
+    ra_types::Point2i first, ra_types::Point2i second,
+    ra_types::Rgb888 color_code, ra_core::pipeline::RenderingTargetBase& target)
 {
     ra_types::n0_t counter = 0;
     target.Paint(color_code);

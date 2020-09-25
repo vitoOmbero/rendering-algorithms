@@ -26,10 +26,10 @@ namespace ra_core::rendering2d::clipping
  * @param rectwindow_minX_minY
  * @return
  */
-std::array<ra_types::point2i, 2> clipping_cohen_sutherland_int(
-    ra_types::point2i first, ra_types::point2i second,
-    ra_types::point2i rectwindow_maxX_maxY,
-    ra_types::point2i rectwindow_minX_minY);
+std::array<ra_types::Point2i, 2> clipping_cohen_sutherland_int(
+    ra_types::Point2i first, ra_types::Point2i second,
+    ra_types::Point2i rectwindow_maxX_maxY,
+    ra_types::Point2i rectwindow_minX_minY);
 }
 
 #endif // ALGORITHM_CLIPPING_COEN_SUZ_H

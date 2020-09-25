@@ -12,43 +12,43 @@ namespace ra_types
  * @details Note that some colors are not properly named, but they are close to
  * originals. That color names have "B" or "_l" chars in names.
  */
-enum class eColor
+enum class Color
 {
-    No      = -1, ///< Invisible value
-    Unnamed = 0,  ///< Unsupported value
+    kNo      = -1, ///< Invisible value
+    kUnnamed = 0,  ///< Unsupported value
 
-    _FIRST_ = 1, ///< Iteration value
+    k_FIRST_ = 1, ///< Iteration value
 
-    Black,         ///<#000000	(0,0,0)
-    Navy,          ///<#000080	(0,0,128)
-    Blue,          ///<#0000FF	(0,0,255)
-    Green,         ///<#008000	(0,128,0)
-    Teal,          ///<#008080	(0,128,128)
-    Blue_light,    ///<####### 	(0,128,255)
-    Lime,          ///<#00FF00	(0,255,0)
-    Green_springB, ///<#######	(0,255,128) Green_spring is (0,255,127)
-    Cyan,          ///<#00FFFF	(0,255,255)
-    Indigo,        ///<#######	(75,0,130)
-    Maroon,        ///<#800000	(128,0,0)
-    Purple,        ///<#800080	(128,0,128)
-    Purple_blue,   ///<#8000FF	(128,0,255)
-    Olive,         ///<#808000	(128,128,0)
-    Gray,          ///<#808080	(128,128,128)
-    Sky_blue_dark, ///<#######	(128,128,255)
-    Silver,        ///<#C0C0C0	(192,192,192)
-    Violet,        ///<####### 	(238,130,238)
-    Red,           ///<#FF0000	(255,0,0)
-    Fuchsia_dark,  ///<#FF0080	(255,0,128)
-    Magenta,       ///<#FF00FF	(255,0,255)
-    DarkOrange1B,  ///<#FF8000	(255,128,0) DarkOrange1 is (255,127,0)
-    Orange,        ///<#######	(255,165,0)
-    Coral_lightd,  ///<#FF8080	(255,128,128)
-    Orchid1_l,     ///<#FF80FF	(255,128,255)
-    Yellow,        ///<#FFFF00	(255,255,0)
-    Khaki1_l,      ///<#FFFF00	(255,255,128)
-    White,         ///<#FFFFFF	(255,255,255)
+    kBlack,        ///<#000000	(0,0,0)
+    kNavy,         ///<#000080	(0,0,128)
+    kBlue,         ///<#0000FF	(0,0,255)
+    kGreen,        ///<#008000	(0,128,0)
+    kTeal,         ///<#008080	(0,128,128)
+    kBlueLight,    ///<####### 	(0,128,255)
+    kLime,         ///<#00FF00	(0,255,0)
+    kGreenSpringB, ///<#######	(0,255,128) Green_spring is (0,255,127)
+    kCyan,         ///<#00FFFF	(0,255,255)
+    kIndigo,       ///<#######	(75,0,130)
+    kMaroon,       ///<#800000	(128,0,0)
+    kPurple,       ///<#800080	(128,0,128)
+    kPurpleBlue,   ///<#8000FF	(128,0,255)
+    kOlive,        ///<#808000	(128,128,0)
+    kGray,         ///<#808080	(128,128,128)
+    kSkyBlueDark,  ///<#######	(128,128,255)
+    kSilver,       ///<#C0C0C0	(192,192,192)
+    kViolet,       ///<####### 	(238,130,238)
+    kRed,          ///<#FF0000	(255,0,0)
+    kFuchsiaDark,  ///<#FF0080	(255,0,128)
+    kMagenta,      ///<#FF00FF	(255,0,255)
+    kDarkOrange1B, ///<#FF8000	(255,128,0) DarkOrange1 is (255,127,0)
+    kOrange,       ///<#######	(255,165,0)
+    kCoralLightD,  ///<#FF8080	(255,128,128)
+    kOrchid1L,     ///<#FF80FF	(255,128,255)
+    kYellow,       ///<#FFFF00	(255,255,0)
+    kKhaki1L,      ///<#FFFF00	(255,255,128)
+    kWhite,        ///<#FFFFFF	(255,255,255)
 
-    _LAST_ ///< Iteration value
+    k_LAST_ ///< Iteration value
 };
 
 } // namespace ra_types

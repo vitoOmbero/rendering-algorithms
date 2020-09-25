@@ -12,18 +12,18 @@ namespace ra_core::figures2d
  */
 struct border
 {
-    enum border_placement
+    enum BorderPlacement
     {
-        logical,   ///< a half of boder image is inside the area of figure
-        inclusive, ///< whole image is inside
-        exclusive  ///< whole image is outside
+        kLogical,   ///< a half of boder image is inside the area of figure
+        kInclusive, ///< whole image is inside
+        kExclusive  ///< whole image is outside
     };
 
-    enum border_type
+    enum BorderType
     {
-        solid,
-        dotted,
-        stripped
+        kSolid,
+        kDotted,
+        kStripped
     };
 
     /**
@@ -34,7 +34,7 @@ struct border
     /**
      * @brief type pointer
      */
-    border_type type = solid;
+    BorderType type = kSolid;
 
     /**
      * @brief gap - Size in dots.
@@ -57,12 +57,12 @@ struct border
     /**
      * @brief placement indicator
      */
-    border_placement placement = logical;
+    BorderPlacement placement = kLogical;
 
     /**
      * @brief color value
      */
-    ra_types::rgb888 color_code = ra_types::rgb888(0);
+    ra_types::Rgb888 color_code = ra_types::Rgb888(0);
 };
 } // namespace ra_core::figures2d
 

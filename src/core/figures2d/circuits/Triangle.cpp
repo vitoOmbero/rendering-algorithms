@@ -1,12 +1,12 @@
 #include "Triangle.h"
 namespace ra_core::figures2d
 {
-Triangle::Triangle(ra_types::point2i p1, ra_types::point2i p2,
-                   ra_types::point2i p3, struct border border)
+Triangle::Triangle(ra_types::Point2i p1, ra_types::Point2i p2,
+                   ra_types::Point2i p3, struct border border)
     : CircuitBase(border)
-    , p1{ p1 }
-    , p2{ p2 }
-    , p3{ p3 }
+    , p1_{ p1 }
+    , p2_{ p2 }
+    , p3_{ p3 }
 {
 }
 
@@ -15,34 +15,34 @@ void Triangle::AcceptFigure2dVisitor(Figure2dVisitor* fv) const
     fv->VisitTriangle(this);
 }
 
-ra_types::point2i Triangle::getP1() const
+ra_types::Point2i Triangle::getP1() const
 {
-    return p1;
+    return p1_;
 }
 
-void Triangle::setP1(const ra_types::point2i& value)
+void Triangle::setP1(const ra_types::Point2i& value)
 {
-    p1 = value;
+    p1_ = value;
 }
 
-ra_types::point2i Triangle::getP2() const
+ra_types::Point2i Triangle::getP2() const
 {
-    return p2;
+    return p2_;
 }
 
-void Triangle::setP2(const ra_types::point2i& value)
+void Triangle::setP2(const ra_types::Point2i& value)
 {
-    p2 = value;
+    p2_ = value;
 }
 
-ra_types::point2i Triangle::getP3() const
+ra_types::Point2i Triangle::getP3() const
 {
-    return p3;
+    return p3_;
 }
 
-void Triangle::setP3(const ra_types::point2i& value)
+void Triangle::setP3(const ra_types::Point2i& value)
 {
-    p3 = value;
+    p3_ = value;
 }
 
 } // namespace ra_core::figures2d

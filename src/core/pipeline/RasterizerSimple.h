@@ -16,10 +16,10 @@ class RasterizerSimple
 {
 public:
     RasterizerSimple(
-        const ra_core::pipeline::DotLinearBuffer2d&               dotbufRef,
-        ra_core::pipeline::PixelBuffer2d&                         pixbufRef,
-        ra_core::pipeline::Canvas2d&                              canvasRef,
-        const ra_core::pipeline::SpaceCoordinateTranslatorSimple& ctsRef);
+        const ra_core::pipeline::DotLinearBuffer2d&               dotbuf_,
+        ra_core::pipeline::PixelBuffer2d&                         pixbuf_,
+        ra_core::pipeline::Canvas2d&                              canvas_,
+        const ra_core::pipeline::SpaceCoordinateTranslatorSimple& cts_);
 
     ra_types::n0_t getDotSize() const;
 
@@ -37,11 +37,11 @@ private:
      * @brief dotSize - scale of canvas image unit
      * @details dotSize = 2 means canvas unit is 2x2 pixel group
      */
-    ra_types::n0_t                                            dotSize = 1;
-    const ra_core::pipeline::DotLinearBuffer2d&               dotbufRef;
-    ra_core::pipeline::PixelBuffer2d&                         pixbufRef;
-    ra_core::pipeline::Canvas2d&                              canvasRef;
-    const ra_core::pipeline::SpaceCoordinateTranslatorSimple& ctsRef;
+    ra_types::n0_t                                            dot_size_ = 1;
+    const ra_core::pipeline::DotLinearBuffer2d&               dotbuf_;
+    ra_core::pipeline::PixelBuffer2d&                         pixbuf_;
+    ra_core::pipeline::Canvas2d&                              canvas_;
+    const ra_core::pipeline::SpaceCoordinateTranslatorSimple& cts_;
 };
 
 } // namespace ra_core::pipeline

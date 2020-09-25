@@ -13,22 +13,22 @@ MatrixCalculatorSimple::MatrixCalculatorSimple()
 
 }
 
-eNotation MatrixCalculatorSimple::getNotation() const
+Notation MatrixCalculatorSimple::getNotation() const
 {
-    return notation;
+    return notation_;
 }
 
 ra_core::figures2d::LineSegment MatrixCalculatorSimple::Move(
     ra_core::figures2d::LineSegment ls, ra_types::displacement1i_t dx,
     ra_types::displacement1i_t dy) const
 {
-    vec2h<ra_types::displacement1i_t> v1(ls.getFirstPoint().x,
+    Vec2h<ra_types::displacement1i_t> v1(ls.getFirstPoint().x,
                                          ls.getFirstPoint().y);
-    vec2h<ra_types::displacement1i_t> v2(ls.getSecondPoint().x,
+    Vec2h<ra_types::displacement1i_t> v2(ls.getSecondPoint().x,
                                          ls.getSecondPoint().y);
 
-    auto v1m = MakeMoveMatrix<displacement1i_t>(dx, dy) * v1;
-    auto v2m = MakeMoveMatrix<displacement1i_t>(dx, dy) * v2;
+    auto v1m = MoveMatrix<displacement1i_t>(dx, dy) * v1;
+    auto v2m = MoveMatrix<displacement1i_t>(dx, dy) * v2;
 
     ls.setFirstPoint({ v1m.col1[0], v1m.col1[1] });
     ls.setSecondPoint({ v2m.col1[0], v2m.col1[1] });
@@ -39,9 +39,9 @@ ra_core::figures2d::Circle MatrixCalculatorSimple::Move(
     ra_core::figures2d::Circle cr, displacement1i_t dx,
     displacement1i_t dy) const
 {
-    vec2h<ra_types::displacement1i_t> v1(cr.getCenter().x, cr.getCenter().y);
+    Vec2h<ra_types::displacement1i_t> v1(cr.getCenter().x, cr.getCenter().y);
 
-    auto v1m = MakeMoveMatrix<displacement1i_t>(dx, dy) * v1;
+    auto v1m = MoveMatrix<displacement1i_t>(dx, dy) * v1;
 
     cr.setCenter({ v1m.col1[0], v1m.col1[1] });
     return cr;

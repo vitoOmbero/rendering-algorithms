@@ -7,78 +7,78 @@
 namespace ra_core::pipeline
 {
 
-typedef std::vector<ra_types::rgb888> line_t;
+typedef std::vector<ra_types::Rgb888> line_t;
 
 PixelBuffer2d::PixelBuffer2d(
-    const ra_types::Space2i&                                  spaceRef,
-    const ra_core::pipeline::SpaceCoordinateTranslatorSimple& ctsRef,
-    ra_types::rgb888 default_color_code)
-    : name{ "RectangularPixelBuffer" }
-    , spaceRef{ spaceRef }
-    , ctsRef{ ctsRef }
+    const ra_types::Space2i&                                  space,
+    const ra_core::pipeline::SpaceCoordinateTranslatorSimple& cts,
+    ra_types::Rgb888 default_color_code)
+    : name_{ "RectangularPixelBuffer" }
+    , space_{ space }
+    , cts_{ cts }
 {
 
     auto vline =
-        std::vector<ra_types::rgb888>(spaceRef.viewWidth, default_color_code);
+        std::vector<ra_types::Rgb888>(space.viewWidth, default_color_code);
 
-    vector2d_ptr = new std::vector<line_t>(spaceRef.viewHeight, vline);
-    vector2d_ptr->shrink_to_fit();
+    vector2d_ptr_ = new std::vector<line_t>(space.viewHeight, vline);
+    vector2d_ptr_->shrink_to_fit();
 }
 
 PixelBuffer2d::~PixelBuffer2d()
 {
-    delete vector2d_ptr;
+    delete vector2d_ptr_;
 }
 
 std::string PixelBuffer2d::getName() const
 {
-    return this->name;
+    return this->name_;
 }
 
-void PixelBuffer2d::Mark(const ra_types::rgb888  code,
-                         const ra_types::point2i point)
+void PixelBuffer2d::Mark(const ra_types::Rgb888  code,
+                         const ra_types::Point2i point)
 {
-    auto p                    = ctsRef.TranslateCanvasToPixelBuffer(point);
-    (*vector2d_ptr)[p.y][p.x] = code;
+    auto p                     = cts_.TranslateCanvasToPixelBuffer(point);
+    (*vector2d_ptr_)[p.y][p.x] = code;
 }
 
-void PixelBuffer2d::Mark(const ra_types::rgb888  code,
-                         const ra_types::point2i start,
-                         const ra_types::point2i end)
+void PixelBuffer2d::Mark(const ra_types::Rgb888  code,
+                         const ra_types::Point2i start,
+                         const ra_types::Point2i end)
 {
     for (auto y = start.y; y <= end.y; ++y)
     {
         for (auto x = start.x; x <= end.x; ++x)
         {
-            auto i = ctsRef.TranslateCanvasToPixelBuffer({ x, y });
-            (*vector2d_ptr)[i.y][i.x] = code;
+            auto i = cts_.TranslateCanvasToPixelBuffer({ x, y });
+            (*vector2d_ptr_)[i.y][i.x] = code;
         }
     }
 }
 
-ra_types::rgb888 PixelBuffer2d::getColorCode(const ra_types::point2i point)
+ra_types::Rgb888 PixelBuffer2d::getColorCode(const ra_types::Point2i point)
 {
-    auto p = ctsRef.TranslateCanvasToPixelBuffer(point);
-    return (*vector2d_ptr)[p.y][p.x];
+    auto p = cts_.TranslateCanvasToPixelBuffer(point);
+    return (*vector2d_ptr_)[p.y][p.x];
 }
 
-std::unique_ptr<std::vector<ra_types::rgb888>> PixelBuffer2d::CreateCopy() const
+std::unique_ptr<std::vector<ra_types::Rgb888>> PixelBuffer2d::CreateCopy() const
 {
-    std::vector<ra_types::rgb888>* v = new std::vector<ra_types::rgb888>(
-        spaceRef.viewWidth * spaceRef.viewHeight);
+    std::vector<ra_types::Rgb888>* v =
+        new std::vector<ra_types::Rgb888>(space_.viewWidth * space_.viewHeight);
     v->shrink_to_fit();
 
     ra_types::distance1ui_t i = 0;
-    for (auto oe = v->begin(); oe != v->end(); oe += spaceRef.viewWidth)
+    for (auto oe = v->begin(); oe != v->end(); oe += space_.viewWidth)
     {
-        auto cb = (*vector2d_ptr)[i].cbegin();
-        auto ce = (*vector2d_ptr)[i].cend();
+        auto cb = (*vector2d_ptr_)[i].cbegin();
+        auto ce = (*vector2d_ptr_)[i].cend();
 
         std::copy(cb, ce, oe);
         ++i;
     }
 
-    std::unique_ptr<std::vector<ra_types::rgb888>> ptr(v);
+    std::unique_ptr<std::vector<ra_types::Rgb888>> ptr(v);
     return ptr;
 }
 

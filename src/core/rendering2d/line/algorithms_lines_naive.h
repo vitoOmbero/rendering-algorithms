@@ -19,8 +19,8 @@ namespace ra_core::rendering2d::line
  */
 ra_types::n0_t naive_dot(ra_types::displacement1i_t              x,
                          ra_types::displacement1i_t              y,
-                         ra_types::rgb888                        color_code,
-                         ra_core::pipeline::RenderingTargetBase& dotbuf);
+                         ra_types::Rgb888                        color_code,
+                         ra_core::pipeline::RenderingTargetBase& target);
 
 /**
  * @brief naive_hv_line - naive rendering for line segments.
@@ -33,9 +33,9 @@ ra_types::n0_t naive_dot(ra_types::displacement1i_t              x,
  * applied
  * @return number of dots were rendered
  */
-ra_types::n0_t naive_hv_line(ra_types::point2i first, ra_types::point2i second,
-                             ra_types::rgb888                        color_code,
-                             ra_core::pipeline::RenderingTargetBase& dotbuf);
+ra_types::n0_t naive_hv_line(ra_types::Point2i first, ra_types::Point2i second,
+                             ra_types::Rgb888                        color_code,
+                             ra_core::pipeline::RenderingTargetBase& target);
 
 } // namespace ra_core::rendering2d::line
 #endif // NAIVE_H

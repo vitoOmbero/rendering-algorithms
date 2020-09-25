@@ -4,12 +4,11 @@
 namespace ra_types
 {
 
-enum class eDirection1d
+enum class Direction1d
 {
-    PosInf, ///< to positive infinity
-    NegInf  ///< to negative infinity
+    kPosInf, ///< to positive infinity
+    kNegInf  ///< to negative infinity
 };
-
 }
 
 #endif // DIRECTION1D_H

@@ -21,10 +21,9 @@ namespace ra_core::pipeline
 class PixelBuffer2d final : public RenderingTargetBase
 {
 public:
-    PixelBuffer2d(
-        const ra_types::Space2i&                                  spaceRef,
-        const ra_core::pipeline::SpaceCoordinateTranslatorSimple& ctsRef,
-        ra_types::rgb888 default_color_code);
+    PixelBuffer2d(const ra_types::Space2i& space,
+                  const ra_core::pipeline::SpaceCoordinateTranslatorSimple& cts,
+                  ra_types::Rgb888 default_color_code);
     ~PixelBuffer2d();
 
     /**
@@ -33,30 +32,30 @@ public:
      */
     std::string getName() const;
 
-    void Mark(const ra_types::rgb888  code,
-              const ra_types::point2i point) override;
+    void Mark(const ra_types::Rgb888  code,
+              const ra_types::Point2i point) override;
 
-    void Mark(const ra_types::rgb888 code, const ra_types::point2i start,
-              const ra_types::point2i end) override;
+    void Mark(const ra_types::Rgb888 code, const ra_types::Point2i start,
+              const ra_types::Point2i end) override;
 
-    ra_types::rgb888 getColorCode(const ra_types::point2i point) override;
+    ra_types::Rgb888 getColorCode(const ra_types::Point2i point) override;
 
-    std::unique_ptr<std::vector<ra_types::rgb888>> CreateCopy() const override;
+    std::unique_ptr<std::vector<ra_types::Rgb888>> CreateCopy() const override;
 
     ra_types::displacement2i getZeroPointOffset() const
     {
-        return spaceRef.viewZeroPointOffset;
+        return space_.viewZeroPointOffset;
     };
 
 private:
-    const std::string name;
+    const std::string name_;
     /**
-     * @brief spaceRef - reference to space description object
+     * @brief space_ - reference to space description object
      */
-    const ra_types::Space2i& spaceRef;
+    const ra_types::Space2i& space_;
 
-    const ra_core::pipeline::SpaceCoordinateTranslatorSimple& ctsRef;
-    std::vector<std::vector<ra_types::rgb888>>*               vector2d_ptr;
+    const ra_core::pipeline::SpaceCoordinateTranslatorSimple& cts_;
+    std::vector<std::vector<ra_types::Rgb888>>*               vector2d_ptr_;
 };
 
 }; // namespace ra_core::pipeline

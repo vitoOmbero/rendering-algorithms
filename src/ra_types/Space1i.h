@@ -21,11 +21,11 @@ struct Space1i
     /**
      * @brief directionOx - 0x axis direction
      */
-    eDirection1d directionOx;
+    Direction1d directionOx;
 
     inline displacement1i_t getHighestVisiblePoint() const
     {
-        if (directionOx == eDirection1d::PosInf)
+        if (directionOx == Direction1d::kPosInf)
             return viewZeroPointOffset + displacement1i_t{ viewLength - 1 };
         else
             return viewZeroPointOffset;
@@ -33,7 +33,7 @@ struct Space1i
 
     inline displacement1i_t getLowestVisiblePoint() const
     {
-        if (directionOx == eDirection1d::PosInf)
+        if (directionOx == Direction1d::kPosInf)
             return viewZeroPointOffset;
         else
             return viewZeroPointOffset - displacement1i_t{ viewLength + 1 };

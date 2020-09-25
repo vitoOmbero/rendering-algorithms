@@ -20,7 +20,7 @@ class imgFile {
 
   public:
   template <size_t N>
-  void save_p6(const std::array<ra_types::rgb888, N>& image, size_t width,
+  void save_p6(const std::array<ra_types::Rgb888, N>& image, size_t width,
                size_t height)
   {
       std::ofstream out_file;
@@ -30,7 +30,7 @@ class imgFile {
 
       out_file << "P6\n" << width << ' ' << height << ' ' << 255 << '\n';
       out_file.write(reinterpret_cast<const char*>(&image),
-                     sizeof(ra_types::rgb888) * N);
+                     sizeof(ra_types::Rgb888) * N);
   }
 };
 } // namespace data_export

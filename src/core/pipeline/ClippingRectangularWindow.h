@@ -13,25 +13,24 @@ namespace ra_core::pipeline
 class ClippingRectangularWindow
 {
 public:
-    ClippingRectangularWindow(
-        const ra_types::Space2i&                 spaceRef,
-        ra_core::rendering2d::clipping_algorithm algo_ptr);
+    ClippingRectangularWindow(const ra_types::Space2i&                space_,
+                              ra_core::rendering2d::ClippingAlgorithm kAlgo);
 
-    ra_core::rendering2d::clipping_algorithm getClippingAlgo_ptr() const;
+    ra_core::rendering2d::ClippingAlgorithm getClippingAlgo() const;
 
-    ra_types::point2i getMax_X_max_Y() const;
+    ra_types::Point2i getMax_X_max_Y() const;
 
-    ra_types::point2i getMin_X_min_Y() const;
+    ra_types::Point2i getMin_X_min_Y() const;
 
     const ra_types::Space2i& getSpaceRef() const;
 
 private:
-    const ra_types::Space2i&                 spaceRef;
-    ra_types::point2i                  max_X_max_Y;
-    ra_types::point2i                  max_X_min_Y;
-    ra_types::point2i                  min_X_max_Y;
-    ra_types::point2i                  min_X_min_Y;
-    ra_core::rendering2d::clipping_algorithm clipping_algo_ptr;
+    const ra_types::Space2i&                space_;
+    ra_types::Point2i                       max_X_max_Y_;
+    ra_types::Point2i                       max_X_min_Y_;
+    ra_types::Point2i                       min_X_max_Y_;
+    ra_types::Point2i                       min_X_min_Y_;
+    ra_core::rendering2d::ClippingAlgorithm clipping_algo_enum_;
 };
 } // namespace ra_core::canvas2d
 #endif // RECTANGULARCLIPPINGWINDOW_H

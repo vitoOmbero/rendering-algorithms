@@ -3,29 +3,29 @@ namespace ra_core::figures2d
 {
 CircuitBase::CircuitBase(struct border border)
 {
-    this->border = border;
+    this->border_ = border;
 }
 
 CircuitBase::~CircuitBase() {}
 
-const rgb888& CircuitBase::GetColorCode() const
+const Rgb888& CircuitBase::GetColorCode() const
 {
-    return this->border.color_code;
+    return this->border_.color_code;
 }
 
-void CircuitBase::setColorCode(rgb888 rgb)
+void CircuitBase::setColorCode(Rgb888 rgb)
 {
-    this->border.color_code = rgb;
+    this->border_.color_code = rgb;
 }
 
 const border& CircuitBase::GetBorder() const
 {
-    return this->border;
+    return this->border_;
 }
 
 void CircuitBase::SetBorder(struct border border)
 {
-    this->border = border;
+    this->border_ = border;
 }
 
 } // namespace ra_core::figures2d

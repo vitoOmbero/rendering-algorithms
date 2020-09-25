@@ -5,7 +5,7 @@ inline int check_bit(int number, char bit_1_based_index)
     return number & (1 << (bit_1_based_index - 1));
 }
 
-unsigned char calculte_code(ra_types::point2i&          p,
+unsigned char calculte_code(ra_types::Point2i&          p,
                             ra_types::displacement1i_t& minX,
                             ra_types::displacement1i_t& minY,
                             ra_types::displacement1i_t& maxX,
@@ -23,15 +23,15 @@ unsigned char calculte_code(ra_types::point2i&          p,
     return code;
 }
 
-std::array<ra_types::point2i, 2>
+std::array<ra_types::Point2i, 2>
 ra_core::rendering2d::clipping::clipping_cohen_sutherland_int(
-    ra_types::point2i first, ra_types::point2i second,
-    ra_types::point2i rectwindow_maxX_maxY,
-    ra_types::point2i rectwindow_minX_minY)
+    ra_types::Point2i first, ra_types::Point2i second,
+    ra_types::Point2i rectwindow_maxX_maxY,
+    ra_types::Point2i rectwindow_minX_minY)
 {
     // TODO: realize
 
-    std::array<ra_types::point2i, 2> result{ first, second };
+    std::array<ra_types::Point2i, 2> result{ first, second };
 
     auto P1 =
         calculte_code(first, rectwindow_minX_minY.x, rectwindow_minX_minY.y,
@@ -48,7 +48,7 @@ ra_core::rendering2d::clipping::clipping_cohen_sutherland_int(
     else
         // trivial invisability
         if ((P1 & P2))
-        return std::array<ra_types::point2i, 2>{ { { -1, 0 } } };
+        return std::array<ra_types::Point2i, 2>{ { { -1, 0 } } };
     else
         // untrivial case (this check is not really needed)
         if ((P1 & P2) == 0)

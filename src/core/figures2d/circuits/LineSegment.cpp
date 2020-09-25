@@ -2,11 +2,11 @@
 namespace ra_core::figures2d
 {
 
-LineSegment::LineSegment(ra_types::point2i one, ra_types::point2i two,
+LineSegment::LineSegment(ra_types::Point2i one, ra_types::Point2i two,
                          struct border border)
     : CircuitBase{ border }
-    , firstPoint{ one }
-    , secondPoint{ two }
+    , p1_{ one }
+    , p2_{ two }
 {
 }
 
@@ -15,14 +15,14 @@ void LineSegment::AcceptFigure2dVisitor(Figure2dVisitor* fv) const
     fv->VisitLine(this);
 }
 
-void LineSegment::setFirstPoint(const ra_types::point2i& value)
+void LineSegment::setFirstPoint(const ra_types::Point2i& value)
 {
-    firstPoint = value;
+    p1_ = value;
 }
 
-void LineSegment::setSecondPoint(const ra_types::point2i& value)
+void LineSegment::setSecondPoint(const ra_types::Point2i& value)
 {
-    secondPoint = value;
+    p2_ = value;
 }
 
 } // namespace ra_core::figures2d

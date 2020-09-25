@@ -18,10 +18,10 @@
 
 #include "geometry_types.h"
 
-void draw_figures(ra_types::point2i A_1, ra_types::point2i A_2,
-                  ra_types::point2i A_3, ra_types::point2i A_4,
-                  ra_types::point2i B_1, ra_types::point2i B_2,
-                  ra_types::point2i B_3)
+void draw_figures(ra_types::Point2i A_1, ra_types::Point2i A_2,
+                  ra_types::Point2i A_3, ra_types::Point2i A_4,
+                  ra_types::Point2i B_1, ra_types::Point2i B_2,
+                  ra_types::Point2i B_3)
 {
     using namespace ra_core;
     using namespace ra_core::figures2d;
@@ -32,14 +32,14 @@ void draw_figures(ra_types::point2i A_1, ra_types::point2i A_2,
     Quadrangle A(A_1, A_2, A_3, A_4, border);
     Triangle   B(B_1, B_2, B_3, border);
 
-    renderer::setDrawingMode(pipeline::eDrawingMode::Circuit);
+    renderer::setDrawingMode(pipeline::DrawingMode::kCircuit);
 
-    A.setColorCode(cm.FindRgbCode(eColor::Orange));
+    A.setColorCode(cm.FindRgbCode(Color::kOrange));
     renderer::Draw(A);
 
-    renderer::setDrawingMode(pipeline::eDrawingMode::Shape);
+    renderer::setDrawingMode(pipeline::DrawingMode::kShape);
 
-    B.setColorCode(cm.FindRgbCode(eColor::Purple_blue));
+    B.setColorCode(cm.FindRgbCode(Color::kPurpleBlue));
     renderer::Draw(B);
 }
 
@@ -50,17 +50,17 @@ ra_core::pipeline::Canvas2d initial()
     using namespace ra_core::pipeline;
     using namespace ra_types;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
-    renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamInt);
+    renderer::UseFillingTriangle(FillingAlgorithm::kFill3LineSweeping);
 
-    point2i qA_1{ 50, 50 };
-    point2i qA_2{ 100, 50 };
-    point2i qA_3{ 100, 100 };
-    point2i qA_4{ 50, 100 };
+    Point2i qA_1{ 50, 50 };
+    Point2i qA_2{ 100, 50 };
+    Point2i qA_3{ 100, 100 };
+    Point2i qA_4{ 50, 100 };
 
-    point2i tB_1{ 100, 400 };
-    point2i tB_2{ 150, 505 };
-    point2i tB_3{ 15, 578 };
+    Point2i tB_1{ 100, 400 };
+    Point2i tB_2{ 150, 505 };
+    Point2i tB_3{ 15, 578 };
 
     draw_figures(qA_1, qA_2, qA_3, qA_4, tB_1, tB_2, tB_3);
 
@@ -74,24 +74,24 @@ ra_core::pipeline::Canvas2d move()
     using namespace ra_core::pipeline;
     using namespace ra_types;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
-    renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamInt);
+    renderer::UseFillingTriangle(FillingAlgorithm::kFill3LineSweeping);
 
-    point2i qA_1{ 50, 50 };
-    point2i qA_2{ 100, 50 };
-    point2i qA_3{ 100, 100 };
-    point2i qA_4{ 50, 100 };
+    Point2i qA_1{ 50, 50 };
+    Point2i qA_2{ 100, 50 };
+    Point2i qA_3{ 100, 100 };
+    Point2i qA_4{ 50, 100 };
 
-    point2i tB_1{ 100, 400 };
-    point2i tB_2{ 150, 505 };
-    point2i tB_3{ 15, 578 };
+    Point2i tB_1{ 100, 400 };
+    Point2i tB_2{ 150, 505 };
+    Point2i tB_3{ 15, 578 };
 
     draw_figures(qA_1, qA_2, qA_3, qA_4, tB_1, tB_2, tB_3);
 
     auto mc = renderer::getMatrixCalculatorSimple();
 
-    std::array<point2i, n1_t(4)> qVertices{ qA_1, qA_2, qA_3, qA_4 };
-    std::array<point2i, n1_t(3)> tVertices{ tB_1, tB_2, tB_3 };
+    std::array<Point2i, n1_t(4)> qVertices{ qA_1, qA_2, qA_3, qA_4 };
+    std::array<Point2i, n1_t(3)> tVertices{ tB_1, tB_2, tB_3 };
 
     displacement1i_t dx = 200;
     displacement1i_t dy = 150;
@@ -114,23 +114,23 @@ ra_core::pipeline::Canvas2d stretching()
     using namespace ra_services::
         geometric_transformations_in_homogeneous_coordinates;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
-    renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamInt);
+    renderer::UseFillingTriangle(FillingAlgorithm::kFill3LineSweeping);
 
-    point2i qA_1{ 50, 50 };
-    point2i qA_2{ 100, 50 };
-    point2i qA_3{ 100, 100 };
-    point2i qA_4{ 50, 100 };
+    Point2i qA_1{ 50, 50 };
+    Point2i qA_2{ 100, 50 };
+    Point2i qA_3{ 100, 100 };
+    Point2i qA_4{ 50, 100 };
 
-    point2i tB_1{ 100, 200 - 40 };
-    point2i tB_2{ 150, 305 - 40 };
-    point2i tB_3{ 15, 378 - 40 };
+    Point2i tB_1{ 100, 200 - 40 };
+    Point2i tB_2{ 150, 305 - 40 };
+    Point2i tB_3{ 15, 378 - 40 };
 
     // initial state draw
     draw_figures(qA_1, qA_2, qA_3, qA_4, tB_1, tB_2, tB_3);
 
     // prepare points
-    std::array<point2i, 4 + 3> vertices{ qA_1, qA_2, qA_3, qA_4,
+    std::array<Point2i, 4 + 3> vertices{ qA_1, qA_2, qA_3, qA_4,
                                          tB_1, tB_2, tB_3 };
     // go
     auto mc = renderer::getMatrixCalculatorSimple();
@@ -140,9 +140,9 @@ ra_core::pipeline::Canvas2d stretching()
     mc.Move<7>(vertices, dx);
 
     // prepare data
-    std::array<point2i, 4> quadrangle{ vertices[0], vertices[1], vertices[2],
+    std::array<Point2i, 4> quadrangle{ vertices[0], vertices[1], vertices[2],
                                        vertices[3] };
-    std::array<point2i, 3> triangle{ vertices[4], vertices[5], vertices[6] };
+    std::array<Point2i, 3> triangle{ vertices[4], vertices[5], vertices[6] };
 
     // streching
     mc.Stretch<4>(quadrangle, 2.5, 2.5);
@@ -169,23 +169,23 @@ ra_core::pipeline::Canvas2d rotation()
     using namespace ra_services::
         geometric_transformations_in_homogeneous_coordinates;
 
-    renderer::UseLineAlgorithm(rendering_algorithm::line_bresenham_int);
-    renderer::UseFillingTriangle(filling_algorithm::fill3_line_sweeping);
+    renderer::UseLineAlgorithm(RenderingAlgorithm::kLineBresenhamInt);
+    renderer::UseFillingTriangle(FillingAlgorithm::kFill3LineSweeping);
 
-    point2i qA_1{ 50, 50 };
-    point2i qA_2{ 100, 50 };
-    point2i qA_3{ 100, 100 };
-    point2i qA_4{ 50, 100 };
+    Point2i qA_1{ 50, 50 };
+    Point2i qA_2{ 100, 50 };
+    Point2i qA_3{ 100, 100 };
+    Point2i qA_4{ 50, 100 };
 
-    point2i tB_1{ 100, 200 - 40 };
-    point2i tB_2{ 150, 305 - 40 };
-    point2i tB_3{ 15, 378 - 40 };
+    Point2i tB_1{ 100, 200 - 40 };
+    Point2i tB_2{ 150, 305 - 40 };
+    Point2i tB_3{ 15, 378 - 40 };
 
     // initial state draw
     draw_figures(qA_1, qA_2, qA_3, qA_4, tB_1, tB_2, tB_3);
 
     // prepare points
-    std::array<point2i, 4 + 3> vertices{ qA_1, qA_2, qA_3, qA_4,
+    std::array<Point2i, 4 + 3> vertices{ qA_1, qA_2, qA_3, qA_4,
                                          tB_1, tB_2, tB_3 };
     // go
     auto mc = renderer::getMatrixCalculatorSimple();
@@ -195,17 +195,17 @@ ra_core::pipeline::Canvas2d rotation()
     mc.Move<7>(vertices, dx);
 
     // prepare data
-    std::array<point2i, 4> quadrangle{ vertices[0], vertices[1], vertices[2],
+    std::array<Point2i, 4> quadrangle{ vertices[0], vertices[1], vertices[2],
                                        vertices[3] };
-    std::array<point2i, 3> triangle{ vertices[4], vertices[5], vertices[6] };
+    std::array<Point2i, 3> triangle{ vertices[4], vertices[5], vertices[6] };
 
     // rotation
 
-    auto ang45 = ra_services::math2d::make_angle_radians(45);
-    auto ang30 = ra_services::math2d::make_angle_radians(30);
+    auto ang45 = ra_services::math2d::AngleToRadians(45);
+    auto ang30 = ra_services::math2d::AngleToRadians(30);
 
     mc.Rotate<4, float>(quadrangle, ang45);
-    mc.Rotate<3>(triangle, ang30, eRotationDirection2d::Anticlock);
+    mc.Rotate<3>(triangle, ang30, RotationDirection2d::kAnticlock);
 
     // draw rotated
 
@@ -224,7 +224,7 @@ namespace ra_examples::cartesian2d
 {
 Transitions::Transitions()
 {
-    name = "04_transitions";
+    name_ = "04_transitions";
     AddExample(initial, "initial");
     AddExample(move, "move");
     AddExample(stretching, "stretching");

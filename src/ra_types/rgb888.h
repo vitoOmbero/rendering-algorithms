@@ -9,13 +9,13 @@ namespace ra_types
 /**
  * @brief Storage class for color data.
  */
-struct rgb888 final
+struct Rgb888
 {
     uchar r = 0;
     uchar g = 0;
     uchar b = 0;
 
-    constexpr rgb888()
+    constexpr Rgb888()
     {
         r = 0;
         g = 0;
@@ -26,7 +26,7 @@ struct rgb888 final
      * Special constructor
      * @param val One value for r,g and b color codes.
      */
-    constexpr rgb888(uchar val)
+    constexpr Rgb888(uchar val)
     {
         r = val;
         g = val;
@@ -39,31 +39,31 @@ struct rgb888 final
      * @param g_ green value 0-255
      * @param b_ blue value 0-255
      */
-    rgb888(uchar r_, uchar g_, uchar b_)
+    Rgb888(uchar r_, uchar g_, uchar b_)
     {
         r = r_;
         g = g_;
         b = b_;
     };
 
-    bool operator==(const rgb888& b) const
+    bool operator==(const Rgb888& b) const
     {
         return (this->r == b.r & this->g == b.g & this->b == b.b);
     };
 
-    bool operator!=(const rgb888& b) const
+    bool operator!=(const Rgb888& b) const
     {
         return (this->r != b.r && this->g != b.g && this->b != b.b);
     };
 
-    bool operator<(const rgb888& b) const
+    bool operator<(const Rgb888& b) const
     {
         return this->r < b.r || this->g < b.g || this->b < b.b;
     };
 
-    rgb888 operator-(const rgb888& b) const
+    Rgb888 operator-(const Rgb888& b) const
     {
-        return rgb888(r - b.r, g - b.g, this->b - b.b);
+        return Rgb888(r - b.r, g - b.g, this->b - b.b);
     };
     /**
      * @brief blue - helper getter

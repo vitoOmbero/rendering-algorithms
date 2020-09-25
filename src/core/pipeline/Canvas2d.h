@@ -18,10 +18,10 @@ namespace ra_core::pipeline
 class Canvas2d
 {
 public:
-    Canvas2d(const ra_types::Space2i& spaceRef)
-        : spaceRef{ spaceRef }
-        , xAxisView{ ra_types::eViewDirection2d::East }
-        , yAxisView{ ra_types::eViewDirection2d::South } {};
+    Canvas2d(const ra_types::Space2i& space)
+        : space_{ space }
+        , x_axis_view_{ ra_types::ViewDirection2d::kEast }
+        , y_axis_view_{ ra_types::ViewDirection2d::kSouth } {};
 
     /**
      * @brief getHighestVisiblePoint - point with highest potential along 0x and
@@ -29,9 +29,9 @@ public:
      * @details \link Rectangular1DotBuffer::lastIndex in 1dBuffer \endlink
      * @return result is packed into 2d displacement struct
      */
-    ra_types::point2i getHighestVisiblePoint() const
+    ra_types::Point2i getHighestVisiblePoint() const
     {
-        return spaceRef.getHighestVisiblePoint();
+        return space_.getHighestVisiblePoint();
     };
 
     /**
@@ -41,9 +41,9 @@ public:
      * \endlink
      * @return result is packed into 2d displacement struct
      */
-    ra_types::point2i getLowestVisiblePoint() const
+    ra_types::Point2i getLowestVisiblePoint() const
     {
-        return spaceRef.getLowestVisiblePoint();
+        return space_.getLowestVisiblePoint();
     };
 
     /**
@@ -59,7 +59,7 @@ public:
      */
     ra_types::displacement2i getZeroPointOffset() const
     {
-        return spaceRef.viewZeroPointOffset;
+        return space_.viewZeroPointOffset;
     };
 
     /**
@@ -70,7 +70,7 @@ public:
                                ra_core::renderer::CANVAS_HEIGHT_PX>
     getImage() const
     {
-        return image;
+        return image_;
     };
 
     void imagePixelBuffer2d(const ra_core::pipeline::PixelBuffer2d& pixbuf)
@@ -80,21 +80,21 @@ public:
         auto copy = pixbuf.CreateCopy();
         auto pixv = *copy;
 
-        std::move(pixv.begin(), pixv.end(), image.begin());
+        std::move(pixv.begin(), pixv.end(), image_.begin());
         pixv.erase(pixv.begin(), pixv.end());
     }
 
-    ra_types::eViewDirection2d getXAxisView() const { return xAxisView; }
+    ra_types::ViewDirection2d getXAxisView() const { return x_axis_view_; }
 
-    ra_types::eViewDirection2d getYAxisView() const { return yAxisView; }
+    ra_types::ViewDirection2d getYAxisView() const { return y_axis_view_; }
 
 private:
-    const ra_types::Space2i&   spaceRef;
-    ra_types::eViewDirection2d xAxisView;
-    ra_types::eViewDirection2d yAxisView;
+    const ra_types::Space2i&  space_;
+    ra_types::ViewDirection2d x_axis_view_;
+    ra_types::ViewDirection2d y_axis_view_;
     ra_types::ImageRgb888Const<ra_core::renderer::CANVAS_WIDTH_PX *
                                ra_core::renderer::CANVAS_HEIGHT_PX>
-        image;
+        image_;
 };
 
 } // namespace ra_core::pipeline

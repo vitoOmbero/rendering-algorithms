@@ -53,7 +53,7 @@ void Draw(const ra_core::figures2d::DrawableInterface& drawable);
  * @brief setDrawingMode - allows to change drawing mode
  * @param mode - the default moe is Circuit.
  */
-void setDrawingMode(pipeline::eDrawingMode mode);
+void setDrawingMode(pipeline::DrawingMode mode);
 
 /**
  * @brief getCanvas
@@ -64,32 +64,32 @@ ra_core::pipeline::Canvas2d getCanvas();
  * @brief setDrawingMode
  * @param mode - Curciut or Shape
  */
-void setDrawingMode(pipeline::eDrawingMode mode);
+void setDrawingMode(pipeline::DrawingMode mode);
 
 /**
  * @brief setExportTarget
  * @param target - target buffer to be exported into canvas
  * @details Dot buffer is the default export target.
  */
-void setExportTarget(pipeline::eTarget target);
+void setExportTarget(pipeline::Target target);
 
 /**
  * @brief setRenderingTarget
  * @param target - target buffer to apply rendering algorithms
  */
-void setRenderingTarget(pipeline::eTarget target);
+void setRenderingTarget(pipeline::Target target);
 
 /**
  * @brief UseLineAlgorithm
  * @param algo_ptr - enum pointer to line rendering algorithm
  */
-void UseLineAlgorithm(ra_core::rendering2d::rendering_algorithm algo_ptr);
+void UseLineAlgorithm(ra_core::rendering2d::RenderingAlgorithm kAlgo);
 
 /**
  * @brief UseCircleAlgorithm
  * @param algo_ptr - enum pointer to circle rendering algorithm
  */
-void UseCircleAlgorithm(ra_core::rendering2d::rendering_algorithm algo_ptr);
+void UseCircleAlgorithm(ra_core::rendering2d::RenderingAlgorithm kAlgo);
 
 /**
  * @brief UseFillingTriangle
@@ -97,14 +97,14 @@ void UseCircleAlgorithm(ra_core::rendering2d::rendering_algorithm algo_ptr);
  * @details There are various filling algorithms which works with different
  * buffers. If nothing is set from client code, default settings are applied.
  */
-void UseFillingTriangle(ra_core::rendering2d::filling_algorithm algo_ptr);
+void UseFillingTriangle(ra_core::rendering2d::FillingAlgorithm kAlgo);
 
 /**
  * @brief UseCustomFillingTriangle
  * @param func_ptr - function with triangle filling algorithm
  */
 void UseCustomFillingTriangle(
-    ra_core::rendering2d::filling_triangle_fptr func_ptr);
+    ra_core::rendering2d::FillingTriangleFunction func_ptr);
 
 /**
  * @brief UseClippingWindow - forces to use centered rectangular clipping window
@@ -116,7 +116,7 @@ void UseCustomFillingTriangle(
  * the buffer space.
  */
 void UseClippingWindow(ra_types::n0_t offsetX, ra_types::n0_t offsetY,
-                       ra_core::rendering2d::clipping_algorithm algo_ptr);
+                       ra_core::rendering2d::ClippingAlgorithm kAlgo);
 /**
  * @brief UseNoClippingWindow - destroy clipping window if it is set
  */

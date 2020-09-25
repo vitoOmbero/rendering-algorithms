@@ -30,15 +30,15 @@ struct Space2i
     /**
      * @brief directionOx - 0x axis direction
      */
-    eDirection1d directionOx;
+    Direction1d directionOx;
     /**
      * @brief directionOy - 0y axis direction
      */
-    eDirection1d directionOy;
+    Direction1d directionOy;
 
     inline displacement1i_t getHighestVisibleOx() const
     {
-        if (directionOx == eDirection1d::PosInf)
+        if (directionOx == Direction1d::kPosInf)
             return viewZeroPointOffset.x + displacement1i_t{ viewWidth - 1 };
         else
             return viewZeroPointOffset.x;
@@ -46,7 +46,7 @@ struct Space2i
 
     inline displacement1i_t getLowestVisibleOx() const
     {
-        if (directionOx == eDirection1d::PosInf)
+        if (directionOx == Direction1d::kPosInf)
             return viewZeroPointOffset.x;
         else
             return viewZeroPointOffset.x - displacement1i_t{ viewWidth + 1 };
@@ -54,7 +54,7 @@ struct Space2i
 
     inline displacement1i_t getHighestVisibleOy() const
     {
-        if (directionOy == eDirection1d::PosInf)
+        if (directionOy == Direction1d::kPosInf)
             return viewZeroPointOffset.y + displacement1i_t{ viewHeight - 1 };
         else
             return viewZeroPointOffset.y;
@@ -62,42 +62,42 @@ struct Space2i
 
     inline displacement1i_t getLowestVisibleOy() const
     {
-        if (directionOy == eDirection1d::PosInf)
+        if (directionOy == Direction1d::kPosInf)
             return viewZeroPointOffset.y;
         else
             return viewZeroPointOffset.y - displacement1i_t{ viewHeight + 1 };
     }
 
-    inline point2i getHighestVisiblePoint() const
+    inline Point2i getHighestVisiblePoint() const
     {
-        if (directionOx == eDirection1d::PosInf)
+        if (directionOx == Direction1d::kPosInf)
         {
-            if (directionOy == eDirection1d::PosInf)
+            if (directionOy == Direction1d::kPosInf)
                 return { getHighestVisibleOx(), getHighestVisibleOy() };
             else
                 return { getHighestVisibleOx(), getLowestVisibleOy() };
         }
         else
         {
-            if (directionOy == eDirection1d::PosInf)
+            if (directionOy == Direction1d::kPosInf)
                 return { getLowestVisibleOx(), getHighestVisibleOy() };
             else
                 return { getLowestVisibleOx(), getLowestVisibleOy() };
         }
     }
 
-    inline point2i getLowestVisiblePoint() const
+    inline Point2i getLowestVisiblePoint() const
     {
-        if (directionOx == eDirection1d::PosInf)
+        if (directionOx == Direction1d::kPosInf)
         {
-            if (directionOy == eDirection1d::PosInf)
+            if (directionOy == Direction1d::kPosInf)
                 return { getLowestVisibleOx(), getLowestVisibleOy() };
             else
                 return { getLowestVisibleOx(), getHighestVisibleOy() };
         }
         else
         {
-            if (directionOy == eDirection1d::PosInf)
+            if (directionOy == Direction1d::kPosInf)
                 return { getHighestVisibleOx(), getLowestVisibleOy() };
             else
                 return { getHighestVisibleOx(), getHighestVisibleOy() };

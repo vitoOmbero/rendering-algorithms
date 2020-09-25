@@ -10,12 +10,12 @@ namespace ra_core::figures2d
  * @details Showcase provides number of rendering algorithms, which can be drawn
  * in diferrent ways
  */
-enum class eFigure2dType
+enum class Figure2dType
 {
-    Dot,
-    Line,
-    Circle,
-    Triangle,
+    kDot,
+    kLine,
+    kCircle,
+    kTriangle,
 };
 
 } // namespace ra_core::figures2d

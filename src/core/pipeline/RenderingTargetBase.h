@@ -20,44 +20,44 @@ public:
      * @brief UpdateDotsNumber - utility function to count painted dots
      * @param inc - increment
      */
-    virtual void UpdateDotsNumber(ra_types::n0_t inc) { total += inc; }
+    virtual void UpdateDotsNumber(ra_types::n0_t inc) { total_ += inc; }
 
     /**
      * @brief Paint - set active color
      * @param code - color code
      */
-    void Paint(const ra_types::rgb888 code) { activeColor = code; };
+    void Paint(const ra_types::Rgb888 code) { active_color_ = code; };
     /**
      * @brief Mark - paint dot with selected paint color
      * @param point - point with coordinates
      */
-    void Mark(const ra_types::point2i point) { Mark(activeColor, point); };
+    void Mark(const ra_types::Point2i point) { Mark(active_color_, point); };
     /**
      * @brief Mark - paint line segment with selected paint color
      * @param start - cartesian coordinates of first segment's end
      * @param end - cartesian coordinates of second segment's end
      */
-    void Mark(const ra_types::point2i start, const ra_types::point2i end)
+    void Mark(const ra_types::Point2i start, const ra_types::Point2i end)
     {
-        Mark(activeColor, start, end);
+        Mark(active_color_, start, end);
     };
 
-    virtual void Mark(const ra_types::rgb888  code,
-                      const ra_types::point2i point) = 0;
+    virtual void Mark(const ra_types::Rgb888  code,
+                      const ra_types::Point2i point) = 0;
 
-    virtual void Mark(const ra_types::rgb888  code,
-                      const ra_types::point2i start, ra_types::point2i end) = 0;
+    virtual void Mark(const ra_types::Rgb888  code,
+                      const ra_types::Point2i start, ra_types::Point2i end) = 0;
 
-    virtual std::unique_ptr<std::vector<ra_types::rgb888>> CreateCopy()
+    virtual std::unique_ptr<std::vector<ra_types::Rgb888>> CreateCopy()
         const = 0;
 
-    virtual ra_types::rgb888 getColorCode(const ra_types::point2i point) = 0;
+    virtual ra_types::Rgb888 getColorCode(const ra_types::Point2i point) = 0;
 
-    ra_types::n0_t getTotalElementsDrawn() const { return total; };
+    ra_types::n0_t getTotalElementsDrawn() const { return total_; };
 
 protected:
-    ra_types::rgb888 activeColor;
-    ra_types::n0_t   total;
+    ra_types::Rgb888 active_color_;
+    ra_types::n0_t   total_;
 };
 
 } // namespace ra_core::pipeline

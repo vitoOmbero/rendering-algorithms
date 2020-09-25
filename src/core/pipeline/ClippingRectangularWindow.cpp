@@ -3,40 +3,40 @@
 namespace ra_core::pipeline
 {
 ClippingRectangularWindow::ClippingRectangularWindow(
-    const ra_types::Space2i&                 spaceRef,
-    ra_core::rendering2d::clipping_algorithm algo_ptr)
-    : spaceRef{ spaceRef }
-    , clipping_algo_ptr{ algo_ptr }
+    const ra_types::Space2i&                spaceRef,
+    ra_core::rendering2d::ClippingAlgorithm algo_ptr)
+    : space_{ spaceRef }
+    , clipping_algo_enum_{ algo_ptr }
 {
     ra_types::displacement1i_t minX = spaceRef.getLowestVisibleOx();
     ra_types::displacement1i_t maxX = spaceRef.getHighestVisibleOx();
     ra_types::displacement1i_t minY = spaceRef.getLowestVisibleOy();
     ra_types::displacement1i_t maxY = spaceRef.getHighestVisibleOy();
-    max_X_max_Y                   = { maxX, maxY };
-    max_X_min_Y                   = { maxX, minY };
-    min_X_max_Y                   = { minX, maxY };
-    min_X_min_Y                   = { minX, minY };
+    max_X_max_Y_                    = { maxX, maxY };
+    max_X_min_Y_                    = { maxX, minY };
+    min_X_max_Y_                    = { minX, maxY };
+    min_X_min_Y_                    = { minX, minY };
 }
 
-ra_core::rendering2d::clipping_algorithm
-ClippingRectangularWindow::getClippingAlgo_ptr() const
+ra_core::rendering2d::ClippingAlgorithm
+ClippingRectangularWindow::getClippingAlgo() const
 {
-    return clipping_algo_ptr;
+    return clipping_algo_enum_;
 }
 
-ra_types::point2i ClippingRectangularWindow::getMax_X_max_Y() const
+ra_types::Point2i ClippingRectangularWindow::getMax_X_max_Y() const
 {
-    return max_X_max_Y;
+    return max_X_max_Y_;
 }
 
-ra_types::point2i ClippingRectangularWindow::getMin_X_min_Y() const
+ra_types::Point2i ClippingRectangularWindow::getMin_X_min_Y() const
 {
-    return min_X_min_Y;
+    return min_X_min_Y_;
 }
 
 const ra_types::Space2i &ClippingRectangularWindow::getSpaceRef() const
 {
-    return spaceRef;
+    return space_;
 }
 
 } // namespace ra_core::canvas2d

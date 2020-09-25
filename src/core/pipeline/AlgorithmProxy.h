@@ -16,9 +16,9 @@ class AlgorithmProxy
 public:
     AlgorithmProxy();
 
-    ra_core::rendering2d::rendering_dot_fptr getRenderDot() const;
+    ra_core::rendering2d::RenderingDotFunction getRenderDot() const;
 
-    ra_core::rendering2d::rendering_line_segment_fptr getRenderLineSegment()
+    ra_core::rendering2d::RenderingLineSegmentFunction getRenderLineSegment()
         const;
 
     /**
@@ -29,7 +29,8 @@ public:
      * @return true if set successfully
      */
     bool setRenderingCircuitAlgorithm(
-        ra_core::figures2d::eFigure2dType figure2dType, rendering_algorithm ra);
+        ra_core::figures2d::Figure2dType figure2d_type,
+        RenderingAlgorithm               algo);
 
     /**
      * @brief setFillingAlgorithm - common setter for supported filling
@@ -38,8 +39,8 @@ public:
      * @param ra
      * @return true if set successfully
      */
-    bool setFillingAlgorithm(ra_core::figures2d::eFigure2dType figure2dType,
-                             filling_algorithm                ca);
+    bool setFillingAlgorithm(ra_core::figures2d::Figure2dType figure2d_type,
+                             FillingAlgorithm                 algo);
 
     /**
      * @brief setCustomRenderingAlgorithm - common setter for custom
@@ -50,57 +51,59 @@ public:
      * @return true if set successfully
      */
     bool setCustomRenderingAlgorithm(
-        ra_core::figures2d::eFigure2dType figure2dType, void* function_ptr);
+        ra_core::figures2d::Figure2dType figure2d_type, void* function_ptr);
 
     bool setCustomFillingAlgorithm(
-        ra_core::figures2d::eFigure2dType figure2dType, void* function_ptr);
+        ra_core::figures2d::Figure2dType figure2d_type, void* function_ptr);
 
-    bool setClippingAlgorithm(clipping_algorithm alro_ptr);
+    bool setClippingAlgorithm(ClippingAlgorithm algo);
 
-    ra_core::rendering2d::rendering_circle_fptr getRenderCircle() const;
+    ra_core::rendering2d::RenderingCircleFunction getRenderCircle() const;
 
-    ra_core::rendering2d::filling_triangle_fptr getFillTriangle() const;
+    ra_core::rendering2d::FillingTriangleFunction getFillTriangle() const;
 
-    ra_core::rendering2d::clipping_line_fptr getClipRectangular() const;
+    ra_core::rendering2d::ClippingLineFunction getClipRectangular() const;
 
 private:
+    // NOTE: todo algo validation
     /**
      * @brief IsValidRenderingAlgorithm - planned feature
      * @return always true !!! WARNING !!!
      */
     bool IsValidRenderingAlgorithm();
 
-    typedef std::map<rendering_algorithm,
-                     ra_core::rendering2d::rendering_dot_fptr>
-        ra_dot_map;
+    typedef std::map<RenderingAlgorithm,
+                     ra_core::rendering2d::RenderingDotFunction>
+        DotMap;
 
-    typedef std::map<rendering_algorithm,
-                     ra_core::rendering2d::rendering_line_segment_fptr>
-        ra_ls_map;
+    typedef std::map<RenderingAlgorithm,
+                     ra_core::rendering2d::RenderingLineSegmentFunction>
+        LineSegMap;
 
-    typedef std::map<rendering_algorithm,
-                     ra_core::rendering2d::rendering_circle_fptr>
-        ra_cir_map;
+    typedef std::map<RenderingAlgorithm,
+                     ra_core::rendering2d::RenderingCircleFunction>
+        CircMap;
 
-    typedef std::map<filling_algorithm,
-                     ra_core::rendering2d::filling_triangle_fptr>
-        ra_fill3_map;
+    typedef std::map<FillingAlgorithm,
+                     ra_core::rendering2d::FillingTriangleFunction>
+        Fill3Map;
 
-    typedef std::map<clipping_algorithm,
-                     ra_core::rendering2d::clipping_line_fptr>
-        ra_clip_map;
+    typedef std::map<ClippingAlgorithm,
+                     ra_core::rendering2d::ClippingLineFunction>
+        ClipMap;
 
-    ra_dot_map   rendering_dot_map;
-    ra_ls_map  rendering_line_segment_map;
-    ra_cir_map rendering_circle_map;
-    ra_fill3_map fill3_map;
-    ra_clip_map  clip_map;
+    DotMap     rendering_dot_map_;
+    LineSegMap rendering_line_segment_map_;
+    CircMap    rendering_circle_map_;
+    Fill3Map   fill3_map_;
+    ClipMap    clip_map_;
 
-    ra_core::rendering2d::rendering_dot_fptr          renderDot;
-    ra_core::rendering2d::rendering_line_segment_fptr renderLineSegment;
-    ra_core::rendering2d::rendering_circle_fptr       renderCircle;
-    ra_core::rendering2d::filling_triangle_fptr       fillTriangle;
-    ra_core::rendering2d::clipping_line_fptr          clipRectangular;
+    ra_core::rendering2d::RenderingDotFunction render_dot_func_;
+    ra_core::rendering2d::RenderingLineSegmentFunction
+                                                  render_line_segment_func_;
+    ra_core::rendering2d::RenderingCircleFunction render_circle_func_;
+    ra_core::rendering2d::FillingTriangleFunction fill_triangle_func_;
+    ra_core::rendering2d::ClippingLineFunction    clip_rectangular_func_;
 };
 } // namespace ra_core::canvas2d
 #endif // ALGORITHMPROXY_H

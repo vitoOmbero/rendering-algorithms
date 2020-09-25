@@ -17,8 +17,8 @@ using namespace ra_types;
 struct terriffying_naive_bad_filling_pack
 {
 
-    void line_positions(ra_types::point2i p1, ra_types::point2i p2,
-                        std::vector<ra_types::point2i>& positions_output,
+    void line_positions(ra_types::Point2i p1, ra_types::Point2i p2,
+                        std::vector<ra_types::Point2i>& positions_output,
                         ra_types::n0_t&                 pixels_count_output)
     {
         coord_t x1 = p1.x;
@@ -102,11 +102,11 @@ struct terriffying_naive_bad_filling_pack
 
     struct borders
     {
-        std::vector<ra_types::point2i> left_border;
-        std::vector<ra_types::point2i> right_border;
+        std::vector<ra_types::Point2i> left_border;
+        std::vector<ra_types::Point2i> right_border;
     };
 
-    borders get_borders(std::vector<ra_types::point2i>& v)
+    borders get_borders(std::vector<ra_types::Point2i>& v)
     {
         v.shrink_to_fit();
         assert(v.size() == 3);
@@ -117,8 +117,8 @@ struct terriffying_naive_bad_filling_pack
         point2d min{ std::min({ v[0].x, v[1].x, v[2].x }),
                      std::min({ v[0].y, v[1].y, v[2].y }) };
 */
-        auto       LD = new std::vector<point2i>;
-        auto       RD = new std::vector<point2i>;
+        auto       LD = new std::vector<Point2i>;
+        auto       RD = new std::vector<Point2i>;
         distance1ui_t countL{ 0 };
         distance1ui_t countR{ 0 };
 
@@ -206,15 +206,15 @@ struct terriffying_naive_bad_filling_pack
         line_positions(v[2], v[0], *RD, countR);
 
         auto distinct_and_sort_by_y_coord =
-            [&](std::vector<point2i>* bigger_side) {
+            [&](std::vector<Point2i>* bigger_side) {
                 auto iter = std::unique(
                     bigger_side->begin(), bigger_side->end(),
-                    [](point2i a, point2i b) -> bool { return a.y == b.y; });
+                    [](Point2i a, Point2i b) -> bool { return a.y == b.y; });
                 bigger_side->erase(iter, bigger_side->end());
                 bigger_side->shrink_to_fit();
                 std::sort(
                     bigger_side->begin(), bigger_side->end(),
-                    [](point2i a, point2i b) -> bool { return a.y < b.y; });
+                    [](Point2i a, Point2i b) -> bool { return a.y < b.y; });
             };
 
         distinct_and_sort_by_y_coord(RD); // just for sure
@@ -228,12 +228,12 @@ static terriffying_naive_bad_filling_pack
     gebr; ///< good example of bad realization
 
 ra_types::n0_t ra_core::rendering2d::filling::fill3_naive_hr(
-    ra_types::point2i first, ra_types::point2i second, ra_types::point2i third,
-    ra_types::rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
+    ra_types::Point2i first, ra_types::Point2i second, ra_types::Point2i third,
+    ra_types::Rgb888 color_code, ra_core::pipeline::RenderingTargetBase& dotbuf)
 {
     n0_t counter = 0;
 
-    std::vector<point2i> v{ first, second, third };
+    std::vector<Point2i> v{ first, second, third };
     auto                 borders = gebr.get_borders(v);
 
     auto LD = &borders.left_border;  // now read as larger
@@ -245,8 +245,8 @@ ra_types::n0_t ra_core::rendering2d::filling::fill3_naive_hr(
     // filling horizontal line by line
     for (ulong i = 0; i < count - 1; ++i)
     {
-        point2i larger = LD->at(i);
-        point2i lesser = RD->at(i);
+        Point2i larger = LD->at(i);
+        Point2i lesser = RD->at(i);
         // line we need
         if (larger.y == lesser.y)
             for (int j = lesser.x; j < larger.x; ++j)

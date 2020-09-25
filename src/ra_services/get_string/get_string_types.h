@@ -29,30 +29,30 @@ inline std::string GetString(const displacement1i_t d1i)
  * @param edir - sreenview related direction
  * @return readonly string representation
  */
-inline std::string_view GetString(const eViewDirection2d edir)
+inline std::string_view GetString(const ViewDirection2d edir)
 {
     switch (edir)
     {
-        case eViewDirection2d::North:
+        case ViewDirection2d::kNorth:
             return "North";
-        case eViewDirection2d::East:
+        case ViewDirection2d::kEast:
             return "East";
-        case eViewDirection2d::South:
+        case ViewDirection2d::kSouth:
             return "South";
-        case eViewDirection2d::West:
+        case ViewDirection2d::kWest:
             return "West";
         default:
             return "No string is provided for eDirection";
     }
 }
 
-inline std::string_view GetString(const eDirection1d d1d)
+inline std::string_view GetString(const Direction1d d1d)
 {
     switch (d1d)
     {
-        case eDirection1d::PosInf:
+        case Direction1d::kPosInf:
             return "+Inf";
-        case eDirection1d::NegInf:
+        case Direction1d::kNegInf:
             return "-Inf";
         default:
             return "No string is provided for eDirection";
@@ -82,7 +82,7 @@ inline std::string GetString(const displacement2i cp, bool oneline = false)
  * @param oneline - formatting flag (TRUE by default)
  * @return 2d point string representation
  */
-inline std::string GetString(const ra_types::point2i point, bool oneline = true)
+inline std::string GetString(const ra_types::Point2i point, bool oneline = true)
 {
     std::ostringstream oss;
     line_formatting(oss, !oneline);
@@ -162,7 +162,7 @@ inline std::string GetString(const Space2i space_do, bool oneline = true)
  * @param rgb - rgb888 color code
  * @return string
  */
-inline std::string GetString(rgb888 rgb)
+inline std::string GetString(Rgb888 rgb)
 {
     using namespace std;
     ostringstream oss;
@@ -171,76 +171,76 @@ inline std::string GetString(rgb888 rgb)
     return oss.str();
 }
 
-inline std::string_view GetString(const eColor ecol)
+inline std::string_view GetString(const Color ecol)
 {
     switch (ecol)
     {
-        case eColor::Black:
+        case Color::kBlack:
             return "Black";
-        case eColor::White:
+        case Color::kWhite:
             return "White";
-        case eColor::Navy:
+        case Color::kNavy:
             return "Navy";
-        case eColor::Blue:
+        case Color::kBlue:
             return "Blue";
-        case eColor::Green:
+        case Color::kGreen:
             return "Green";
-        case eColor::Teal:
+        case Color::kTeal:
             return "Teal";
-        case eColor::Blue_light:
+        case Color::kBlueLight:
             return "Blue_light";
-        case eColor::Lime:
+        case Color::kLime:
             return "Lime";
-        case eColor::Green_springB:
+        case Color::kGreenSpringB:
             return "Green_springB";
-        case eColor::Cyan:
+        case Color::kCyan:
             return "Cyan";
-        case eColor::Indigo:
+        case Color::kIndigo:
             return "Indigo";
-        case eColor::Maroon:
+        case Color::kMaroon:
             return "Maroon";
-        case eColor::Purple:
+        case Color::kPurple:
             return "Purple";
-        case eColor::Purple_blue:
+        case Color::kPurpleBlue:
             return "Purple_blue";
-        case eColor::Olive:
+        case Color::kOlive:
             return "Olive";
-        case eColor::Gray:
+        case Color::kGray:
             return "Gray";
-        case eColor::Sky_blue_dark:
+        case Color::kSkyBlueDark:
             return "Sky_blue_dark";
-        case eColor::Silver:
+        case Color::kSilver:
             return "Silver";
-        case eColor::Violet:
+        case Color::kViolet:
             return "Violet";
-        case eColor::Red:
+        case Color::kRed:
             return "Red";
-        case eColor::Fuchsia_dark:
+        case Color::kFuchsiaDark:
             return "Fuchsia_dark";
-        case eColor::Magenta:
+        case Color::kMagenta:
             return "Magenta";
-        case eColor::DarkOrange1B:
+        case Color::kDarkOrange1B:
             return "DarkOrange1B";
-        case eColor::Orange:
+        case Color::kOrange:
             return "Orange";
-        case eColor::Coral_lightd:
+        case Color::kCoralLightD:
             return "Coral_lightd";
-        case eColor::Orchid1_l:
+        case Color::kOrchid1L:
             return "Orchid1_l";
-        case eColor::Yellow:
+        case Color::kYellow:
             return "Yellow";
-        case eColor::Khaki1_l:
+        case Color::kKhaki1L:
             return "Khaki1_l";
-        case eColor::No:
+        case Color::kNo:
             return "No (invisible color)";
-        case eColor::Unnamed:
+        case Color::kUnnamed:
             return "Unnamed (enum null value)";
-        case eColor::_FIRST_:
+        case Color::k_FIRST_:
             return "_FIRST_ (enum iterator)";
-        case eColor::_LAST_:
+        case Color::k_LAST_:
             return "_LAST_ (enum iterator)";
         default:
-            return "No string is provided for current eColor";
+            return "No string is provided for current Color";
             // TODO: add feature if ColorMap service is static
     }
 }
