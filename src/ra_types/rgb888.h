@@ -48,7 +48,7 @@ struct Rgb888
 
     bool operator==(const Rgb888& b) const
     {
-        return (this->r == b.r & this->g == b.g & this->b == b.b);
+        return (this->r == b.r && this->g == b.g && this->b == b.b);
     };
 
     bool operator!=(const Rgb888& b) const
@@ -69,17 +69,17 @@ struct Rgb888
      * @brief blue - helper getter
      * @return at least 16bit int
      */
-    int blue() const { return static_cast<int>(b); };
+    int blue() const { return static_cast<int>(b); }
     /**
      * @brief green - helper getter
      * @return at least 16bit int
      */
-    int green() const { return static_cast<int>(g); };
+    int green() const { return static_cast<int>(g); }
     /**
      * @brief red - helper getter
      * @return at least 16bit int
      */
-    int red() const { return static_cast<int>(r); };
+    int red() const { return static_cast<int>(r); }
 };
 
 } // namespace ra_types

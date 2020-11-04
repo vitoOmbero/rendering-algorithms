@@ -14,7 +14,7 @@
 typedef ra_types::displacement1i_t coord_t;
 using namespace ra_types;
 
-struct terriffying_naive_bad_filling_pack
+struct terrifying_naive_bad_filling_pack
 {
 
     void line_positions(ra_types::Point2i p1, ra_types::Point2i p2,
@@ -224,7 +224,7 @@ struct terriffying_naive_bad_filling_pack
     }
 };
 
-static terriffying_naive_bad_filling_pack
+static terrifying_naive_bad_filling_pack
     gebr; ///< good example of bad realization
 
 ra_types::n0_t ra_core::rendering2d::filling::fill3_naive_hr(

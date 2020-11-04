@@ -15,9 +15,9 @@ ra_types::n0_t ra_core::rendering2d::circuits::bresenham_int_circle(
 
     auto&   c     = center;
     coord_t x     = 0;
-    coord_t y     = coord_t(radius);
+    auto y     = coord_t(radius);
     coord_t delta = 1 - 2 * coord_t(radius);
-    coord_t error = 0;
+    coord_t error;
 
     while (y >= 0)
     {

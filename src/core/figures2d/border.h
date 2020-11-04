@@ -6,9 +6,9 @@
 
 namespace ra_core::figures2d
 {
-
+//TODO: remove naming violation and border struct placeholder
 /**
- * @brief The border struct - lightweight geometrical border abstaction
+ * @brief The border struct - lightweight geometrical border abstraction (current status: placeholder)
  */
 struct border
 {

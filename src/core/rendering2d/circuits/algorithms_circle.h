@@ -1,7 +1,7 @@
 #ifndef ALGORITHMS_CIRCLE_H
 #define ALGORITHMS_CIRCLE_H
 
-#include "RenderingTargetBase.h"
+#include "rendering_target_base.h"
 #include "point2i.h"
 #include "rgb888.h"
 #include "typedefs.h"

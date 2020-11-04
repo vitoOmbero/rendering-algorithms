@@ -18,12 +18,12 @@ struct displacement2i final
 
     bool operator==(const displacement2i& b) const
     {
-        return x == b.x & y == b.y;
+        return (x == b.x) && (y == b.y);
     };
 
     bool operator!=(const displacement2i& b) const
     {
-        return x != b.x && y != b.y;
+        return (x != b.x) && (y != b.y);
     };
 
     /**
@@ -33,12 +33,12 @@ struct displacement2i final
      */
     bool operator<(const displacement2i& b) const
     {
-        return x < b.x || y < b.y;
+        return (x < b.x) || (y < b.y);
     };
 
     bool operator>(const displacement2i& b) const
     {
-        return x > b.x || y > b.y;
+        return (x > b.x) || (y > b.y);
     };
 
     bool operator<=(const displacement2i& b) const

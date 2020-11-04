@@ -1,5 +1,5 @@
 #include "algorithm_filling_3v_line_sweeping.h"
-#include "ColorMap.h"
+#include "color_map.h"
 #include "algorithms_line_classic.h"
 #include "algorithms_lines_naive.h"
 

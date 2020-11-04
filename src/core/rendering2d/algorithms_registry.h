@@ -24,6 +24,6 @@ enum class RenderingAlgorithm
     kLineBresenhamInt,
     kCircleBresenhamInt,
 };
-}; // namespace ra_core::rendering2d
+} // namespace ra_core::rendering2d
 
 #endif // ALGORITHMS_REGISTRY_H

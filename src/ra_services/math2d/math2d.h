@@ -18,13 +18,13 @@ inline ra_types::distance1ui_t CalcDistance(ra_types::Point2i from,
     return value;
 }
 
-inline ra_types::Point2i CalcMidddlePoint(ra_types::Point2i p1,
-                                          ra_types::Point2i p2)
+inline ra_types::Point2i CalcMiddlePoint(ra_types::Point2i p1,
+                                         ra_types::Point2i p2)
 {
     if (p1 < p2)
         std::swap(p1, p2);
 
-    ra_types::Point2i p;
+    ra_types::Point2i p{};
     p.x = (float)(p1.x - p2.x) / 2 + p1.x;
     p.y = (float)(p1.y - p2.y) / 2 + p1.y;
     return p;

@@ -36,8 +36,11 @@
 .cproject
 
 # Directories
-/bin
-/build
+**/bin
+**/build
+**/build**
+**/*-build-**
+
 
 #Cmake
 CMakeLists.txt?*

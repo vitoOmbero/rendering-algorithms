@@ -1,13 +1,13 @@
 #ifndef RENDERINGPIPELLINE2D_H
 #define RENDERINGPIPELLINE2D_H
 
-#include "Canvas2d.h"
-#include "ColorMap.h"
+#include "canvas2d.h"
+#include "color_map.h"
 #include "DEFAULT_PIPELINE_VALUES.h"
-#include "DrawableInterface.h"
-#include "DrawingMode.h"
-#include "MatrixCalculatorSimple.h"
-#include "PipelineTargets.h"
+#include "drawable_interface.h"
+#include "drawing_mode.h"
+#include "matrix_calculator_simple.h"
+#include "pipeline_targets.h"
 #include "algorithms_registry.h"
 #include "algorithms_types.h"
 
@@ -60,11 +60,6 @@ void setDrawingMode(pipeline::DrawingMode mode);
  * @return Canvas2d
  */
 ra_core::pipeline::Canvas2d getCanvas();
-/**
- * @brief setDrawingMode
- * @param mode - Curciut or Shape
- */
-void setDrawingMode(pipeline::DrawingMode mode);
 
 /**
  * @brief setExportTarget

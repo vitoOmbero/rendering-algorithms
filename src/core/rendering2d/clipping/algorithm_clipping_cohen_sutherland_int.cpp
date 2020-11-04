@@ -5,7 +5,7 @@ inline int check_bit(int number, char bit_1_based_index)
     return number & (1 << (bit_1_based_index - 1));
 }
 
-unsigned char calculte_code(ra_types::Point2i&          p,
+unsigned char calculateCode(ra_types::Point2i&          p,
                             ra_types::displacement1i_t& minX,
                             ra_types::displacement1i_t& minY,
                             ra_types::displacement1i_t& maxX,
@@ -34,23 +34,25 @@ ra_core::rendering2d::clipping::clipping_cohen_sutherland_int(
     std::array<ra_types::Point2i, 2> result{ first, second };
 
     auto P1 =
-        calculte_code(first, rectwindow_minX_minY.x, rectwindow_minX_minY.y,
-                      rectwindow_maxX_maxY.x, rectwindow_maxX_maxY.y);
+            calculateCode(first, rectwindow_minX_minY.x, rectwindow_minX_minY.y,
+                          rectwindow_maxX_maxY.x, rectwindow_maxX_maxY.y);
     auto P2 =
-        calculte_code(second, rectwindow_minX_minY.x, rectwindow_minX_minY.y,
-                      rectwindow_maxX_maxY.x, rectwindow_maxX_maxY.y);
+            calculateCode(second, rectwindow_minX_minY.x, rectwindow_minX_minY.y,
+                          rectwindow_maxX_maxY.x, rectwindow_maxX_maxY.y);
 
     unsigned char codes[]{ P1, P2 };
 
-    // trivial visability
+    // trivial visibility
     if ((P1 + P2) == 0)
         return result;
-    else
-        // trivial invisability
-        if ((P1 & P2))
+
+    // trivial invisibility
+    if ((P1 & P2))
+    {
         return std::array<ra_types::Point2i, 2>{ { { -1, 0 } } };
+    }
     else
-        // untrivial case (this check is not really needed)
+        // not trivial case (this check is not really needed)
         if ((P1 & P2) == 0)
     {
         /* parametric line eq:
@@ -81,7 +83,7 @@ ra_core::rendering2d::clipping::clipping_cohen_sutherland_int(
                 continue;
             auto& point = result[i];
 
-            // order is imortant!
+            // order is important!
 
             if (check_bit(P, 1)) // left
             {

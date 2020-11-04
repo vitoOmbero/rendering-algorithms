@@ -24,7 +24,7 @@ struct Vec2
     Vec2()
         : col1{ T(1), T(1) } {};
 
-    Vec2(const T arr[2])
+    explicit Vec2(const T arr[2])
         : col1{ arr[0], arr[1] } {};
 
     Vec2(T val0, T val1)
@@ -39,7 +39,7 @@ struct Vec2h
     Vec2h()
         : col1{ T(1), T(1), T(1) } {};
 
-    Vec2h(const T arr[3])
+    explicit Vec2h(const T arr[3])
         : col1{ arr[0], arr[1], arr[2] } {};
 
     Vec2h(T val0, T val1)

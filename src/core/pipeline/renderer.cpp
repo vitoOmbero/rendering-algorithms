@@ -1,14 +1,14 @@
 #include "renderer.h"
 
-#include "AlgorithmProxy.h"
-#include "Canvas2d.h"
-#include "ClippingRectangularWindow.h"
-#include "DrawCircuit2dVisitor.h"
-#include "DrawShape2dVisitor.h"
-#include "Pipeline.h"
-#include "PixelBuffer2d.h"
-#include "RasterizerSimple.h"
-#include "SpaceCoordinateTranslatorSimple.h"
+#include "algorithm_proxy.h"
+#include "canvas2d.h"
+#include "clipping_rectangular_window.h"
+#include "draw_circuit2d_visitor.h"
+#include "draw_shape2d_visitor.h"
+#include "pipeline.h"
+#include "pixel_buffer2d.h"
+#include "rasterizer_simple.h"
+#include "space_coordinate_translator_simple.h"
 
 namespace ra_core::renderer
 {
@@ -108,15 +108,15 @@ void UseClippingWindow(ra_types::n0_t offsetX, ra_types::n0_t offsetY,
 
     UseNoClippingWindow();
 
-    spaceCoordTrans_ptr->setClipwinOffset({ offsetX, offsetY });
+    spaceCoordTrans_ptr->setClippingWindowsOffset({ offsetX, offsetY });
 
     using namespace ra_types;
 
-    spaceCoordTrans_ptr->modClipwinSize(displacement1i_t{ -offsetX },
+    spaceCoordTrans_ptr->modClippingWindowSize(displacement1i_t{ -offsetX },
                                         displacement1i_t{ -offsetY });
 
     clipwin_ptr = new pipeline::ClippingRectangularWindow(
-        spaceCoordTrans_ptr->getClipwin2dSpaceRef(), kAlgo);
+        spaceCoordTrans_ptr->getClippingWindow2dSpace(), kAlgo);
     pipeline_ptr->setClipwin_ptr(clipwin_ptr);
 
     raproxy.setClippingAlgorithm(clipwin_ptr->getClippingAlgo());

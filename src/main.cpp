@@ -1,14 +1,14 @@
 #include <iostream>
 
-#include "01_Elemantary.h"
-#include "02_Shapes.h"
-#include "03_Clipping.h"
-#include "04_Transitions.h"
-#include "05_Shaders.h"
-#include "ExampleRunner.h"
-#include "GlutViewerSimple.h"
-#include "PpxCanvas2dViewer.h"
-#include "TerminalCanvas2dViewer.h"
+#include "01_elemantary.h"
+#include "02_shapes.h"
+#include "03_clipping.h"
+#include "04_transitions.h"
+#include "05_shaders.h"
+#include "example_runner.h"
+#include "glut_viewer_simple.h"
+#include "ppx_canvas2d_viewer.h"
+#include "terminal_canvas2d_viewer.h"
 
 int main(int argc, char* argv[])
 {
@@ -60,11 +60,13 @@ int main(int argc, char* argv[])
         er.Run(expack);
     }
 
+    if (argc > 1)
+        return 0;
     {
         GlutViewerSimple                  glutViewer(argc, argv);
-        ExampleRunner                     er(glutViewer);
-        ra_examples::cartesian2d::Shaders expack;
-        er.Run(expack);
+        ExampleRunner                     er_1(glutViewer);
+        ra_examples::cartesian2d::Shaders expack_1;
+        er_1.Run(expack_1);
         glutViewer.glutMainLoop(); // never return from this
     }
     return 0;

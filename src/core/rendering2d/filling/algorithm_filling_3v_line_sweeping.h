@@ -1,8 +1,8 @@
 #ifndef ALGORTITHMS_FILLING_3V_LINE_SWEEPING_H
 #define ALGORTITHMS_FILLING_3V_LINE_SWEEPING_H
 
-#include "RenderingTargetBase.h"
 #include "point2i.h"
+#include "rendering_target_base.h"
 #include "rgb888.h"
 #include "typedefs.h"
 

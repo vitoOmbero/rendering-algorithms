@@ -3,8 +3,8 @@
 #include <sstream>
 #include <string>
 
-#include "Canvas2d.h"
-#include "PixelBuffer2d.h"
+#include "canvas2d.h"
+#include "pixel_buffer2d.h"
 #include "get_string_types.h"
 
 namespace ra_core::pipeline
@@ -22,25 +22,6 @@ inline std::string GetString(const ra_core::pipeline::PixelBuffer2d& pb)
     oss << "Pixels drawn: " << pb.getTotalElementsDrawn() << endl;
     oss << "Zero point offset: " << ra_types::GetString(pb.getZeroPointOffset())
         << endl;
-    /*
-    oss << "Height, px: " << pb.getHeight() << endl;
-    oss << "Width, dt: " << pb.getDotBufferWidth() << endl;
-    oss << "Height, dt: " << pb.getDotBufferHeight() << endl;
-    oss << "Dot scale: " << pb.getDotBufferExportDotSize() << endl;
-
-
-    oss << "Buffer last index: " << pb.getDotBufferLastIndex() << endl;
-    oss << "Zero index: " << pb.getDotBufferZeroIndex() << endl;
-    oss << "Zero point offset: " << ra_types::GetString(pb.getZeroPointOffset())
-        << endl;
-    oss << "Dots drawn total: " << pb.getDotBufferDotsNumber() << endl;
-    oss << "Lowest visible point: "
-        << ra_types::GetString(pb.getLowestVisibleCanvasPoint()) << endl;
-    oss << "Highest visible point: "
-        << ra_types::GetString(pb.getHighestVisibleCanvasPoint()) << endl;
-    oss << "Buffer zero point index: " << pb.getDotBufferZeroPointIndex()
-        << endl;
-    */
     return oss.str();
 }
 
